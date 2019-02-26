@@ -1,0 +1,9 @@
+<ul>
+  {% for advert in listAdverts %}
+    <li>
+      <a href="{{ path('oc_advert_view', {'id': advert.id}) }}">
+        {{ advert.title }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

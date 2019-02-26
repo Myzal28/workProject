@@ -1,9 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
+{% extends "layout.html.twig" %}
 
-</body>
-</html>
+{% block body %}
+
+  <h2>Ajouter une annonce</h2>
+
+  {{ include("Advert/_form.html.twig") }}
+
+  <p>
+    Attention : cette annonce sera ajoutée directement
+    sur la page d'accueil après validation du formulaire.
+  </p>
+
+{% endblock %}
