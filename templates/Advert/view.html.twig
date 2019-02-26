@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Affichage de l'annonce {{id}}</title>
+</head>
+<body>
+	<h1>Hello annonce n°{{id}}</h1>
+	<p>Tag éventuel : {{tag}}</p>
+	<div>
+		{% for message in app.flashes('info') %}
+			<p> Message flash : {{message}}</p>
+		{% endfor %}
+	</div>
+
+	<p>
+		Ici nous pourrons lire l'annonce ayant comme id : {{id}}<br>
+		Mais pour l'instant nous ne savons pas encore le faire, cela viendra !
+	</p>
+</body>
+</html>
