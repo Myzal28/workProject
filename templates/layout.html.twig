@@ -31,10 +31,12 @@
 				</ul>
 				<h4>Dernières annonces</h4>
 				{{ 
-					render(controller(
-					'App\\Controller\\AdvertController::menu',
-					{ 'limit': 3 }
-					)) 
+					render(
+						controller(
+							'App\\Controller\\AdvertController::menu',
+							{ 'limit': 3 }
+						)
+					) 
 				}}
 			</div>
 			<div id="content" class="col-md-9">

@@ -35,7 +35,7 @@ class Application
      */
     private $date;
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Advert")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Advert", inversedBy="applications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $advert;

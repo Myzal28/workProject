@@ -16,6 +16,8 @@ use App\Entity\Advert;
 use App\Entity\Image;
 use App\Entity\Application;
 use App\Entity\Category;
+use App\Entity\AdvertSkill;
+use App\Entity\Skill;
 /**
  * @Route("/advert")
  */
@@ -71,23 +73,34 @@ class AdvertController extends AbstractController
 	 */
 	public function view($id = 1)
 	{
+		// Initialisation de l'objet doctrine
 		$doctrine = $this->getDoctrine()->getManager();
 
+		// On récupère l'annonce a l'id $id
 		$advert = $doctrine->getRepository('App:Advert')->find($id);
 
+		// Si l'annonce n'est pas trouvée on lance une erreur 404
 		if ($advert === NULL) {
 			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
 		}
 
+		// On récupère les candidatures 
 		$listApplications = $doctrine
 			->getRepository('App:Application')
+			->findBy(['advert' => $advert])
+		;
+
+		// On récupère les skills nécéssaires
+		$listAdvertSkills = $doctrine
+			->getRepository('App:AdvertSkill')
 			->findBy(['advert' => $advert])
 		;
 		return $this->render(
 			'Advert/view.html.twig',
 			[
 				'advert' => $advert,
-				'listApplications' => $listApplications
+				'listApplications' => $listApplications,
+				'listAdvertSkills' => $listAdvertSkills,
 			]
 		);
 	}
@@ -97,17 +110,34 @@ class AdvertController extends AbstractController
 	 */
 	public function add(Request $request)
 	{
+		// On crée l'objet doctrine permettant de gérer la BDD
+		$doctrine = $this->getDoctrine()->getManager();
+
+		// On crée l'annnonce de base
 		$advert = new Advert;
 		$advert->setTitle("Recherche CDD Caviste");
 		$advert->setAuthor("Benoît");
 		$advert->setContent("Nous recherchons un caviste pour 6 mois pour le magasin de Paris Espace");
 		
+		// On ajoute les skills à l'annonce
+		$listSkills = $doctrine->getRepository('App:Skill')->findAll();
+		foreach ($listSkills as $skill) {
+			$advertSkill = new AdvertSkill();
+			$advertSkill->setAdvert($advert);
+			$advertSkill->setSkill($skill);
+			$advertSkill->setLevel(rand(0,5));
+
+			$doctrine->persist($advertSkill);
+		}
+
+		// On ajoute l'image à l'annonce
 		$image = new Image();
 		$image->setUrl('http://www.alexis-berger.com/wp-content/uploads/2017/07/Pourquoi-vous-devez-prendre-un-job-dappoint.jpg');
 		$image->setAlt('Find job');
 
 		$advert->setImage($image);
 
+		// On ajoute des candidatures à l'annonce
 		$application1 = new Application();
 		$application1->setAuthor('Marine');
 		$application1->setContent("J'ai toutes les qualités requises");
@@ -118,23 +148,22 @@ class AdvertController extends AbstractController
 
 		$application1->setAdvert($advert);
 		$application2->setAdvert($advert);
-		
-
-		$doctrine = $this->getDoctrine()->getManager();
 
 		$doctrine->persist($advert);
 		$doctrine->persist($application1);
 		$doctrine->persist($application2);
 		
+		// On valide tous les ajouts et on éxecute les requêtes
 		$doctrine->flush();
 		
-		$advertRepository = $doctrine->getRepository('App:Advert');
 		if ($request->isMethod('POST')) 
 		{
 			// Ici on gèrera le formulaire
 			$this->addFlash('info','Annonce bien enregistrée');
 			return $this->redirectToRoute('oc_advert_view',['id' => $advert->getId()]);
 		}
+
+		// On crée et renvoie la vue
 		return $this->render('Advert/add.html.twig');
 	}
 
@@ -149,19 +178,30 @@ class AdvertController extends AbstractController
 	 */
 	public function edit($id,Request $request)
 	{
+		$doctrine = $this->getDoctrine()->getManager();
+
+		$advert = $doctrine->getRepository('App:Advert')->find($id);
+
+		if($advert === NULL)
+		{
+			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+		}
+
+		$listCategories = $doctrine->getRepository('App:Category')->findAll();
+
+		foreach ($listCategories as $category) {
+			$advert->addCategory($category);
+		}
+
+		$doctrine->flush();
+
 		if($request->isMethod('POST'))
 		{
 			$this->addFlash('notice','Annonce bien modifiée');
 
 			return $this->redirectToRoute('oc_advert_view',['id' => 5]);
 		}
-		$advert = array(
-		  'title'   => 'Recherche développpeur Symfony',
-		  'id'      => $id,
-		  'author'  => 'Alexandre',
-		  'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-		  'date'    => new \Datetime()
-		);
+
 		return $this->render(
 			'Advert/edit.html.twig',
 			['advert' => $advert]
@@ -178,6 +218,17 @@ class AdvertController extends AbstractController
 	 */
 	public function delete($id)
 	{
+		$doctrine = $this->getDoctrine()->getManager();
+
+		$advert = $doctrine->getRepository('App:Advert')->find($id);
+		if ($advert === NULL) {
+			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+		}
+
+		foreach ($advert->getCategories() as $category) {
+			$advert->removeCategory($category);
+		}
+
 		return $this->render('Advert/delete.html.twig');
 	}
 
