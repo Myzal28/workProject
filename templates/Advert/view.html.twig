@@ -1,0 +1,56 @@
+{% extends "Advert/layout.html.twig" %}
+
+{% block title %}
+  Lecture d'une annonce - {{ parent() }}
+{% endblock %}
+
+{% block ocplatform_body %}
+
+  {% if advert.image is not null %}
+    <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+  {% endif %}
+  <h2>{{ advert.title }}</h2>
+  <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
+  <div class="well">
+    {{ advert.content }}
+  </div>
+
+  <p>
+    <a href="{{ path('oc_advert_index') }}" class="btn btn-primary">
+      Retour à la liste
+    </a>
+    <a href="{{ path('oc_advert_edit', {'id': advert.id}) }}" class="btn btn-primary">
+      Modifier l'annonce
+    </a>
+    <a href="{{ path('oc_advert_delete', {'id': advert.id}) }}" class="btn btn-danger">
+      Supprimer l'annonce
+    </a>
+  </p>
+
+  {% if not advert.categories.empty %}
+    <p>
+      Cette annonce est parue dans les catégories suivantes : 
+      {% for category in advert.categories %}
+        {{ category.name }}{% if not loop.last %},{% endif %}
+      {% endfor %}
+    </p>
+  {% endif %}
+  {% if listAdvertSkills|length > 0 %}
+    <div>
+      Cette annonce requiert les compétences suivantes :
+      <ul>
+        {% for advertSkill in listAdvertSkills %}
+          <li>{{ advertSkill.skill.name }} : niveau {{ advertSkill.level }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  {% if listApplications is not null %}
+    <h3>Candidatures déjà postées</h3>
+    <ul>
+      {% for application in listApplications %}
+        <li>{{application.author}} : {{application.content}} - {{application.date|date('d/m/Y')}}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
