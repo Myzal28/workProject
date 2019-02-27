@@ -7,9 +7,15 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface; //
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+// Entités
+use App\Entity\Advert;
+use App\Entity\Image;
+use App\Entity\Application;
+use App\Entity\Category;
 /**
  * @Route("/advert")
  */
@@ -65,16 +71,24 @@ class AdvertController extends AbstractController
 	 */
 	public function view($id = 1)
 	{
-		$advert = array(
-		  'title'   => 'Recherche développpeur Symfony2',
-		  'id'      => $id,
-		  'author'  => 'Alexandre',
-		  'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-		  'date'    => new \Datetime()
-		);
+		$doctrine = $this->getDoctrine()->getManager();
+
+		$advert = $doctrine->getRepository('App:Advert')->find($id);
+
+		if ($advert === NULL) {
+			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+		}
+
+		$listApplications = $doctrine
+			->getRepository('App:Application')
+			->findBy(['advert' => $advert])
+		;
 		return $this->render(
 			'Advert/view.html.twig',
-			['id' => $id,'advert' => $advert]
+			[
+				'advert' => $advert,
+				'listApplications' => $listApplications
+			]
 		);
 	}
 
@@ -83,10 +97,43 @@ class AdvertController extends AbstractController
 	 */
 	public function add(Request $request)
 	{
+		$advert = new Advert;
+		$advert->setTitle("Recherche CDD Caviste");
+		$advert->setAuthor("Benoît");
+		$advert->setContent("Nous recherchons un caviste pour 6 mois pour le magasin de Paris Espace");
+		
+		$image = new Image();
+		$image->setUrl('http://www.alexis-berger.com/wp-content/uploads/2017/07/Pourquoi-vous-devez-prendre-un-job-dappoint.jpg');
+		$image->setAlt('Find job');
+
+		$advert->setImage($image);
+
+		$application1 = new Application();
+		$application1->setAuthor('Marine');
+		$application1->setContent("J'ai toutes les qualités requises");
+
+		$application2 = new Application();
+		$application2->setAuthor('Pierre');
+		$application2->setContent("Je suis très motivé");
+
+		$application1->setAdvert($advert);
+		$application2->setAdvert($advert);
+		
+
+		$doctrine = $this->getDoctrine()->getManager();
+
+		$doctrine->persist($advert);
+		$doctrine->persist($application1);
+		$doctrine->persist($application2);
+		
+		$doctrine->flush();
+		
+		$advertRepository = $doctrine->getRepository('App:Advert');
 		if ($request->isMethod('POST')) 
 		{
 			// Ici on gèrera le formulaire
 			$this->addFlash('info','Annonce bien enregistrée');
+			return $this->redirectToRoute('oc_advert_view',['id' => $advert->getId()]);
 		}
 		return $this->render('Advert/add.html.twig');
 	}
