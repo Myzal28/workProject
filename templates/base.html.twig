@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/gsb.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+
 <body>
 <header class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow justify-content-between justify-content-md-start "> >
     <div>
@@ -22,7 +33,7 @@
         <nav id="nav" class="navbar navbar-expand-md col-md-3 sidebar pl-2 pl-md-2 pl-lg-5">
             <div id="menu" class="collapse navbar-collapse flex-column align-items-start">
                 <a href="{{ path('accueil') }}" title="Retour accueil" class="text-info ">
-                    <span class="oi" data-glyph="home"></span>
+                    <i class="fa fa-home"></i>
                 </a>
                 <h4 class="text-info mt-2">Les vétérinaires</h4>
                 <ul class="nav nav-pills flex-column">
@@ -41,7 +52,7 @@
                 </ul>
                 <h4 class="text-info mt-2">Les produits</h4>
                 <ul class="nav nav-pills flex-column">
-                    <li><a href="{{ path('produit_liste') }}">Liste des produits</a></li>
+                    {#<li><a href="{{ path('produit_liste') }}">Liste des produits</a></li> #}
                 </ul>
             </div>
         </nav>
@@ -50,7 +61,7 @@
         </main>
     </div>
     <footer class="d-flex flex-row justify-content-center">
-        <p class="m-1 d-none d-lg-block"><em>&copy; STS SIO SLAM - Chantilly - Promo 2019</em></p>
+        <p class="m-1 d-none d-lg-block"><em>&copy; BTS SIO SLAM - Chantilly - Promo 2019</em></p>
     </footer>
 </div>
 <script src="{{ asset('vendor/jquery/jquery-3.3.1.min.js') }}"></script>

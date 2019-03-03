@@ -5,7 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Form\VeterinaireType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Veterinaire;
 /**
  * Class VeterinaireController
  * @package App\Controller
@@ -15,41 +18,144 @@ class VeterinaireController extends AbstractController
 {
     /**
      * @Route("", name="veterinaire_liste")
+     * @return Response
      */
     public function index()
     {
-        return new Response('<h1>INDEX Action</h1>');
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository(Veterinaire::class);
+
+        $lesVeterinaires = $repository->findAll();
+
+        return $this->render('veterinaire/index.html.twig', ['lesVetos' => $lesVeterinaires]);
     }
+
     /**
      * @Route("/{id}/show", name="veterinaire_show")
+     * @param $id
+     * @return Response
      */
     public function show($id)
     {
-        return new Response('<h1>SHOW Action</h1>');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Veterinaire::class);
+        $veto = $repository->find($id);
+
+        return $this->render('veterinaire/show.html.twig', ['veto' => $veto]);
     }
 
     /**
      * @Route("/new",name="veterinaire_new")
+     * @return Response
      */
-    public function new()
+    public function new(Request $request)
     {
-        return new Response('<h1>NEW Action</h1>');
+        $veto = new Veterinaire;
+
+        $form = $this->createForm(VeterinaireType::class, $veto);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($veto);
+
+            $em->flush();
+
+            $this->addFlash('info', 'Vétérinaire bien enregistré');
+
+            return $this->redirectToRoute('veterinaire_show', ['id' => $veto->getId()]);
+
+        }
+        return $this->render('veterinaire/new.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("/{id}/edit", name="veterinaire_edit")
+     * @param $id
+     * @param Request $request
+     * @return Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        return new Response('<h1>EDIT Action</h1>');
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository(Veterinaire::class);
+
+        $veto = $repository->find($id);
+        if (!$veto) {
+            $this->addFlash('erreur', 'Vétérinaire non trouvé');
+            return $this->redirectToRoute('veterinaire_liste');
+        }
+        $form = $this->createForm(VeterinaireType::class, $veto);
+        $deleteForm = $this->createDeleteForm($veto);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            $this->addFlash('info', 'Le vétérinaire a bien été modifié');
+
+            return $this->redirectToRoute('veterinaire_show', ['id' => $veto->getId()]);
+
+        }
+        return $this->render('veterinaire/edit.html.twig', [
+            'form' => $form->createView(),
+            'id' => $id,
+            'delete_form' => $deleteForm->createView()
+        ]);
     }
 
     /**
-     * @Route("/{id}/delete", name="veterinaire_delete")
+     *
+     * @Route("/{id}/delete",methods={"DELETE"},name="veterinaire_delete")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        return new Response('<h1>DELETE Action</h1>');
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository(Veterinaire::class);
+
+        $veto = $repository->find($id);
+        if (!$veto) {
+            $this->addFlash('erreur', 'Vétérinaire inconnu');
+        } else {
+            $this->addFlash('alerte', 'Suppression vétérinaire n°' . $veto->getId() . ' effectuée');
+            $em->remove($veto);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('veterinaire_liste');
     }
 
+    /**
+     * @param Session $session
+     * @param $id
+     * @return bool
+     */
+    public function deleteVeterinaire(Session $session, $id)
+    {
+        $lesVetos = $this->getLesVeterinaires($session);
+
+        $del = false;
+
+        for ($i = 0; $i < count($lesVetos); $i++) {
+            if ($lesVetos[$i]['id'] == $id) {
+                unset($lesVetos[$i]);
+                break;
+            }
+        }
+
+        $newVetos = array_values($lesVetos);
+        $del = true;
+
+        $session->set('lesVetos', $newVetos);
+        $this->lesVeterinaires = $newVetos;
+
+        return $del;
+    }
 }
