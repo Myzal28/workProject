@@ -158,4 +158,20 @@ class VeterinaireController extends AbstractController
 
         return $del;
     }
+
+    /**
+     * @param Veterinaire $veto
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createDeleteForm(Veterinaire $veto)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl(
+                'veterinaire_delete',
+                ['id' => $veto->getId()]
+            ))
+            ->setMethod('DELETE')
+            ->getForm();
+    }
+
 }
