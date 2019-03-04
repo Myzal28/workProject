@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class Produit
      * @ORM\Column(type="float")
      */
     private $prix;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="produit", orphanRemoval=true)
+     */
+    private $objectifs;
+
+    public function __construct()
+    {
+        $this->objectifs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,5 +65,40 @@ class Produit
         $this->prix = $prix;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Objectif[]
+     */
+    public function getObjectifs(): Collection
+    {
+        return $this->objectifs;
+    }
+
+    public function addObjectif(Objectif $objectif): self
+    {
+        if (!$this->objectifs->contains($objectif)) {
+            $this->objectifs[] = $objectif;
+            $objectif->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectif(Objectif $objectif): self
+    {
+        if ($this->objectifs->contains($objectif)) {
+            $this->objectifs->removeElement($objectif);
+            // set the owning side to null (unless already changed)
+            if ($objectif->getProduit() === $this) {
+                $objectif->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNomProduit(){
+        return $this->getNom();
     }
 }

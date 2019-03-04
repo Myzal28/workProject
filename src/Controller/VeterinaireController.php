@@ -47,7 +47,9 @@ class VeterinaireController extends AbstractController
 
     /**
      * @Route("/new",name="veterinaire_new")
-     * @return Response
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
     public function new(Request $request)
     {
@@ -132,6 +134,25 @@ class VeterinaireController extends AbstractController
         return $this->redirectToRoute('veterinaire_liste');
     }
 
+    /**
+     * @Route("/{id}/objectif", methods={"GET"},name="objectif_show")
+     * @param $id
+     * @return Response
+     */
+    public function showObjectif($id){
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $em->getRepository(Veterinaire::class);
+
+        $veto = $repository->find($id);
+
+        $objectifs = $veto->getObjectifs();
+
+        return $this->render('objectif/show.html.twig',[
+            'veto' => $veto,
+            'objectifs' => $objectifs
+        ]);
+    }
     /**
      * @param Session $session
      * @param $id

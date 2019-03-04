@@ -5,9 +5,9 @@ namespace App\Form;
 use App\Entity\Veterinaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VeterinaireType extends AbstractType
 {
@@ -23,8 +23,15 @@ class VeterinaireType extends AbstractType
             ->add('codePostal',TextType::class,['required'=> true])
             ->add('ville',TextType::class,['required'=> true])
             ->add('telephone',TextType::class,['required'=> true])
-            ->add('urlImage',UrlType::class,['label' => 'URL Photo','required'=> true])
-            ->add('altImage',TextType::class,['label' => 'ALT Photo','required'=> true])
+            ->add('photo',PhotoType::class,[
+                'data_class' => 'App\Entity\Photo',
+                'required'=> true
+            ])
+            ->add('activites',EntityType::class,[
+                'class' => 'App\Entity\Activite',
+                'multiple' => true,
+                'choice_label' => 'libelle'
+            ])
         ;
     }
 

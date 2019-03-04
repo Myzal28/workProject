@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/gsb.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/gsb.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
 
@@ -39,20 +39,25 @@
                 <ul class="nav nav-pills flex-column">
                     <li><a href="{{ path('veterinaire_liste') }}">Liste des vétérinaires</a></li>
                     <li><a href="{{ path('veterinaire_new') }}">Ajouter un vétérinaire</a></li>
+                    <li><a href="{{ path('activite') }}">Vétérinaires par activité</a></li>
                 </ul>
                 <h4 class="text-info mt-2">Les objectifs</h4>
                 <ul class="nav nav-pills flex-column">
-                    <li><a href="">Liste des objectifs fixés</a></li>
-                    <li><a href="">Ajout d'un objectif</a></li>
+                    <li><a href="{{ path('objectif_liste') }}">Liste des objectifs fixés</a></li>
+                    <li><a href="{{ path('objectif_new') }}">Ajout d'un objectif</a></li>
                 </ul>
                 <h4 class="text-info mt-2">Suivi des vétérinaires</h4>
                 <ul class="nav nav-pills flex-column">
-                    <li><a href="">Liste des suivis</a></li>
-                    <li><a href="">Ajouter un suivi</a></li>
+                    <li><a href="{{ path('suivi_liste') }}">Liste des suivis</a></li>
+                    <li><a href="{{ path('suivi_new') }}">Ajouter un suivi</a></li>
                 </ul>
                 <h4 class="text-info mt-2">Les produits</h4>
                 <ul class="nav nav-pills flex-column">
                     <li><a href="{{ path('produit_liste') }}">Liste des produits</a></li>
+                </ul>
+                <h4 class="text-info mt-2">Tableaux de bord</h4>
+                <ul class="nav nav-pills flex-column">
+                    <li><a href="{{  path('tbord_nbSuivis') }}">Suivis par vétérinaire</a></li>
                 </ul>
             </div>
         </nav>

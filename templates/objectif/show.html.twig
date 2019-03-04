@@ -1,0 +1,54 @@
+{% extends 'objectif/base.html.twig' %}
+{% block title %}{{ parent() }} Voir l'objectif{% endblock %}
+{% block body %}
+    <h1>Objectifs commerciaux</h1>
+    <div class="col-12 col-xl-8 mb-3 mb-lg-4 alert alert-secondary" role="alert">
+        <div class="row">
+            <div class="col-9"> <strong>{{ veto.nom|upper }}</strong> </div>
+        </div>
+        <div class="row">
+            <div class="col-9"> {{ veto.adresse }} </div>
+        </div>
+        <div class="row">
+            <div class="col-9"> {{ veto.codePostal }} - {{ veto.ville }} </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CA à atteindre</th>
+                <th>Produit</th>
+                <th>Prix</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for objectif in objectifs %}
+                <tr>
+                    <td>{{ objectif.montant }}</td>
+                    <td>{{ objectif.produit.nom }}</td>
+                    <td>{{ objectif.produit.prix }}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('objectif_edit',{'id' : objectif.id}) }}">Éditer</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Pas d'objectif pour le moment</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <ul class="list-unstyled mt-5">
+        <li>
+            <a href="{{ path('veterinaire_liste') }}">
+                <i class="fa fa-angle-left"></i>
+                Retour à la liste des vétérinaires
+            </a>
+        </li>
+    </ul>
+{% endblock %}

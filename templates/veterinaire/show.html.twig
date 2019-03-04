@@ -9,7 +9,7 @@
     {% endfor %}
     <div class="row my-4">
         <div class="offset-1">
-            <img class="det-veto" src="{{ veto.urlImage }} ">
+            <img class="det-veto" src="{{ veto.photo.urlImage }} ">
         </div>
     </div>
     <div class="row">
@@ -26,6 +26,20 @@
     <div class="row">
         <div class="col-2 text-right"><strong>Téléphone : </strong></div>
         <div class="col-9"> {{ veto.telephone }} </div>
+    </div>
+    <div class="row">
+        <div class="col-2 text-right"><strong>Activités : </strong></div>
+        <div class="col-9">
+            {% for activite in veto.activites %}
+                {% if loop.last %}
+                    {{ activite.libelle }}.
+                {% else %}
+                    {{ activite.libelle }},
+                {% endif %}
+            {% else %}
+                Pas encore d'activités pour ce véto
+            {% endfor %}
+        </div>
     </div>
     <ul class="list-unstyled mt-5">
         <li>

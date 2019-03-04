@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Veterinaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Query;
 
 /**
  * @method Veterinaire|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,7 +19,46 @@ class VeterinaireRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Veterinaire::class);
     }
+    public function nombreVeterinairesDuMois()
+    {
+        $ddeb = new \Datetime('first day of this month');
+        $dfin = new \Datetime('last day of this month');
 
+        return $this->createQueryBuilder('v')
+            ->select('count(v.id) AS nbVetosMoisCourant')
+            ->where('v.dateCreation BETWEEN :dateDebut and :dateFin')
+            ->setParameter('dateDebut',$ddeb)
+            ->setParameter('dateFin',$dfin)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    public function nombreTotalVeterinaires()
+    {
+        return $this->createQueryBuilder('v')
+            ->select('count(v.id) AS nbTotalVetos')
+            ->getQuery()
+            ->getResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    public function nombreDeSuivisParVeterinaire()
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.suivis','s')
+            ->select('v.id')
+            ->addSelect('v.nom')
+            ->addSelect('v.adresse')
+            ->addSelect('v.codePostal')
+            ->addSelect('v.ville')
+            ->addSelect('COUNT(s.id) AS nbSuivis')
+            ->groupBy('v.id')
+            ->addGroupBy('v.nom')
+            ->addGroupBy('v.adresse')
+            ->addGroupBy('v.codePostal')
+            ->addGroupBy('v.ville')
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Veterinaire[] Returns an array of Veterinaire objects
     //  */

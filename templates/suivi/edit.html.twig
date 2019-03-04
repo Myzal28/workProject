@@ -1,0 +1,40 @@
+{% extends 'suivi/base.html.twig' %}
+{% form_theme edit_form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% form_theme delete_form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% block title %}
+    {{ parent() }} Editer le suivi {{ suivi.id }}
+{% endblock %}
+{% block body %}
+    <h1>Modification du suivi {{ suivi.id }}</h1>
+    {% for message in app.session.flashBag.get('erreur') %}
+        <div class="alert alert-primary" role="alert">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+
+    <hr>
+    {{ form_start(edit_form,{'attr':{'class':'col-12 col-xl-8'} }) }}
+    {{ form_widget(edit_form) }}
+    <p class="mt-3 padding-tb-10">
+        <button type="submit" class="btn btn-info">
+            <i class="fa fa-plus"></i> Enregistrer
+        </button>
+    </p>
+    {{ form_end(edit_form) }}
+
+    <ul class="list-unstyled mt-5">
+        <li>
+            {{ form_start(delete_form) }}
+                <button type="submit" class="btn btn-link btn-link pl-0">
+                    <i class="fa fa-trash"></i> Supprimer
+                </button>
+            {{ form_end(delete_form) }}
+        </li>
+
+        <li>
+            <a href="{{ path('suivi_liste') }}">
+                <i class="fa fa-angle-left"></i> Retour à la liste
+            </a>
+        </li>
+    </ul>
+{% endblock %}

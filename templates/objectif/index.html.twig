@@ -1,0 +1,55 @@
+{% extends 'objectif/base.html.twig' %}
+
+{% block title %}{{ parent() }} Liste des objectifs{% endblock %}
+
+{% block body %}
+    <h1>Liste des objectifs</h1>
+    {% for message in app.session.flashBag.get('erreur') %}
+        <div class="alert alert-danger" role="alert">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+    {# On affiche tous les messages flash de type "info" #}
+    {% for message in app.session.flashBag.get('info') %}
+        <div class="alert alert-primary" role="alert">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+    {# On affiche tous les messages flash de type "alerte" #}
+    {% for message in app.session.flashBag.get('alerte') %}
+        <div class="alert alert-warning" role="alert">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+
+    <p class="text-center padding-tb-10">
+        <a href="{{  path('objectif_new') }}" class="btn btn-primary">
+            <i class="fa fa-edit"></i> Nouvel objectif
+        </a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CA à atteindre</th>
+                <th>Vétérinaire</th>
+                <th>Produit</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for objectif in objectifs %}
+                <tr>
+                    <td>{{ objectif.montant }}</td>
+                    <td>{{ objectif.veterinaire.nom }}</td>
+                    <td>{{ objectif.produit.nom }}</td>
+                    <td>{{ objectif.produit.prix }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Pas d'objectifs à afficher</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

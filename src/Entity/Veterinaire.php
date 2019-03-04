@@ -2,13 +2,26 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VeterinaireRepository")
  */
 class Veterinaire
 {
+    /**
+     * Veterinaire constructor.
+     * @throws \Exception
+     */
+    public function __construct(){
+        $this->dateCreation = new \Datetime();
+        $this->suivis = new ArrayCollection();
+        $this->activites = new ArrayCollection();
+        $this->objectifs = new ArrayCollection();
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -18,16 +31,31 @@ class Veterinaire
 
     /**
      * @ORM\Column(type="string", length=80)
+     * @Assert\Length (
+     * min = "10",
+     * max = "80",
+     * minMessage = "{{ limit }} caractères minimum",
+     * maxMessage = "{{ limit }} caractères maximum"
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length (
+     * max = "80",
+     * maxMessage = "{{ limit }} caractères maximum"
+     * )
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Assert\Regex(
+     * pattern = "/^(0[1-9]|[1-9][0-9])[0-9]{3}$/",
+     * match = "false",
+     * message = "Ce code postal n'existe pas"
+     * )
      */
     private $codePostal;
 
@@ -38,18 +66,39 @@ class Veterinaire
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Regex(
+     * pattern = "/^(0|(\\+33)|(0033))[1-9][0-9]{8}$/",
+     * match = "false",
+     * message = "Veuillez saisir un numéro de téléphone valide"
+     * )
      */
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="date")
      */
-    private $urlImage;
+    private $dateCreation;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\OneToOne(targetEntity="App\Entity\Photo", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $altImage;
+    private $photo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Suivi", mappedBy="veterinaire", orphanRemoval=true)
+     */
+    private $suivis;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Activite",inversedBy="veterinaires")
+     */
+    private $activites;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="veterinaire", orphanRemoval=true)
+     */
+    private $objectifs;
 
     public function getId(): ?int
     {
@@ -116,26 +165,119 @@ class Veterinaire
         return $this;
     }
 
-    public function getUrlImage(): ?string
+    public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->urlImage;
+        return $this->dateCreation;
     }
 
-    public function setUrlImage(string $urlImage): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->urlImage = $urlImage;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
-    public function getAltImage(): ?string
+    public function getPhoto(): ?Photo
     {
-        return $this->altImage;
+        return $this->photo;
     }
 
-    public function setAltImage(string $altImage): self
+    public function setPhoto(Photo $photo): self
     {
-        $this->altImage = $altImage;
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Suivi[]
+     */
+    public function getSuivis(): Collection
+    {
+        return $this->suivis;
+    }
+
+    public function addSuivi(Suivi $suivi): self
+    {
+        if (!$this->suivis->contains($suivi)) {
+            $this->suivis[] = $suivi;
+            $suivi->setVeterinaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuivi(Suivi $suivi): self
+    {
+        if ($this->suivis->contains($suivi)) {
+            $this->suivis->removeElement($suivi);
+            // set the owning side to null (unless already changed)
+            if ($suivi->getVeterinaire() === $this) {
+                $suivi->setVeterinaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNomVille()
+    {
+        return $this->nom . " - " . $this->ville;
+    }
+
+    /**
+     * @return Collection|Activite[]
+     */
+    public function getActivites(): Collection
+    {
+        return $this->activites;
+    }
+
+    public function addActivite(Activite $activite): self
+    {
+        if (!$this->activites->contains($activite)) {
+            $this->activites[] = $activite;
+        }
+
+        return $this;
+    }
+
+    public function removeActivite(Activite $activite): self
+    {
+        if ($this->activites->contains($activite)) {
+            $this->activites->removeElement($activite);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Objectif[]
+     */
+    public function getObjectifs(): Collection
+    {
+        return $this->objectifs;
+    }
+
+    public function addObjectif(Objectif $objectif): self
+    {
+        if (!$this->objectifs->contains($objectif)) {
+            $this->objectifs[] = $objectif;
+            $objectif->setVeterinaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectif(Objectif $objectif): self
+    {
+        if ($this->objectifs->contains($objectif)) {
+            $this->objectifs->removeElement($objectif);
+            // set the owning side to null (unless already changed)
+            if ($objectif->getVeterinaire() === $this) {
+                $objectif->setVeterinaire(null);
+            }
+        }
 
         return $this;
     }
