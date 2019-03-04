@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -18,235 +18,231 @@ use App\Entity\Application;
 use App\Entity\Category;
 use App\Entity\AdvertSkill;
 use App\Entity\Skill;
-
 /**
  * @Route("/advert")
  */
 class AdvertController extends AbstractController
 {
-	/**
-	 * @Route(
-	 * "/{page}", 
-	 * name="oc_advert_index", 
-	 * requirements={
-	 * 	"page" = "\d+"
-	 * },
-	 * defaults={
-	 * 	"page" = 1
-	 * }
-	 * )
-	 */
-	public function index($page)
-	{
-		if ($page < 1) {
-			throw $this->createNotFoundException('Page '.$page.' inexistante');
-		}
-		$listAdverts = array(
-		  array(
-		    'title'   => 'Recherche développpeur Symfony',
-		    'id'      => 1,
-		    'author'  => 'Alexandre',
-		    'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-		    'date'    => new \Datetime()),
-		  array(
-		    'title'   => 'Mission de webmaster',
-		    'id'      => 2,
-		    'author'  => 'Hugo',
-		    'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
-		    'date'    => new \Datetime()),
-		  array(
-		    'title'   => 'Offre de stage webdesigner',
-		    'id'      => 3,
-		    'author'  => 'Mathieu',
-		    'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
-		    'date'    => new \Datetime())
-		);
-		return $this->render(
-			'Advert/index.html.twig', 
-			['listAdverts' => $listAdverts]
-		);
-	}
+    /**
+     * @Route(
+     * "/{page}",
+     * name="oc_advert_index",
+     * requirements={
+     * 	"page" = "\d+"
+     * }
+     * )
+     */
+    public function index($page = 1)
+    {
+        if ($page < 1) {
+            throw $this->createNotFoundException('Page '.$page.' inexistante');
+        }
+        $listAdverts = array(
+            array(
+                'title'   => 'Recherche développpeur Symfony',
+                'id'      => 1,
+                'author'  => 'Alexandre',
+                'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
+                'date'    => new \Datetime()),
+            array(
+                'title'   => 'Mission de webmaster',
+                'id'      => 2,
+                'author'  => 'Hugo',
+                'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
+                'date'    => new \Datetime()),
+            array(
+                'title'   => 'Offre de stage webdesigner',
+                'id'      => 3,
+                'author'  => 'Mathieu',
+                'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
+                'date'    => new \Datetime())
+        );
+        return $this->render(
+            'Advert/index.html.twig',
+            ['listAdverts' => $listAdverts]
+        );
+    }
 
-	/**
-	 * @Route("/view/{id}", name="oc_advert_view", requirements={
-	 * 	"id" = "\d+",
-	 * })
-	 */
-	public function view($id = 1)
-	{
-		// Initialisation de l'objet doctrine
-		$doctrine = $this->getDoctrine()->getManager();
+    /**
+     * @Route("/view/{id}", name="oc_advert_view", requirements={
+     * 	"id" = "\d+",
+     * })
+     */
+    public function view($id = 1)
+    {
+        // Initialisation de l'objet doctrine
+        $doctrine = $this->getDoctrine()->getManager();
 
-		// On récupère l'annonce a l'id $id
-		$advert = $doctrine->getRepository('App:Advert')->find($id);
+        // On récupère l'annonce a l'id $id
+        $advert = $doctrine->getRepository('App:Advert')->find($id);
 
-		// Si l'annonce n'est pas trouvée on lance une erreur 404
-		if ($advert === NULL) {
-			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
-		}
+        // Si l'annonce n'est pas trouvée on lance une erreur 404
+        if ($advert === NULL) {
+            throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+        }
 
-		// On récupère les candidatures 
-		$listApplications = $doctrine
-			->getRepository('App:Application')
-			->findBy(['advert' => $advert])
-		;
+        // On récupère les candidatures
+        $listApplications = $doctrine
+            ->getRepository('App:Application')
+            ->findBy(['advert' => $advert])
+        ;
 
-		// On récupère les skills nécéssaires
-		$listAdvertSkills = $doctrine
-			->getRepository('App:AdvertSkill')
-			->findBy(['advert' => $advert])
-		;
-		return $this->render(
-			'Advert/view.html.twig',
-			[
-				'advert' => $advert,
-				'listApplications' => $listApplications,
-				'listAdvertSkills' => $listAdvertSkills,
-			]
-		);
-	}
+        // On récupère les skills nécéssaires
+        $listAdvertSkills = $doctrine
+            ->getRepository('App:AdvertSkill')
+            ->findBy(['advert' => $advert])
+        ;
+        return $this->render(
+            'Advert/view.html.twig',
+            [
+                'advert' => $advert,
+                'listApplications' => $listApplications,
+                'listAdvertSkills' => $listAdvertSkills,
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/add",name="oc_advert_add")
-	 */
-	public function add(Request $request)
-	{
-		// On crée l'objet doctrine permettant de gérer la BDD
-		$doctrine = $this->getDoctrine()->getManager();
+    /**
+     * @Route("/add",name="oc_advert_add")
+     */
+    public function add(Request $request)
+    {
+        // On crée l'objet doctrine permettant de gérer la BDD
+        $doctrine = $this->getDoctrine()->getManager();
 
-		// On crée l'annnonce de base
-		$advert = new Advert;
-		$advert->setTitle("Recherche CDD Caviste");
-		$advert->setAuthor("Benoît");
-		$advert->setContent("Nous recherchons un caviste pour 6 mois pour le magasin de Paris Espace");
-		
-		// On ajoute les skills à l'annonce
-		$listSkills = $doctrine->getRepository('App:Skill')->findAll();
-		foreach ($listSkills as $skill) {
-			$advertSkill = new AdvertSkill();
-			$advertSkill->setAdvert($advert);
-			$advertSkill->setSkill($skill);
-			$advertSkill->setLevel(rand(0,5));
+        // On crée l'annnonce de base
+        $advert = new Advert;
+        $advert->setTitle("Recherche CDD Caviste");
+        $advert->setAuthor("Benoît");
+        $advert->setContent("Nous recherchons un caviste pour 6 mois pour le magasin de Paris Espace");
 
-			$doctrine->persist($advertSkill);
-		}
+        // On ajoute les skills à l'annonce
+        $listSkills = $doctrine->getRepository('App:Skill')->findAll();
+        foreach ($listSkills as $skill) {
+            $advertSkill = new AdvertSkill();
+            $advertSkill->setAdvert($advert);
+            $advertSkill->setSkill($skill);
+            $advertSkill->setLevel(rand(0,5));
 
-		// On ajoute l'image à l'annonce
-		$image = new Image();
-		$image->setUrl('http://www.alexis-berger.com/wp-content/uploads/2017/07/Pourquoi-vous-devez-prendre-un-job-dappoint.jpg');
-		$image->setAlt('Find job');
+            $doctrine->persist($advertSkill);
+        }
 
-		$advert->setImage($image);
+        // On ajoute l'image à l'annonce
+        $image = new Image();
+        $image->setUrl('http://www.alexis-berger.com/wp-content/uploads/2017/07/Pourquoi-vous-devez-prendre-un-job-dappoint.jpg');
+        $image->setAlt('Find job');
 
-		// On ajoute des candidatures à l'annonce
-		$application1 = new Application();
-		$application1->setAuthor('Marine');
-		$application1->setContent("J'ai toutes les qualités requises");
+        $advert->setImage($image);
 
-		$application2 = new Application();
-		$application2->setAuthor('Pierre');
-		$application2->setContent("Je suis très motivé");
+        // On ajoute des candidatures à l'annonce
+        $application1 = new Application();
+        $application1->setAuthor('Marine');
+        $application1->setContent("J'ai toutes les qualités requises");
 
-		$application1->setAdvert($advert);
-		$application2->setAdvert($advert);
+        $application2 = new Application();
+        $application2->setAuthor('Pierre');
+        $application2->setContent("Je suis très motivé");
 
-		$doctrine->persist($advert);
-		$doctrine->persist($application1);
-		$doctrine->persist($application2);
-		
-		// On valide tous les ajouts et on éxecute les requêtes
-		$doctrine->flush();
-		
-		if ($request->isMethod('POST')) 
-		{
-			// Ici on gèrera le formulaire
-			$this->addFlash('info','Annonce bien enregistrée');
-			return $this->redirectToRoute('oc_advert_view',['id' => $advert->getId()]);
-		}
+        $application1->setAdvert($advert);
+        $application2->setAdvert($advert);
 
-		// On crée et renvoie la vue
-		return $this->render('Advert/add.html.twig');
-	}
+        $doctrine->persist($advert);
+        $doctrine->persist($application1);
+        $doctrine->persist($application2);
 
-	/**
-	 * @Route(
-	 * 	"/edit/{id}",
-	 * 	name="oc_advert_edit",
-	 * 	requirements={
-	 *    "id" = "\d+"
-	 * 	}
-	 * )
-	 */
-	public function edit($id,Request $request)
-	{
-		$doctrine = $this->getDoctrine()->getManager();
+        // On valide tous les ajouts et on éxecute les requêtes
+        $doctrine->flush();
 
-		$advert = $doctrine->getRepository('App:Advert')->find($id);
+        if ($request->isMethod('POST'))
+        {
+            // Ici on gèrera le formulaire
+            $this->addFlash('info','Annonce bien enregistrée');
+            return $this->redirectToRoute('oc_advert_view',['id' => $advert->getId()]);
+        }
 
-		if($advert === NULL)
-		{
-			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
-		}
+        // On crée et renvoie la vue
+        return $this->render('Advert/add.html.twig');
+    }
 
-		$listCategories = $doctrine->getRepository('App:Category')->findAll();
+    /**
+     * @Route(
+     * 	"/edit/{id}",
+     * 	name="oc_advert_edit",
+     * 	requirements={
+     *    "id" = "\d+"
+     * 	}
+     * )
+     */
+    public function edit($id,Request $request)
+    {
+        $doctrine = $this->getDoctrine()->getManager();
 
-		foreach ($listCategories as $category) {
-			$advert->addCategory($category);
-		}
+        $advert = $doctrine->getRepository('App:Advert')->find($id);
 
-		$doctrine->flush();
+        if($advert === NULL)
+        {
+            throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+        }
 
-		if($request->isMethod('POST'))
-		{
-			$this->addFlash('notice','Annonce bien modifiée');
+        $listCategories = $doctrine->getRepository('App:Category')->findAll();
 
-			return $this->redirectToRoute('oc_advert_view',['id' => 5]);
-		}
+        foreach ($listCategories as $category) {
+            $advert->addCategory($category);
+        }
 
-		return $this->render(
-			'Advert/edit.html.twig',
-			['advert' => $advert]
-		);
-	}
+        $doctrine->flush();
 
-	/**
-	 * @Route(
-	 * 	"/delete/{id}",
-	 * 	name="oc_advert_delete",
-	 * 	requirements={
-	 *    "id" = "\d+"
-	 * 	})
-	 */
-	public function delete($id)
-	{
-		$doctrine = $this->getDoctrine()->getManager();
+        if($request->isMethod('POST'))
+        {
+            $this->addFlash('notice','Annonce bien modifiée');
 
-		$advert = $doctrine->getRepository('App:Advert')->find($id);
-		if ($advert === NULL) {
-			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
-		}
+            return $this->redirectToRoute('oc_advert_view',['id' => 5]);
+        }
 
-		foreach ($advert->getCategories() as $category) {
-			$advert->removeCategory($category);
-		}
+        return $this->render(
+            'Advert/edit.html.twig',
+            ['advert' => $advert]
+        );
+    }
 
-		return $this->render('Advert/delete.html.twig');
-	}
+    /**
+     * @Route(
+     * 	"/delete/{id}",
+     * 	name="oc_advert_delete",
+     * 	requirements={
+     *    "id" = "\d+"
+     * 	})
+     */
+    public function delete($id)
+    {
+        $doctrine = $this->getDoctrine()->getManager();
 
-	public function menu()
-	{
-		// On fixe en dur une liste ici, bien entendu par la suite
-		// on la récupérera depuis la BDD !
-		$listAdverts = array(
-		  array('id' => 2, 'title' => 'Recherche développeur Symfony'),
-		  array('id' => 5, 'title' => 'Mission de webmaster'),
-		  array('id' => 9, 'title' => 'Offre de stage webdesigner')
-		);
+        $advert = $doctrine->getRepository('App:Advert')->find($id);
+        if ($advert === NULL) {
+            throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas");
+        }
 
-		return $this->render('menu.html.twig', array(
-		  // Tout l'intérêt est ici : le contrôleur passe
-		  // les variables nécessaires au template !
-		  'listAdverts' => $listAdverts
-		));
-	}	
+        foreach ($advert->getCategories() as $category) {
+            $advert->removeCategory($category);
+        }
+
+        return $this->render('Advert/delete.html.twig');
+    }
+
+    public function menu()
+    {
+        // On fixe en dur une liste ici, bien entendu par la suite
+        // on la récupérera depuis la BDD !
+        $listAdverts = array(
+            array('id' => 2, 'title' => 'Recherche développeur Symfony'),
+            array('id' => 5, 'title' => 'Mission de webmaster'),
+            array('id' => 9, 'title' => 'Offre de stage webdesigner')
+        );
+
+        return $this->render('menu.html.twig', array(
+            // Tout l'intérêt est ici : le contrôleur passe
+            // les variables nécessaires au template !
+            'listAdverts' => $listAdverts
+        ));
+    }
 }

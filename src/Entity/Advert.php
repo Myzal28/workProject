@@ -17,7 +17,6 @@ class Advert
         $this->applications = new ArrayCollection();
     }
 
-
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"})
      */
@@ -62,7 +61,7 @@ class Advert
      * @ORM\Column(type="boolean")
      */
     private $published = true;
-    
+
     public function getId(): ?int
     {
         return $this->id;

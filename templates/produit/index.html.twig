@@ -1,0 +1,27 @@
+{% extends 'produit/base.html.twig' %}
+
+{% block title %} {{ parent() }} Liste des produits{% endblock %}
+{% block body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in  produits %}
+                <tr>
+                    <td>{{ produit.id }}</td>
+                    <td>{{ produit.nom }}</td>
+                    <td>{{ produit.prix }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Pas de produits à afficher ! </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
