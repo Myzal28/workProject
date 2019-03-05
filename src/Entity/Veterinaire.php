@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VeterinaireRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Veterinaire
 {
@@ -99,6 +100,11 @@ class Veterinaire
      * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="veterinaire", orphanRemoval=true)
      */
     private $objectifs;
+
+    /**
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -280,5 +286,25 @@ class Veterinaire
         }
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setUpdatedAt(new \Datetime());
     }
 }
