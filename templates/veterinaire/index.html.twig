@@ -15,12 +15,13 @@
         </div>
     {% endfor %}
 
-
-    <p class="text-center padding-tb-10">
-        <a href="{{  path('veterinaire_new') }}" class="btn btn-primary">
-            <i class="fa fa-edit"></i> Créer un nouveau véto
-        </a>
-    </p>
+    {% if is_granted('ROLE_USER') %}
+        <p class="text-center padding-tb-10">
+            <a href="{{  path('veterinaire_new') }}" class="btn btn-primary">
+                <i class="fa fa-edit"></i> Créer un nouveau véto
+            </a>
+        </p>
+    {% endif %}
     <table class="table">
         <thead>
             <tr>
@@ -45,8 +46,10 @@
                     <td>
                         <ul>
                             <li><a href="{{ path('veterinaire_show',{'id' : veto.id}) }}">Voir</a></li>
-                            <li><a href="{{ path('veterinaire_edit',{'id' : veto.id}) }}">Éditer</a></li>
-                            <li><a href="{{ path('objectif_show',{'id' : veto.id}) }}">Gérer les objectifs</a></li>
+                            {% if is_granted('ROLE_USER') %}
+                                <li><a href="{{ path('veterinaire_edit',{'id' : veto.id}) }}">Éditer</a></li>
+                                <li><a href="{{ path('objectif_show',{'id' : veto.id}) }}">Gérer les objectifs</a></li>
+                            {% endif %}
                         </ul>
                     </td>
                 </tr>

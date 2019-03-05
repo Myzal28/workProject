@@ -22,7 +22,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-
+            logout:
+                path: app_logout
             # activate different ways to authenticate
 
             # http_basic: true
@@ -34,7 +35,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # require ROLE_USER for /veterinaire
-        - { path: ^/veterinaire, roles: ROLE_USER }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
