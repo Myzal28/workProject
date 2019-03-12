@@ -1,82 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}VetLab -{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/gsb.css') }}">
-    {% block stylesheets %}{% endblock %}
+    <meta charset="utf-8">
+    <title>{% block title %}FFW -{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="{{ asset('img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="{{ asset('lib/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- =======================================================
+      Theme Name: Regna
+      Theme URL: https://bootstrapmade.com/regna-bootstrap-onepage-template/
+      Author: BootstrapMade.com
+      License: https://bootstrapmade.com/license/
+    ======================================================= -->
 </head>
 
 <body>
-<header class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow justify-content-between justify-content-md-start "> >
-    <div>
-        <img class="img-thumbnail d-none d-lg-block" src="{{ asset('img/logoGSB.jpg') }}" width="120" alt="">
-        <img class="img-thumbnail d-none d-md-block d-lg-none" src="{{ asset('img/logoGSB.jpg') }}" width="100" alt="">
-        <img class="img-thumbnail d-none d-sm-block d-md-none" src="{{ asset('img/logoGSB.jpg') }}" width="60" alt="">
+
+<!--==========================
+Header
+============================-->
+<header id="header">
+    <div class="container">
+
+        <div id="logo" class="pull-left">
+            <a href="#hero"><img src="{{ asset('img/logo.png') }}" alt="" title="" /></img></a>
+            <!-- Uncomment below if you prefer to use a text logo -->
+            <!--<h1><a href="#hero">Regna</a></h1>-->
+        </div>
+
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li class="menu-active"><a href="{{ path('home') }}">{% trans %}Home{% endtrans %}</a></li>
+                {% block navbar %}
+                {% endblock %}
+                <li><a href="#contact">{% trans %}Contact Us{% endtrans %}</a></li>
+                <li><a href="{{ path('app_login') }}">{% trans %}Connexion{% endtrans %}</a></li>
+            </ul>
+        </nav><!-- #nav-menu-container -->
     </div>
-    <div class="ml-md-5">
-        <h3 class="d-none d-md-block text-primary">Laboratoires Galaxy Swiss Bourdin</h3>
-        <div class="navbar-brand no-titre-very-small">GSBVeto : Suivi vétérinaires</div>
-        <div class="navbar-brand d-none titre-very-small">Suivi vétérinaires</div>
+</header><!-- #header -->
+
+<!--==========================
+  Hero Section
+============================-->
+<section id="hero">
+    <div class="hero-container">
+        {% block firstPage %}
+        {% endblock %}
     </div>
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <button class="navbar-toggler align-self-center" type="button" data-toggle="collapse"
-            data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
-<div class="container-fluid" id="contenu">
-    <div class="row">
-        <nav id="nav" class="navbar navbar-expand-md col-md-3 sidebar pl-2 pl-md-2 pl-lg-5">
-            <div id="menu" class="collapse navbar-collapse flex-column align-items-start">
-                <a href="{{ path('accueil') }}" title="Retour accueil" class="text-info ">
-                    <i class="fa fa-home"></i>
-                </a>
-                <h4 class="text-info mt-2">Les vétérinaires</h4>
-                <ul class="nav nav-pills flex-column">
-                    <li><a href="{{ path('veterinaire_liste') }}">Liste des vétérinaires</a></li>
-                    <li><a href="{{ path('veterinaire_new') }}">Ajouter un vétérinaire</a></li>
-                    <li><a href="{{ path('activite') }}">Vétérinaires par activité</a></li>
-                </ul>
-                <h4 class="text-info mt-2">Les objectifs</h4>
-                <ul class="nav nav-pills flex-column">
-                    <li><a href="{{ path('objectif_liste') }}">Liste des objectifs fixés</a></li>
-                    <li><a href="{{ path('objectif_new') }}">Ajout d'un objectif</a></li>
-                </ul>
-                <h4 class="text-info mt-2">Suivi des vétérinaires</h4>
-                <ul class="nav nav-pills flex-column">
-                    <li><a href="{{ path('suivi_liste') }}">Liste des suivis</a></li>
-                    <li><a href="{{ path('suivi_new') }}">Ajouter un suivi</a></li>
-                </ul>
-                <h4 class="text-info mt-2">Les produits</h4>
-                <ul class="nav nav-pills flex-column">
-                    <li><a href="{{ path('produit_liste') }}">Liste des produits</a></li>
-                </ul>
-                <h4 class="text-info mt-2">Tableaux de bord</h4>
-                <ul class="nav nav-pills flex-column">
-                    <li><a href="{{  path('tbord_nbSuivis') }}">Suivis par vétérinaire</a></li>
-                </ul>
-            </div>
-        </nav>
-        <main class="col-md-9">
-            {% block body %}{% endblock %}
-        </main>
-    </div>
-    <footer class="d-flex flex-row justify-content-center">
-        <p class="m-1 d-none d-lg-block"><em>&copy; BTS SIO SLAM - Chantilly - Promo 2019</em></p>
-    </footer>
-</div>
-<script src="{{ asset('vendor/jquery/jquery-3.3.1.min.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-{% block javascripts %}{% endblock %}
+</section><!-- #hero -->
+
+<main id="main">
+    {% block body %}
+    {% endblock %}
+</main>
+
+{% include 'footer.html.twig' %}
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('lib/jquery/jquery-migrate.min.js') }}"></script>
+<script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+<script src="{{ asset('lib/wow/wow.min.js') }}"></script>
+<script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ asset('lib/counterup/counterup.min.js') }}"></script>
+<script src="{{ asset('lib/superfish/hoverIntent.js') }}"></script>
+<script src="{{ asset('lib/superfish/superfish.min.js') }}"></script>
+
+<!-- Contact Form JavaScript File -->
+<script src="{{ asset('contactform/contactform.js') }}"></script>
+
+<!-- Template Main Javascript File -->
+<script src="{{ asset('js/main.js') }}"></script>
+
 </body>
 </html>
