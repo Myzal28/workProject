@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login/{_locale}", name="app_login", defaults={"_locale"="fr"})
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */

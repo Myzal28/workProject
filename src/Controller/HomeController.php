@@ -8,7 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("", name="home")
+     * @Route("/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="home",
+     *     requirements={
+     *         "_locale"="en|fr"
+     * })
      */
     public function index()
     {
