@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+{% block title %}{{ parent() }} - S'enregistrer{% endblock %}
+
+{% block firstPage %}
+    <h1>S'enregistrer</h1>
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword) }}
+
+        <button class="btn btn-primary">S'enregistrer</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}

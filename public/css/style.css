@@ -96,6 +96,10 @@ h1, h2, h3, h4, h5, h6 {
   float: left;
 }
 
+#header .logo-img{
+  height: 24px;
+}
+
 #header #logo h1 {
   font-size: 36px;
   margin: 0;
@@ -126,41 +130,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header.header-fixed {
-  background: rgba(52, 59, 64, 0.9);
+  background: rgba(52, 59, 64, 1);
   padding: 20px 0;
   height: 72px;
   transition: all 0.5s;
 }
 
 /*--------------------------------------------------------------
-# Hero Section
+# Intro Section
 --------------------------------------------------------------*/
-#hero {
+#intro {
   width: 100%;
   height: 100vh;
-  background: url(../img/hero-bg.jpg) top center;
-  background-size: cover;
+}
+#intro .intro-content{
+  position: relative;
+  z-index:1;
+  background-color: rgba(0,0,0,0.6);
+  height: 100vh;
+  width: 100%;
+}
+#intro #introCarousel{
+  position: absolute;
+}
+#intro .intro-content {
+  width: 100%;
+  height: 100vh;
   position: relative;
 }
 
-@media (min-width: 1024px) {
-  #hero {
-    background-attachment: fixed;
-  }
-}
-
-#hero:before {
-  content: "";
-  background: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-#hero .hero-container {
-  position: absolute;
+#intro .intro-content {
   bottom: 0;
   top: 0;
   left: 0;
@@ -172,7 +171,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-#hero h1 {
+#intro .intro-content h1 {
   margin: 30px 0 10px 0;
   font-size: 48px;
   font-weight: 700;
@@ -182,27 +181,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-  #hero h1 {
+  #intro .intro-content h1 {
     font-size: 28px;
     line-height: 36px;
   }
 }
 
-#hero h2 {
+#intro .intro-content h2 {
   color: #eee;
   margin-bottom: 50px;
   font-size: 24px;
 }
 
 @media (max-width: 768px) {
-  #hero h2 {
+  #intro .intro-content h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
   }
 }
 
-#hero .btn-get-started {
+#intro .intro-content .btn-get-started {
   font-family: "Poppins", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -217,9 +216,62 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-#hero .btn-get-started:hover {
+#intro .intro-content .btn-get-started:hover {
   background: #2dc997;
   border: 2px solid #2dc997;
+}
+
+#intro .carousel-item {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#intro .carousel-item::before {
+  content: '';
+  background-color: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#intro .carousel-background img {
+  max-width: 100%;
+}
+
+#intro .carousel-fade {
+  overflow: hidden;
+}
+
+#intro .carousel-fade .carousel-inner .carousel-item {
+  transition-property: opacity;
+}
+
+#intro .carousel-fade .carousel-inner .carousel-item,
+#intro .carousel-fade .carousel-inner .active.carousel-item-left,
+#intro .carousel-fade .carousel-inner .active.carousel-item-right {
+  opacity: 0;
+}
+
+#intro .carousel-fade .carousel-inner .active,
+#intro .carousel-fade .carousel-inner .carousel-item-next.carousel-item-left,
+#intro .carousel-fade .carousel-inner .carousel-item-prev.carousel-item-right {
+  opacity: 1;
+  transition: 0.5s;
+}
+
+#intro .carousel-fade .carousel-inner .carousel-item-next,
+#intro .carousel-fade .carousel-inner .carousel-item-prev,
+#intro .carousel-fade .carousel-inner .active.carousel-item-left,
+#intro .carousel-fade .carousel-inner .active.carousel-item-right {
+  left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 /*--------------------------------------------------------------
@@ -823,6 +875,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #team .member .pic img {
   max-width: 100%;
+  height: 100%
 }
 
 #team .member h4 {
@@ -857,17 +910,12 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* Contact Section
 --------------------------------*/
 #contact {
-  background: #f7f7f7;
   padding: 80px 0 40px 0;
 }
 
-#contact #google-map {
-  height: 300px;
-  margin-bottom: 20px;
-}
 
 #contact .info {
-  color: #333333;
+  color: white;
 }
 
 #contact .info i {
@@ -904,60 +952,44 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 36px;
   transition: 0.3s;
 }
-
-#contact .social-links a:hover {
+#contact .social-links a:hover{
   background: #2dc997;
+}
+
+.btn-custom {
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 50px;
+  transition: 0.5s;
+  margin: 10px;
+  border: 2px solid #fff;
   color: #fff;
 }
 
-#contact .form #sendmessage {
-  color: #2dc997;
-  border: 1px solid #2dc997;
-  display: none;
-  text-align: center;
-  padding: 15px;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-#contact .form #errormessage {
-  color: red;
-  display: none;
-  border: 1px solid red;
-  text-align: center;
-  padding: 15px;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-#contact .form #sendmessage.show, #contact .form #errormessage.show, #contact .form .show {
-  display: block;
-}
-
-#contact .form .validation {
-  color: red;
-  display: none;
-  margin: 0 0 20px;
-  font-weight: 400;
-  font-size: 13px;
-}
-
-#contact .form input, #contact .form textarea {
-  border-radius: 0;
-  box-shadow: none;
-  font-size: 14px;
-}
-
-#contact .form button[type="submit"] {
+.btn-custom:hover {
   background: #2dc997;
-  border: 0;
-  padding: 10px 24px;
   color: #fff;
-  transition: 0.4s;
+  border: 2px solid #2dc997;
+}
+#contact h1 {
+  margin: 30px 0 10px 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  text-transform: uppercase;
+  color: #fff;
 }
 
-#contact .form button[type="submit"]:hover {
-  background: #51d8ad;
+@media (max-width: 768px) {
+  #contact h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
 }
 
 /*--------------------------------------------------------------

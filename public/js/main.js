@@ -68,7 +68,7 @@ jQuery(document).ready(function ($) {
     $("#mobile-nav, #mobile-nav-toggle").hide();
   }
 
-  // Smoth scroll on page hash links
+  // Smooth scroll on page hash links
   $('a[href*="#"]:not([href="#"])').on('click', function () {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
@@ -122,9 +122,43 @@ jQuery(document).ready(function ($) {
   // jQuery counterUp
   $('[data-toggle="counter-up"]').counterUp({
     delay: 10,
-    time: 1000
+    time: 1500
   });
 
-  // custom code
 
+  function redimensionnement(){ 
+ 
+    var $image = $('.carousel-background');
+    var image_width = $image.width(); 
+    var image_height = $image.height();     
+     
+    var over = image_width / image_height; 
+    var under = image_height / image_width; 
+     
+    var body_width = $(window).width(); 
+    var body_height = $(window).height(); 
+     
+    if (body_width / body_height >= over) { 
+      $image.css({ 
+        'width': body_width + 'px', 
+        'height': Math.ceil(under * body_width) + 'px', 
+        'left': '0px', 
+        'top': Math.abs((under * body_width) - body_height) / -2 + 'px' 
+      }); 
+    }  
+     
+    else { 
+      $image.css({ 
+        'width': Math.ceil(over * body_height) + 'px', 
+        'height': body_height + 'px', 
+        'top': '0px', 
+        'left': Math.abs((over * body_height) - body_width) / -2 + 'px' 
+      }); 
+    } 
+  }
+  redimensionnement(); 
+  $(window).resize(function(){ 
+      redimensionnement(); 
+  });  
+  // custom code
 });
