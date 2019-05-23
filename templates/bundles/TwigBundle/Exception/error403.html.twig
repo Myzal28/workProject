@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} Accès Interdit{% endblock %}
+{% block firstPage %}
+    <h1>Accès  Interdit <i class="fa fa-exclamation-triangle"></i></h1>
+    <h2>
+        Vous n'avez pas accès à cette ressource<br>
+        <a href="{{ path('home') }}" class="btn-get-started">Retour à l'accueil</a>
+    </h2>
+{% endblock %}
