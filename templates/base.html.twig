@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}FFW -{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Favicons -->
+    <link href="{{ asset('img/favicon.png') }}" rel="icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="{{ asset('lib/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+
+    <!-- =======================================================
+      Theme Name: Regna
+      Theme URL: https://bootstrapmade.com/regna-bootstrap-onepage-template/
+      Author: BootstrapMade.com
+      License: https://bootstrapmade.com/license/
+    ======================================================= -->
+</head>
+
+<body>
+<!--==========================
+Header
+============================-->
+<header id="header">
+    <div class="container">
+
+        <div id="logo" class="pull-left">
+            <a href="{{ path('home') }}"><img class="logo-img" src="{{ asset('img/logo.png') }}" alt="Logo fight food waste"/></a>
+            <!-- Uncomment below if you prefer to use a text logo -->
+            <!--<h1><a href="#hero">Regna</a></h1>-->
+        </div>
+
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li class="menu-active"><a href="{{ path('home') }}">{% trans %}Accueil{% endtrans %}</a></li>
+
+                {% block navbar %}
+                {% endblock %}
+
+                <li><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
+                {% if app.user == false %}
+                    <li><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
+                    <li><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+                {% else %}
+                    <li><a href="{{path("view_profile", {'id' : 1})}}">{% trans %}Mon profile{% endtrans %}</a></li>
+                {% endif %}
+                {% if app.request.attributes.get('_route') %}
+                    <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
+                        <ul>
+                            {% if app.request.locale != 'fr' %}
+                                <li><a href="{{ path('home',{'_locale' : 'fr'}) }}"><img src="{{ asset('/img/flags/fr.png') }}" height="32px" alt="french flag"></a></li>
+                            {% endif %}
+
+                            {% if app.request.locale != 'pt' %}
+                                <li><a href="{{ path('home',{'_locale' : 'pt'}) }}"><img src="{{ asset('/img/flags/pt.png') }}" height="32px" alt="portuguese flag"></a></li>
+                            {% endif %}
+
+                            {% if app.request.locale != 'it' %}
+                                <li><a href="{{ path('home',{'_locale' : 'it'}) }}"><img src="{{ asset('/img/flags/it.png') }}" height="32px" alt="italian flag"></a></li>
+                            {% endif %}
+
+                            {% if app.request.locale != 'en' %}
+                                <li><a href="{{ path('home',{'_locale' : 'en'}) }}"><img src="{{ asset('/img/flags/en.png') }}" height="32px" alt="uk flag"></a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag">
+                    </li>
+                {% endif %}
+                {% if app.user %}
+                    <li><a href="{{ path('security_logout') }}"><i class="fa fa-power-off"></i></a></li>
+                {% endif %}
+            </ul>
+
+        </nav><!-- #nav-menu-container -->
+    </div>
+</header><!-- #header -->
+<!--==========================
+  Hero Section
+============================-->
+<section id="intro">
+    <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+
+            <div class="carousel-item active">
+                <div class="carousel-background"><img src="{{ asset('/img/background/background-1.jpg') }}" alt=""></div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="carousel-background"><img src="{{ asset('/img/background/background-2.jpg') }}" alt=""></div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="intro-content">
+        {% block firstPage %}
+        {% endblock %}
+    </div>
+</section><!-- #hero -->
+
+<main id="main">
+    {% block body %}
+    {% endblock %}
+</main>
+
+{% include 'footer.html.twig' %}
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- JavaScript Libraries -->
+
+<script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('lib/jquery/jquery-migrate.min.js') }}"></script>
+<script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+<script src="{{ asset('lib/wow/wow.min.js') }}"></script>
+<script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ asset('lib/counterup/counterup.min.js') }}"></script>
+<script src="{{ asset('lib/superfish/hoverIntent.js') }}"></script>
+<script src="{{ asset('lib/superfish/superfish.min.js') }}"></script>
+<script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('lib/touchSwipe/jquery.touchSwipe.min.js') }}"></script>
+<!-- Contact Form JavaScript File -->
+<script src="{{ asset('contactform/contactform.js') }}"></script>
+
+<!-- Template Main Javascript File -->
+<script src="{{ asset('js/main.js') }}"></script>
+{% block javascript %}
+{% endblock %}
+</body>
+</html>
