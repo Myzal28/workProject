@@ -56,4 +56,37 @@ class HomeController extends AbstractController
             'person' => $person
         ]);
     }
+
+    /**
+     * @Route("/email/send/{email}/{name}",name="email_send")
+     */
+    public function mail($name, $email, \Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Welcome on board !'))
+            ->setFrom('planitcalendar2018@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView(
+                    // templates/emails/registration.html.twig
+                    'emails/registration.html.twig',
+                    ['name' => $name]
+                ),
+                'text/html'
+            )
+            /*
+            * If you also want to include a plaintext version of the message
+            ->addPart(
+                $this->renderView(
+                    'emails/registration.txt.twig',
+                    ['name' => $name]
+                ),
+                'text/plain'
+            )
+            */
+        ;
+
+        $mailer->send($message);
+
+        return $this->redirectToRoute('security_login');
+    }
 }

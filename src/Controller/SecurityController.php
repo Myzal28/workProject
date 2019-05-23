@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Signup;
 use App\Entity\Persons;
 use App\Form\SignupPersonType;
+
+use App\Repository\StatusRepository;
+use App\Repository\PersonsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -17,7 +20,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/signup/{_locale}", name="security_signup", defaults={"_locale"="fr"})
      */
-    public function signup(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    public function signup(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, PersonsRepository $persons,StatusRepository $status)
     {
         $person = new Persons();
 
@@ -32,21 +35,36 @@ class SecurityController extends AbstractController
             $hash = $encoder->encodePassword($person, $person->getPassword());
 
             $person->setPassword($hash);
+            $person->setDateRegister(new \Datetime);
+            $person->setAdminSite(0);
             
             if($person->type_choice){
                 $person->setVolunteer(1);
                 $person->setInternal(0);
+                $manager->persist($person);
+
+                $manager->flush();
             }else{
+                $signup = new Signup();
+
                 $person->setVolunteer(0);
                 $person->setInternal(1);
+
+                $manager->persist($person);
+                $manager->flush();
+
+                $person = $persons->findOneBy(["email"=>$person->getEmail()]);
+                $signup->setPerson($person);
+                $signup->setStatus($status->find(1));
+                $signup->setCommentary("En attente de vérifications !");
+                $signup->setDateLastUpdate(new \Datetime);
+                $manager->persist($signup);
+
+                $manager->flush();
             }
-
-            $person->setDateRegister(new \Datetime);
-            $person->setAdminSite(0);
-            $manager->persist($person);
-            $manager->flush();
-
-            return $this->redirectToRoute('security_login');
+            
+            
+            return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
         }
 
         return $this->render('security/registration.html.twig', [
