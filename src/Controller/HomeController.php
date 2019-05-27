@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Persons;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -16,8 +17,9 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function index()
+    public function index(Request $request)
     {
+        dump($request);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -39,13 +41,13 @@ class HomeController extends AbstractController
     /**
      * @Route("/user/view/{id}/{_locale}",
      *     defaults={"_locale"="fr"},
-     *     name="view_profile",
+     *     name="view_profile_user",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
      * @Route("/admin/view/{id}/{_locale}",
      *     defaults={"_locale"="fr"},
-     *     name="view_profile",
+     *     name="view_profile_admin",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
@@ -55,6 +57,25 @@ class HomeController extends AbstractController
         return $this->render('view/profile.html.twig', [
             'person' => $person
         ]);
+    }
+
+    /**
+     * @Route("/user/manage/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="user_manage",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     * @Route("/admin/manage/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="admin_manage",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function Manage(){
+
+        return $this->render('home/manage.html.twig');
     }
 
     /**

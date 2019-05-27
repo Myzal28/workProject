@@ -55,8 +55,10 @@ Header
                 {% if app.user == false %}
                     <li><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
                     <li><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+                {% elseif app.user.getAdminSite() == 1 %}
+                    <li><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% else %}
-                    <li><a href="{{path("view_profile", {'id' : 1})}}">{% trans %}Mon profile{% endtrans %}</a></li>
+                    <li><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% endif %}
                 {% if app.request.attributes.get('_route') %}
                     <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
