@@ -17,9 +17,8 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function index(Request $request)
+    public function index()
     {
-        dump($request);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -60,12 +59,6 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/user/manage/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="user_manage",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
      * @Route("/admin/manage/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="admin_manage",
@@ -73,7 +66,9 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function Manage(){
+    public function Manage(Request $request){
+
+        dump($request);
 
         return $this->render('home/manage.html.twig');
     }
