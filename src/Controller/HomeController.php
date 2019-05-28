@@ -66,9 +66,7 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function Manage(Request $request){
-
-        dump($request);
+    public function Manage(){
 
         return $this->render('home/manage.html.twig');
     }

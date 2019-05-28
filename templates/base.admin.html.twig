@@ -30,8 +30,9 @@
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">
             <div class="app-header__logo">
-                <a href="{{ path('home') }}"><img  style="height: 20px;" src="{{ asset('img/logo_noir.png') }}" alt="Logo fight food waste"/></a>
-                
+                <a href="{{ path('home') }}"><img style="height: 20px;" src="{{ asset('img/logo_noir.png') }}"
+                        alt="Logo fight food waste" /></a>
+
             </div>
             <div class="app-header__mobile-menu">
                 <div>
@@ -62,32 +63,75 @@
                         <button class="close"></button>
                     </div>
                     <ul class="header-menu nav">
-                        
-                        <li {% if app.request.server.get('REQUEST_URI') == path('home') %} class="menu-active {% endif  %}nav-item" ><a class="nav-link" href="{{ path('home') }}">{% trans %}Accueil{% endtrans %}</a></li>
-                        <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %} class="menu-active {% endif  %}nav-item" ><a class="nav-link" href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
+
+                        <li {% if app.request.server.get('REQUEST_URI') == path('home') %}
+                            class="menu-active {% endif  %}nav-item"><a class="nav-link"
+                                href="{{ path('home') }}">{% trans %}Accueil{% endtrans %}</a></li>
+                        <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %}
+                            class="menu-active {% endif  %}nav-item"><a class="nav-link"
+                                href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
+
                     </ul>
                 </div>
                 <div class="app-header-right">
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
-                                
-                                <div class="widget-content-left  ml-3 header-user-info">
-                                    <div class="widget-heading">
-                                        <a href="{{path("view_profile_admin", {'id' : app.user.id})}}" >{{app.user.firstname}} {{app.user.lastname}}</a>
-                                    </div>
-                                    <div class="widget-subheading">
-                                        Administrateur du site
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            class="p-0 btn">
+                                            <img width="42" class="rounded-circle"
+                                                src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" alt="">
+                                        </a>
+                                        <div tabindex="-1" role="menu" aria-hidden="true"
+                                            class="dropdown-menu dropdown-menu-right">
+                                            {% if app.request.locale != 'fr' %}
+                                            <button type="button" tabindex="0" class="dropdown-item"><a class="nav-link"
+                                                    href="{{ path('home',{'_locale' : 'fr'}) }}"><img
+                                                        src="{{ asset('/img/flags/fr.png') }}" height="32px"
+                                                        alt="french flag">Français</a></button>
+                                            {% endif %}
+                                            {% if app.request.locale != 'pt' %}
+                                            <button type="button" tabindex="0" class="dropdown-item"><a class="nav-link"
+                                                    href="{{ path('home',{'_locale' : 'pt'}) }}"><img
+                                                        src="{{ asset('/img/flags/pt.png') }}" height="32px"
+                                                        alt="portuguese flag">Português</a></button>
+
+                                            {% endif %}
+                                            {% if app.request.locale != 'it' %}
+                                            <button type="button" tabindex="0" class="dropdown-item"><a class="nav-link"
+                                                    href="{{ path('home',{'_locale' : 'it'}) }}"><img
+                                                        src="{{ asset('/img/flags/it.png') }}" height="32px"
+                                                        alt="italian flag">Italiano</a></button>
+
+                                            {% endif %}
+                                            {% if app.request.locale != 'en' %}
+                                            <button type="button" tabindex="0" class="dropdown-item"><a class="nav-link"
+                                                    href="{{ path('home',{'_locale' : 'en'}) }}"><img
+                                                        src="{{ asset('/img/flags/en.png') }}" height="32px"
+                                                        alt="uk flag">English</a></button>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                                
+                                <div class="widget-content-left  ml-3 header-user-info">
+                                    <div class="widget-heading">
+                                        <a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.firstname}}
+                                            {{app.user.lastname}}</a>
+                                    </div>
+                                    <div class="widget-subheading">
+                                        {% trans %}Administrateur du site{% endtrans %}
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-           
+
         <div class="app-main">
             <div class="app-sidebar sidebar-shadow">
                 <div class="app-header__logo">
@@ -125,16 +169,18 @@
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
-                            <li class="app-sidebar__heading">Dashboards</li>
+                            <li class="app-sidebar__heading">{% trans %}Tableau de bord{% endtrans %}</li>
                             <li>
                                 <a href="index.html" class="mm-active">
-                                    <i class="metismenu-icon pe-7s-rocket"></i>
-                                    Dashboard Example 1
+                                       {% trans %}Tableau de bord principal{% endtrans %}
                                 </a>
                             </li>
 
                     </div>
+                    {% block sideBar %}
+                    {% endblock %}
                 </div>
+
             </div>
             <div class="app-main__outer">
                 <div class="app-main__inner">
