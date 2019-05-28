@@ -34,7 +34,13 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 0 20px 0;
   padding: 0;
 }
-
+#title-underlined{
+  margin-top: 12vh;
+  border-bottom: 3px solid #2dc997;
+}
+.full-page{
+  height: 100vh;
+}
 /* Prelaoder */
 #preloader {
   position: fixed;

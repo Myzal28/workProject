@@ -2,9 +2,28 @@
 {% block title %}{{ parent() }} {% trans %}Accueil{% endtrans %}{% endblock %}
 
 {% block firstPage %}
-    <h1>{% trans %}Bienvenue sur{% endtrans %} fight food waste</h1>
-    <h2>{% trans %}Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage{% endtrans %}</h2>
-    <a href="#about" class="btn-get-started">{% trans %}Débuter{% endtrans %}</a>
+    <section id="intro">
+        <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+
+            <div class="carousel-inner" role="listbox">
+
+                <div class="carousel-item active">
+                    <div class="carousel-background"><img src="{{ asset('/img/background/background-1.jpg') }}" alt=""></div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="carousel-background"><img src="{{ asset('/img/background/background-2.jpg') }}" alt=""></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="intro-content">
+            <h1>{% trans %}Bienvenue sur{% endtrans %} fight food waste</h1>
+            <h2>{% trans %}Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage{% endtrans %}</h2>
+            <a href="#about" class="btn-get-started">{% trans %}Débuter{% endtrans %}</a>
+        </div>
+    </section><!-- #hero -->
 {% endblock %}
 
 {% block body %}

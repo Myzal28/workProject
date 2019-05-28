@@ -32,10 +32,20 @@
 </head>
 
 <body>
+
+{% block firstPage %}
+
+{% endblock %}
+
 <!--==========================
 Header
 ============================-->
-<header id="header">
+<main id="main">
+    {% block body %}
+    {% endblock %}
+</main>
+
+<header id="header" class="header-fixed">
     <div class="container">
 
         <div id="logo" class="pull-left">
@@ -94,35 +104,6 @@ Header
         </nav><!-- #nav-menu-container -->
     </div>
 </header><!-- #header -->
-<!--==========================
-  Hero Section
-============================-->
-<section id="intro">
-    <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
-
-        <div class="carousel-inner" role="listbox">
-
-            <div class="carousel-item active">
-                <div class="carousel-background"><img src="{{ asset('/img/background/background-1.jpg') }}" alt=""></div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="carousel-background"><img src="{{ asset('/img/background/background-2.jpg') }}" alt=""></div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="intro-content">
-        {% block firstPage %}
-        {% endblock %}
-    </div>
-</section><!-- #hero -->
-
-<main id="main">
-    {% block body %}
-    {% endblock %}
-</main>
 
 {% include 'footer.html.twig' %}
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
