@@ -16,6 +16,9 @@
                         <button type="submit" class="btn btn-success">Connexion</button>
                     </div>
                 </form>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
             </div>
         </div>
     </div>
