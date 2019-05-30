@@ -1,0 +1,57 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block staff %}class="mm-active" aria-expanded="true"{% endblock %}
+{% block manageStaff %}class="mm-active"{% endblock %}
+{% block mainPane %}
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+            <div>{% trans %}Staff complêt{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Liste de toute les personnes qui travaillent avec FFW{% endtrans %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="mb-0 table" id="signups" >
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{% trans %}Prénom{% endtrans %}</th>
+                            <th>{% trans %}Nom{% endtrans %}</th>
+                            <th>{% trans %}Email{% endtrans %}</th>
+                            <th>{% trans %}Adresse{% endtrans %}</th>
+                            <th>{% trans %}Pays{% endtrans %}</th>
+                            <th>{% trans %}Service{% endtrans %}</th>
+                            <th>{% trans %}Admin{% endtrans %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                {% for person in persons %}
+                                <tr>
+                                    <th scope="row">{{person.id}}</th>
+                                    <td>{{person.firstname}}</td>
+                                    <td>{{person.lastname}}</td>
+                                    <td>{{person.email}}</td>
+                                    <td>{{person.address}}</td>
+                                    <td>{{person.country}}</td>
+                                    <td>{% if person.service.name is not defined %}<a href="{{ path('manage_no_services') }}">{% trans %}Attribuer ?{% endtrans %}</a>{% else %}{{person.service.name}}{% endif %}</td>
+                                    <td>{% if person.adminSite == 1 %}<button class="mb-2 mr-2 btn-transition btn btn-outline-warning">{% trans %}Retirer droit{% endtrans %}</button>{% else %}<button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Donner droit{% endtrans %}</button>{% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

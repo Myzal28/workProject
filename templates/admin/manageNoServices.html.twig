@@ -1,0 +1,63 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block staff %}class="mm-active" aria-expanded="true"{% endblock %}
+{% block manageNoServices %}class="mm-active"{% endblock %}
+{% block mainPane %}
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+            <div>{% trans %}Staff sans service{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Liste des personnes sans service attribuer{% endtrans %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="mb-0 table" id="signups" >
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{% trans %}Prénom{% endtrans %}</th>
+                            <th>{% trans %}Nom{% endtrans %}</th>
+                            <th>{% trans %}Email{% endtrans %}</th>
+                            <th>{% trans %}Adresse{% endtrans %}</th>
+                            <th>{% trans %}Pays{% endtrans %}</th>
+                            <th>{% trans %}Services{% endtrans %}</th>
+                            <th>{% trans %}Validation{% endtrans %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                {% for person in persons %}
+                                <tr>
+                                    <th scope="row">{{person.id}}</th>
+                                    <td>{{person.firstname}}</td>
+                                    <td>{{person.lastname}}</td>
+                                    <td>{{person.email}}</td>
+                                    <td>{{person.address}}</td>
+                                    <td>{{person.country}}</td>
+                                    <td>
+                                        <select class="form-control-sm form-control">
+                                            {% for service in services %}
+                                            <option>{{ service.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td><button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Valider{% endtrans %}</button></td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

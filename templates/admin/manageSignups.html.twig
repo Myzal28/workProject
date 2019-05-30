@@ -1,0 +1,70 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block staff %}class="mm-active" aria-expanded="true"
+{% endblock %}
+{% block manageSignups %}class="mm-active"
+{% endblock %}
+{% block mainPane %}
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>{% trans %}Inscription{% endtrans %}
+                    <div class="page-title-subheading">{% trans %}Personne en attente de confirmations{% endtrans %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table" id="signups">
+                            <thead>
+                                <tr>
+                                    <th>Prénom</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Services</th>
+                                    <th>Validation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for signup in signups %}
+                                    <tr>
+                                        <td scope="row">{{signup.person.firstname}}</td>
+                                        <td>{{signup.person.lastname}}</td>
+                                        <td>{{signup.person.email}}</td>
+                                        <td>
+                                            <select class="form-control-sm form-control">
+                                                {% for statu in status %}
+                                                    <option {% if statu.id == 1 %} selected="selected" {% endif %}>{{ statu.status }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control-sm form-control">
+                                                <option selected="selected">{% trans %}Aucun{% endtrans %}</option>
+                                                {% for service in services %}
+                                                    <option>{{ service.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Valider{% endtrans %}</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

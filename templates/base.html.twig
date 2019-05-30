@@ -32,10 +32,20 @@
 </head>
 
 <body>
+
+{% block firstPage %}
+
+{% endblock %}
+
 <!--==========================
 Header
 ============================-->
-<header id="header">
+<main id="main">
+    {% block body %}
+    {% endblock %}
+</main>
+
+<header id="header" class="header-fixed">
     <div class="container">
 
         <div id="logo" class="pull-left">
@@ -46,17 +56,20 @@ Header
 
         <nav id="nav-menu-container">
             <ul class="nav-menu">
-                <li class="menu-active"><a href="{{ path('home') }}">{% trans %}Accueil{% endtrans %}</a></li>
+                <li {% if app.request.server.get('REQUEST_URI') == path('home') %} class="menu-active" {% endif  %} ><a href="{{ path('home') }}">{% trans %}Accueil{% endtrans %}</a></li>
 
                 {% block navbar %}
                 {% endblock %}
 
-                <li><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
+                <li {% if app.request.server.get('REQUEST_URI') == path('contact') %} class="menu-active" {% endif  %} ><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
                 {% if app.user == false %}
-                    <li><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
-                    <li><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path('security_login') %} class="menu-active" {% endif  %}><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path('security_signup') %} class="menu-active" {% endif  %}><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+                {% elseif app.user.getAdminSite() == 1 %}
+                    <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %} class="menu-active" {% endif  %} ><a href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_admin", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% else %}
-                    <li><a href="{{path("view_profile", {'id' : 1})}}">{% trans %}Mon profile{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% endif %}
                 {% if app.request.attributes.get('_route') %}
                     <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
@@ -91,35 +104,6 @@ Header
         </nav><!-- #nav-menu-container -->
     </div>
 </header><!-- #header -->
-<!--==========================
-  Hero Section
-============================-->
-<section id="intro">
-    <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
-
-        <div class="carousel-inner" role="listbox">
-
-            <div class="carousel-item active">
-                <div class="carousel-background"><img src="{{ asset('/img/background/background-1.jpg') }}" alt=""></div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="carousel-background"><img src="{{ asset('/img/background/background-2.jpg') }}" alt=""></div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="intro-content">
-        {% block firstPage %}
-        {% endblock %}
-    </div>
-</section><!-- #hero -->
-
-<main id="main">
-    {% block body %}
-    {% endblock %}
-</main>
 
 {% include 'footer.html.twig' %}
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

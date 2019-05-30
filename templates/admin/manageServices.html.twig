@@ -1,0 +1,48 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block manageServices %}class="mm-active"{% endblock %}
+
+{% block mainPane %}
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+            <div>{% trans %}Services{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Voici tout les services existants{% endtrans %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="mb-0 table">
+                        <thead>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for service in services %}
+                        <tr>
+                            <th scope="row">{{service.id}}</th>
+                            <td>{{service.name}}</td>
+                            <td>{{service.description}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
