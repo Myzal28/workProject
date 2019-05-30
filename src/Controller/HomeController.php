@@ -5,9 +5,6 @@ namespace App\Controller;
 
 use App\Entity\Persons;
 use Psr\Log\LoggerInterface;
-use App\Repository\SignupRepository;
-use App\Repository\CollectRepository;
-use App\Repository\ServicesRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,55 +60,6 @@ class HomeController extends AbstractController
 
         return $this->render('view/profile.html.twig', [
             'person' => $person
-        ]);
-    }
-
-    /**
-     * @Route("/admin/manage/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="admin_manage",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function Manage(SignupRepository $signup, CollectRepository $collect){
-
-        $signups = $signup->count(["status"=>1]);
-        $collects = $collect->count(["status"=>1]);
-
-        return $this->render('admin/manage.html.twig',[
-            "collects" => $collects,
-            "signups" => $signups
-        ]);
-    }
-
-    /**
-     * @Route("/admin/manage/staff/signups/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="manage_signups",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function ManageSignups(){
-
-        return $this->render('admin/manageSignups.html.twig');
-    }
-
-    /**
-     * @Route("/admin/manage/services/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="manage_services",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function ManageServices(ServicesRepository $serviceRep){
-
-        $services = $serviceRep->findAll();
-
-        return $this->render('admin/manageServices.html.twig',[
-            "services" => $services
         ]);
     }
 

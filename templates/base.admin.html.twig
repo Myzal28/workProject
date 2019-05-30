@@ -178,14 +178,9 @@
                                         {% trans %}Staff{% endtrans %}
                                     </a>
                                     <ul>
-                                        <li><a href="#" {% block manageStaff %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff complet{% endtrans %}</a></li>
+                                        <li><a href="{{ path('manage_staff')}}" {% block manageStaff %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff complet{% endtrans %}</a></li>
                                         <li><a href="{{ path('manage_signups')}}"{% block manageSignups %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Inscriptions{% endtrans %}</a></li>
-                                        <li><a href="elements-icons.html" {% block manageNoServices %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff sans services attribuer{% endtrans %}</a></li>
-                                        <li><a href="elements-badges-labels.html"><i class="metismenu-icon"></i>Badges</a></li>
-                                        <li><a href="elements-cards.html"><i class="metismenu-icon"></i>Cards</a></li>
-                                        <li><a href="elements-list-group.html"><i class="metismenu-icon"></i>List Groups</a></li>
-                                        <li><a href="elements-navigation.html"><i class="metismenu-icon"></i>Navigation Menus</a></li>
-                                        <li><a href="elements-utilities.html"><i class="metismenu-icon"></i>Utilities</a></li>
+                                        <li><a href="{{ path('manage_no_services')}}" {% block manageNoServices %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff sans services{% endtrans %}</a></li>
                                     </ul>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Services{% endtrans %}</li>
