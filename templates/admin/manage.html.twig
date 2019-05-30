@@ -1,5 +1,7 @@
 {% extends 'base.admin.html.twig' %}
 
+{% block adminManage %}class="mm-active"{% endblock %}
+
 {% block mainPane %}
 <div class="app-page-title">
     <div class="page-title-wrapper">
@@ -22,7 +24,7 @@
                     <div class="widget-subheading">Personnes en attente pour inscription</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-white"><span>1896</span></div>
+                    <div class="widget-numbers text-white"><a href="{{ path('manage_signups')}}"><span>{{ signups }}</span></a></div>
                 </div>
             </div>
         </div>
@@ -35,7 +37,7 @@
                     <div class="widget-subheading">Collectes en attente de confirmations</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-white"><span>568</span></div>
+                    <div class="widget-numbers text-white"><a href="#"><span>{{ collects }}</span></a></div>
                 </div>
             </div>
         </div>

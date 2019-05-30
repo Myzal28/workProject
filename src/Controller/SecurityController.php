@@ -30,7 +30,6 @@ class SecurityController extends AbstractController
 
        
         $form->handleRequest($request);
-        dump($request);
         if($form->isSubmitted() && $form->isValid()){
 
             $hash = $encoder->encodePassword($person, $person->getPassword());

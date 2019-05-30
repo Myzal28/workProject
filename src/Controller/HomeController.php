@@ -2,13 +2,23 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Persons;
+use Psr\Log\LoggerInterface;
+use App\Repository\SignupRepository;
+use App\Repository\CollectRepository;
+use App\Repository\ServicesRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Omines\DataTablesBundle\Column\TextColumn;
 use Symfony\Component\Routing\Annotation\Route;
+use Omines\DataTablesBundle\Adapter\ArrayAdapter;
+use Omines\DataTablesBundle\Controller\DataTablesTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+
+    
     /**
      * @Route("/{_locale}",
      *     defaults={"_locale"="fr"},
@@ -64,9 +74,45 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function Manage(){
+    public function Manage(SignupRepository $signup, CollectRepository $collect){
 
-        return $this->render('home/manage.html.twig');
+        $signups = $signup->count(["status"=>1]);
+        $collects = $collect->count(["status"=>1]);
+
+        return $this->render('admin/manage.html.twig',[
+            "collects" => $collects,
+            "signups" => $signups
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/staff/signups/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_signups",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function ManageSignups(){
+
+        return $this->render('admin/manageSignups.html.twig');
+    }
+
+    /**
+     * @Route("/admin/manage/services/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_services",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function ManageServices(ServicesRepository $serviceRep){
+
+        $services = $serviceRep->findAll();
+
+        return $this->render('admin/manageServices.html.twig',[
+            "services" => $services
+        ]);
     }
 
     /**
@@ -100,5 +146,30 @@ class HomeController extends AbstractController
         $mailer->send($message);
 
         return $this->redirectToRoute('security_login');
+    }
+
+
+    
+    /**
+     * @Route("/test")
+     */
+    use DataTablesTrait;
+    public function showAction(Request $request)
+    {
+        
+
+        $table = $this->createDataTable()
+            ->add('firstName', TextColumn::class)
+            ->add('lastName', TextColumn::class)
+            ->createAdapter(ArrayAdapter::class, [
+                ['firstName' => 'Donald', 'lastName' => 'Trump'],
+                ['firstName' => 'Barack', 'lastName' => 'Obama'],
+            ])
+            ->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+        return $this->render('tests/list.html.twig', ['datatable' => $table]);
     }
 }

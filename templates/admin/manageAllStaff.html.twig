@@ -1,0 +1,40 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block staff %}class="mm-active" aria-expanded="true"{% endblock %}
+{% block manageSignups %}class="mm-active"{% endblock %}
+{% block mainPane %}
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+            <div>{% trans %}Inscription{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Personne en attente de confirmations{% endtrans %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg">
+        <div class="main-card mb-3 card">
+            <div class="card-body"><h5 class="card-title">Table responsive</h5>
+                <div class="table-responsive">
+                    <table class="mb-0 table" id="signups" >
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Inscription</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
