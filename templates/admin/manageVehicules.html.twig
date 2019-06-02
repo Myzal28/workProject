@@ -23,17 +23,35 @@
                     <table class="mb-0 table">
                         <thead>
                         <tr>
-                            <th>Identifiant</th>
-                            <th>Nom</th>
-                            <th>Description</th>
+                            <th>#</th>
+                            <th>{% trans %}Personnes attribué:{% endtrans %}</th>
+                            <th>{% trans %}Status{% endtrans %}</th>
+                            <th>{% trans %}Modèle{% endtrans %}</th>
+                            <th>{% trans %}Marque{% endtrans %}</th>
+                            <th>{% trans %}Kilomètrage{% endtrans %}</th>
+                            <th>{% trans %}Date d'enregistrement{% endtrans %}</th>
+                            <th>{% trans %}Date du dernier checkup{% endtrans %}</th>
+                            <th>{% trans %}Valider{% endtrans %}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for service in services %}
+                        {% for vehicule in vehicules %}
                         <tr>
-                            <th scope="row">{{service.id}}</th>
-                            <td>{{service.name}}</td>
-                            <td>{{service.description}}</td>
+                            <th scope="row">{{vehicule.id}}</th>
+                            <td>{% if vehicule.person.email is not defined %}<input type="text" placeholder="{% trans %}Entrer email{% endtrans %}">{% else %}{{vehicule.person.email}}{% endif %}</td>
+                            <td>
+                                <select class="form-control-sm form-control">
+                                    {% for statu in status %}
+                                        <option {% if vehicule.status.id == statu.id %} selected="selected" {% endif %}>{{ statu.status }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>{{vehicule.model}}</td>
+                            <td>{{vehicule.brand}}</td>
+                            <td>{{vehicule.mileage}} Km</td>
+                            <td>{{vehicule.dateRegister  | date('d/m/Y  H:i')}}</td>
+                            <td>{% if vehicule.dateLastCheck == null %}{% trans %}Pas de vérifications{% endtrans %}{% else %}{{vehicule.dateLastheck  | date('d/m/Y  H:i')}}{% endif %}</td>
+                            <td><button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Valider{% endtrans %}</button></td>
                         </tr>
                         {% endfor %}
                         </tbody>

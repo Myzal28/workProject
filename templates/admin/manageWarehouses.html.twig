@@ -7,8 +7,8 @@
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             
-            <div>{% trans %}Services{% endtrans %}
-                <div class="page-title-subheading">{% trans %}Voici tout les services existants{% endtrans %}
+            <div>{% trans %}Entrepôts{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Voici tout les entrepôt{% endtrans %}
                 </div>
             </div>
         </div>
@@ -23,17 +23,20 @@
                     <table class="mb-0 table">
                         <thead>
                         <tr>
-                            <th>Identifiant</th>
-                            <th>Nom</th>
-                            <th>Description</th>
+                            <th>#</th>
+                            <th>{% trans %}Status{% endtrans %}</th>
+                            <th>{% trans %}Pays{% endtrans %}</th>
+                            <th>{% trans %}Code postal{% endtrans %}</th>
+                            <th>{% trans %}Adresse{% endtrans %}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for service in services %}
+                        {% for warehouse in warehouses %}
                         <tr>
-                            <th scope="row">{{service.id}}</th>
-                            <td>{{service.name}}</td>
-                            <td>{{service.description}}</td>
+                            <th scope="row">{{warehouse.id}}</th>
+                            <td>{{warehouse.status.status}}</td>
+                            <td>{{warehouse.zipcode}}</td>
+                            <td>{{warehouse.address}}</td>
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -47,5 +50,5 @@
 
 {% endblock %}
 {% block painFooter %}
-<button class="mb-2 mr-2 btn btn-success">{% trans %}Creer nouveau service{% endtrans %}</button>
+<button class="mb-2 mr-2 btn btn-success">{% trans %}Creer nouvel entrepôt{% endtrans %}</button>
 {% endblock %}

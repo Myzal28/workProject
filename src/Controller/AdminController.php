@@ -156,12 +156,14 @@ class AdminController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function manageVehicules(VehiclesRepository $vehiculesRep){
+    public function manageVehicules(VehiclesRepository $vehiculesRep, StatusRepository $statusRep){
 
         $vehicules = $vehiculesRep->findAll();
+        $status = $statusRep->findBy(["statusType" => "VHE"]);
 
         return $this->render('admin/manageVehicules.html.twig',[
-            "vehicules" => $vehicules
+            "vehicules" => $vehicules,
+            "status" => $status
         ]);
     }
 
@@ -176,6 +178,7 @@ class AdminController extends AbstractController
     public function manageWarehouses(WarehousesRepository $warehousesRep){
 
         $warehouses = $warehousesRep->findAll();
+        
 
         return $this->render('admin/manageWarehouses.html.twig',[
             "warehouses" => $warehouses
