@@ -1,0 +1,92 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block collects %}class="mm-active" aria-expanded="true"
+{% endblock %}
+{% block manageNoCheck %}class="mm-active"
+{% endblock %}
+{% block mainPane %}
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>{% trans %}Collectes en attente{% endtrans %}
+                    <div class="page-title-subheading">{% trans %}Liste de toute collectes en attente{% endtrans %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table" id="signups">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{% trans %}Creer par:{% endtrans %}</th>
+                                    <th>{% trans %}Status{% endtrans %}</th>
+                                    <th>{% trans %}Commentaire{% endtrans %}</th>
+                                    <th>{% trans %}Date de création{% endtrans %}</th>
+                                    <th>{% trans %}Véhicule utiliser{% endtrans %}</th>
+                                    <th>{% trans %}Date de ramassage{% endtrans %}</th>
+                                    <th>{% trans %}Autoriser{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for collect in collects %}
+                                    <tr>
+                                        <th scope="row">{{collect.id}}</th>
+                                        <td>{{collect.personCreate.email}}</td>
+                                        <td>
+                                            <select class="form-control-sm form-control">
+                                                {% for statu in status %}
+                                                    <option {% if collect.status.id == statu.id %} selected="selected" {% endif %}>{{ statu.status }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="text" value="{{collect.commentary}}"></td>
+                                        <td>{{collect.dateRegister | date('d/m/Y  H:i')}}</td>
+                                        <td>
+                                            {% if collect.vehicle.id is not defined %}
+                                                <select class="form-control-sm form-control">
+                                                    <option>Aucun</option>
+                                                    {% for vehicule in vehicules %}
+                                                        <option>{{ vehicule.model }}
+                                                            :
+                                                            {{ vehicule.id }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% else %}
+                                                <select class="form-control-sm form-control">
+                                                    <option>Aucun</option>
+                                                    {% for vehicule in vehicules %}
+                                                        <option {% if collect.vehicle.id == vehicule.id %} selected="selected" {% endif %}>{{ vehicule.model }}
+                                                            :
+                                                            {{ vehicule.id }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if collect.dateCollect == null %}
+                                                <input type="datetime-local">{% else %}<input type="datetime" value="{{collect.dateCollect | date('d/mm/Y H:i:s')}}">
+                                                {% endif %}
+                                        </td>
+                                        </td>
+                                        <td>
+                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Autoriser{% endtrans %}</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

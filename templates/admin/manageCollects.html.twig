@@ -1,0 +1,77 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block collects %}class="mm-active" aria-expanded="true"{% endblock %}
+{% block manageCollects %}class="mm-active"{% endblock %}
+{% block mainPane %}
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>{% trans %}Collectes{% endtrans %}
+                    <div class="page-title-subheading">{% trans %}Liste de toute les Collectes{% endtrans %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table" id="signups">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{% trans %}Autorisé par:{% endtrans %}</th>
+                                    <th>{% trans %}Creer par:{% endtrans %}</th>
+                                    <th>{% trans %}Véhicule utiliser{% endtrans %}</th>
+                                    <th>{% trans %}Status{% endtrans %}</th>
+                                    <th>{% trans %}Commentaire{% endtrans %}</th>
+                                    <th>{% trans %}Date de création{% endtrans %}</th>
+                                    <th>{% trans %}Date de ramassage{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for collect in collects %}
+                                    <tr>
+                                        <th scope="row">{{collect.id}}</th>
+                                        <td>
+                                            {% if collect.personCheck.firstname is not defined %}
+                                                <a href="{{ path('manage_no_check') }}">{% trans %}Autoriser ?{% endtrans %}</a>
+                                            {% else %}
+                                                {{collect.personCheck.firstname}}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{collect.personCreate.email}}</td>
+                                        <td>
+                                            {% if collect.vehicle.id is not defined %}
+                                                <a href="{{ path('manage_no_check') }}">{% trans %}Attribuer ?{% endtrans %}</a>
+                                            {% else %}
+                                                {{ collect.vehicle.model }}
+                                                :
+                                                {{ collect.vehicle.id }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{collect.status.status}}</td>
+                                        <td>{{collect.commentary}}</td>
+                                        <td>{{collect.dateRegister | date('d/m/Y  H:i')}}</td>
+                                        <td>
+                                            {% if collect.dateCollect == null %}
+                                                <a href="{{ path('manage_no_check') }}">{% trans %}Ajouter date ?{% endtrans %}</a>
+                                            {% else %}
+                                                {{collect.dateCollect | date('d/m/Y  H:i')}}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

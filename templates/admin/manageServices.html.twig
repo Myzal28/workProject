@@ -23,9 +23,9 @@
                     <table class="mb-0 table">
                         <thead>
                         <tr>
-                            <th>Identifiant</th>
-                            <th>Nom</th>
-                            <th>Description</th>
+                            <th>{% trans %}Identifiant{% endtrans %}</th>
+                            <th>{% trans %}Nom{% endtrans %}</th>
+                            <th>{% trans %}Description{% endtrans %}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,4 +45,7 @@
 </div>
 
 
+{% endblock %}
+{% block painFooter %}
+<button class="mb-2 mr-2 btn btn-success">{% trans %}Creer nouveau service{% endtrans %}</button>
 {% endblock %}

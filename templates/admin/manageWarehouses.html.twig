@@ -1,0 +1,54 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block manageWarehouses %}class="mm-active"{% endblock %}
+
+{% block mainPane %}
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+            <div>{% trans %}Entrepôts{% endtrans %}
+                <div class="page-title-subheading">{% trans %}Voici tout les entrepôt{% endtrans %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="mb-0 table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{% trans %}Status{% endtrans %}</th>
+                            <th>{% trans %}Pays{% endtrans %}</th>
+                            <th>{% trans %}Code postal{% endtrans %}</th>
+                            <th>{% trans %}Adresse{% endtrans %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for warehouse in warehouses %}
+                        <tr>
+                            <th scope="row">{{warehouse.id}}</th>
+                            <td>{{warehouse.status.status}}</td>
+                            <td>{{warehouse.zipcode}}</td>
+                            <td>{{warehouse.address}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block painFooter %}
+<button class="mb-2 mr-2 btn btn-success">{% trans %}Creer nouvel entrepôt{% endtrans %}</button>
+{% endblock %}
