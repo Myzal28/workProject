@@ -7,6 +7,8 @@ use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
 use App\Repository\ServicesRepository;
+use App\Repository\VehiclesRepository;
+use App\Repository\WarehousesRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -102,6 +104,81 @@ class AdminController extends AbstractController
         return $this->render('admin/manageNoServices.html.twig',[
             "persons" => $persons,
             "services" => $services
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/collects/all/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_collects",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function manageCollects(CollectRepository $collectRep){
+
+        $collects= $collectRep->findall();
+        
+
+        return $this->render('admin/manageCollects.html.twig',[
+            "collects" => $collects
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/collects/no_check/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_no_check",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function manageNoCheck(CollectRepository $collectRep, StatusRepository $statusRep, VehiclesRepository $vehiculesRep){
+
+        $collects = $collectRep->findBy(["status" => 4]);
+        $status = $statusRep->findBy(["statusType" => "CLL"]);
+        $vehicules = $vehiculesRep->findAll();
+        $datetime = new \Datetime;
+
+        return $this->render('admin/manageNocheck.html.twig',[
+            "collects" => $collects,
+            "status" => $status,
+            "vehicules" => $vehicules,
+            "datetime" => $datetime
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/vehicules/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_vehicules",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function manageVehicules(VehiclesRepository $vehiculesRep){
+
+        $vehicules = $vehiculesRep->findAll();
+
+        return $this->render('admin/manageVehicules.html.twig',[
+            "vehicules" => $vehicules
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/warehouses/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_warehouses",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function manageWarehouses(WarehousesRepository $warehousesRep){
+
+        $warehouses = $warehousesRep->findAll();
+
+        return $this->render('admin/manageWarehouses.html.twig',[
+            "warehouses" => $warehouses
         ]);
     }
 }

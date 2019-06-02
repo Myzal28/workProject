@@ -189,6 +189,30 @@
                                         {% trans %}Tout les services{% endtrans %}
                                     </a>
                                 </li>
+                                <li class="app-sidebar__heading">{% trans %}Gestion Collectes{% endtrans %}</li>
+                                
+                                <li>
+                                    <a href="#" {% block collects %}{% endblock %}>
+                                        {% trans %}Collectes{% endtrans %}
+                                    </a>
+                                    <ul>
+                                        <li><a href="{{ path('manage_collects') }}" {% block manageCollects %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Toutes les collectes{% endtrans %}</a></li>
+                                        <li><a href="{{ path('manage_no_check') }}"{% block manageNoCheck %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes en attentes{% endtrans %}</a></li>
+                                        <li><a href="#" {% block manageTDCollect %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes de la journée{% endtrans %}</a></li>
+                                    </ul>
+                                </li>
+                                <li class="app-sidebar__heading">{% trans %}Véhicules{% endtrans %}</li>
+                                <li>
+                                    <a href="{{ path('manage_vehicules') }}" {% block manageVehicules %} {% endblock %}>
+                                        {% trans %}Tout les Véhicules{% endtrans %}
+                                    </a>
+                                </li>
+                                <li class="app-sidebar__heading">{% trans %}Entrepôt{% endtrans %}</li>
+                                <li>
+                                    <a href="{{ path('manage_warehouses') }}" {% block manageWarhouses %} {% endblock %}>
+                                        {% trans %}Tout les Entrepôts{% endtrans %}
+                                    </a>
+                                </li>
                                 <!-- Ajouté des dashboards ici -->
                                 </ul>
                             </div>
