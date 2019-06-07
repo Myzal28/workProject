@@ -17,6 +17,7 @@
 </div>
 <div class="row">
     <div class="col-md-6 col-xl-4">
+        <a href="{{ path('manage_signups')}}"></a>
         <div class="card mb-3 widget-content bg-midnight-bloom">
             <div class="widget-content-wrapper text-white">
                 <div class="widget-content-left">
@@ -24,12 +25,14 @@
                     <div class="widget-subheading">Personnes en attente pour inscription</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-white"><a href="{{ path('manage_signups')}}"><span>{{ signups }}</span></a></div>
+                    <div class="widget-numbers text-white"><span>{{ signups }}</span></div>
                 </div>
             </div>
         </div>
+    
     </div>
     <div class="col-md-6 col-xl-4">
+            <a href="#">
         <div class="card mb-3 widget-content bg-arielle-smile">
             <div class="widget-content-wrapper text-white">
                 <div class="widget-content-left">
@@ -37,10 +40,11 @@
                     <div class="widget-subheading">Collectes en attente de confirmations</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-white"><a href="#"><span>{{ collects }}</span></a></div>
+                    <div class="widget-numbers text-white"><span>{{ collects }}</span></div>
                 </div>
             </div>
         </div>
+    </a>
     </div>
     <div class="col-md-6 col-xl-4">
         <div class="card mb-3 widget-content bg-grow-early">
