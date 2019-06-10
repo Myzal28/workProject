@@ -13,6 +13,7 @@ use Omines\DataTablesBundle\Controller\DataTablesTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ApiController extends Controller
 {
@@ -35,7 +36,28 @@ class ApiController extends Controller
         ]);
     }
 
-    
+    /**
+     * @Route("api/user/connect", name="user_connect")
+     */
+    public function apiConexion(Request $request, PersonsRepository $personsRep, UserPasswordEncoderInterface $encoder)
+    {
+
+        $response = new Response();
+
+        $user = $personsRep->findOneBy(["email"=>$request->get("_username")]);
+
+        if($user){
+            $plainPassword = $request->get('_password');
+
+            if($encoder->isPasswordValid($user, $plainPassword)){
+                $response->setStatusCode(200);
+                return $response;
+            }
+        }
+        $response->setStatusCode(403);
+
+        return $response;
+    }
     
     /**
      * @Route("/test")
