@@ -1,0 +1,23 @@
+{
+	"email":"peterbalivet@gmail.com",
+	"articles":[
+		{
+			"code":"5449000214911",
+			"product_name": "Coca-cola",
+			"ingredients_text": "Eau gazéifiée, sucre, colorant, E150d, acidifiant, acide phosphorique, arômes naturels (extraits végétaux, caféine).",
+			"quantity": "330 ml",
+			"brands":"Coca-Cola",
+			"image_url":"https://static.openfoodfacts.org/images/products/544/900/021/4911/front_fr.63.400.jpg",
+			"quantity_nbr":"1"
+		},
+		{
+			"code":"5449000000439",
+			"product_name": "Coca Cola",
+			"ingredients_text": "Eau gazéifiée, sucre, colorant, E150d, acidifiant, acide phosphorique, arômes naturels (extraits végétaux, caféine).",
+			"quantity": "1,5 L",
+			"brands":"Coca-Cola,كوكا كولا",
+			"image_url":"https://static.openfoodfacts.org/images/products/544/900/000/0439/front_en.46.400.jpg",
+			"quantity_nbr":"1"
+		}
+	]
+}
