@@ -38,6 +38,31 @@ class Foods
      */
     private $recipes;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $ingredients;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $quantity;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $brands;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $imageUrl;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
@@ -128,6 +153,66 @@ class Foods
             $this->recipes->removeElement($recipe);
             $recipe->removeFood($this);
         }
+
+        return $this;
+    }
+
+    public function getIngredients(): ?string
+    {
+        return $this->ingredients;
+    }
+
+    public function setIngredients(string $ingredients): self
+    {
+        $this->ingredients = $ingredients;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?string
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(string $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getBrands(): ?string
+    {
+        return $this->brands;
+    }
+
+    public function setBrands(string $brands): self
+    {
+        $this->brands = $brands;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

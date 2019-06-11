@@ -151,6 +151,16 @@ class Persons implements UserInterface
      */
     private $articles;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ClientPar;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ClientPro;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -581,8 +591,34 @@ class Persons implements UserInterface
     public function getRoles() {
         if($this->getAdminSite() == 1){
             return ['ROLE_ADMIN'];
+        }elseif($this->getVolunteer() == 1){
+            return ['ROLE_VOL'];
         }
-        return ['ROLE_USER'];
+        return ['ROLE_CLI'];
+    }
+
+    public function getClientPar(): ?int
+    {
+        return $this->ClientPar;
+    }
+
+    public function setClientPar(int $ClientPar): self
+    {
+        $this->ClientPar = $ClientPar;
+
+        return $this;
+    }
+
+    public function getClientPro(): ?int
+    {
+        return $this->ClientPro;
+    }
+
+    public function setClientPro(int $ClientPro): self
+    {
+        $this->ClientPro = $ClientPro;
+
+        return $this;
     }
 
 }

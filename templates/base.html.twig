@@ -40,10 +40,7 @@
 <!--==========================
 Header
 ============================-->
-<main id="main">
-    {% block body %}
-    {% endblock %}
-</main>
+
 
 <header id="header" class="header-fixed">
     <div class="container">
@@ -68,8 +65,11 @@ Header
                 {% elseif app.user.getAdminSite() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %} class="menu-active" {% endif  %} ><a href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_admin", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
-                {% else %}
+                {% elseif app.user.getVolunteer() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
+                {% else %}
+                    <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes commandes{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_client", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_client", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% endif %}
                 {% if app.request.attributes.get('_route') %}
                     <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
@@ -105,6 +105,11 @@ Header
     </div>
 </header><!-- #header -->
 
+<main id="main">
+        {% block body %}
+        {% endblock %}
+    </main>
+
 {% include 'footer.html.twig' %}
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
@@ -126,6 +131,7 @@ Header
 
 <!-- Template Main Javascript File -->
 <script src="{{ asset('js/main.js') }}"></script>
+
 {% block javascript %}
 {% endblock %}
 </body>

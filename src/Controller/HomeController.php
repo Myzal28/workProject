@@ -53,6 +53,12 @@ class HomeController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @Route("/client/view/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="view_profile_client",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
      */
     public function viewPerson(Persons $person){
 
@@ -94,7 +100,28 @@ class HomeController extends AbstractController
         return $this->redirectToRoute('security_login');
     }
 
-
+    /**
+     * @Route("/client/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="client_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function clientsJobs(Persons $person){
+        return $this->render('home/clientsJobs.html.twig');
+    }
     
+    /**
+     * @Route("/user/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="user_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function userJobs(Persons $person){
+        return $this->render('home/usersJobs.html.twig');
+    }
     
 }

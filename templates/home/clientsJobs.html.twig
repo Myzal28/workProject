@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+            #map {
+    height: 380px;
+  }</style>
+
+
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+            
+        <div class="col-lg-8">
+                <h2>Mes commandes</h2>
+                <div id="map"></div>
+            
+                
+                                              
+                
+            
+        </div>
+    </div>
+</div>
+
+  {% endblock %}
+
+  {% block javascript %}
+<script>
+      var map;
+      function initMap() {
+        var myLatLng = {lat: 48.851716, lng: 2.3804606};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: myLatLng,
+          zoom: 8
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Home'
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyNQhP1sA7AqfKQnUUdQfa737oLH-7tZc&callback=initMap"
+    async defer></script>  
+{% endblock %}

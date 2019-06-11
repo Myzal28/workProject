@@ -38,29 +38,57 @@ class SecurityController extends AbstractController
             $person->setDateRegister(new \Datetime);
             $person->setAdminSite(0);
             
-            if($person->type_choice){
-                $person->setVolunteer(1);
-                $person->setInternal(0);
-                $manager->persist($person);
+            switch ($person->type_choice) {
+                case 1:
+                    $person->setInternal(1);
+                    $person->setVolunteer(0);
+                    $person->setClientPro(0);
+                    $person->setClientPar(0);
 
-                $manager->flush();
-            }else{
-                $signup = new Signup();
+                    $manager->persist($person);
 
-                $person->setVolunteer(0);
-                $person->setInternal(1);
+                    $manager->flush();
 
-                $manager->persist($person);
-                $manager->flush();
+                    break;
+                case 2:
+                    $person->setInternal(0);
+                    $person->setVolunteer(1);
+                    $person->setClientPro(0);
+                    $person->setClientPar(0);
+                    $manager->persist($person);
 
-                $person = $persons->findOneBy(["email"=>$person->getEmail()]);
-                $signup->setPerson($person);
-                $signup->setStatus($status->find(1));
-                $signup->setCommentary("En attente de vérifications !");
-                $signup->setDateLastUpdate(new \Datetime);
-                $manager->persist($signup);
+                    $manager->flush();
 
-                $manager->flush();
+                    $person = $persons->findOneBy(["email"=>$person->getEmail()]);
+                    $signup->setPerson($person);
+                    $signup->setStatus($status->find(1));
+                    $signup->setCommentary("En attente de vérifications !");
+                    $signup->setDateLastUpdate(new \Datetime);
+
+                    $manager->persist($signup);
+
+                    $manager->flush();
+                    break;
+                case 3:
+                    $person->setInternal(0);
+                    $person->setVolunteer(0);
+                    $person->setClientPro(1);
+                    $person->setClientPar(0);
+
+                    $manager->persist($person);
+
+                    $manager->flush();
+                    break;
+                case 4:
+                    $person->setInternal(0);
+                    $person->setVolunteer(0);
+                    $person->setClientPro(0);
+                    $person->setClientPar(1);
+
+                    $manager->persist($person);
+
+                    $manager->flush();
+                    break;
             }
             
             

@@ -23,16 +23,18 @@ class SignupPersonType extends AbstractType
             ])
             ->add('password', PasswordType::class)
             ->add('confirm_password', PasswordType::class)
-            ->add('address')
             ->add('phoneNbr')
             ->add('email')
             ->add('country')
             ->add('zipcode')
+            ->add('address')
             ->add('company')
             ->add('type_choice', ChoiceType::class, [
                 'choices'  => [
-                    'Intern' => false,
-                    'Volunteer' => true,
+                    'Intern' => 1,
+                    'Volunteer' => 2,
+                    'Client Pro'=> 3,
+                    'Client Par' => 4
                 ],
             ])
         ;

@@ -117,8 +117,7 @@ class AdminController extends AbstractController
      */
     public function manageCollects(CollectRepository $collectRep){
 
-        $collects= $collectRep->findall();
-        
+        $collects = $collectRep->findall();
 
         return $this->render('admin/manageCollects.html.twig',[
             "collects" => $collects
