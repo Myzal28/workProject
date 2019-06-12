@@ -68,7 +68,7 @@ Header
                 {% elseif app.user.getVolunteer() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% else %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes commandes{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes Ramassages{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_client", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_client", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% endif %}
                 {% if app.request.attributes.get('_route') %}

@@ -25,7 +25,7 @@ class PostController extends AbstractController
 
         $signups = $signup->findBy(["status" => 1]);
         $content = $serializer->normalize($signups, null, ['attributes' => ['person' => ['id','firstname', 'lastname', 'email','date_register']]]);
-        $content = array_values($content);
+        //$content = array_values($content);
         //$jsonContent = $serializer->normalize($content, 'json');
 
         return $this->json(["data"=>$content], 200);
