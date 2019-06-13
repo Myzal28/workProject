@@ -59,7 +59,8 @@ class SecurityController extends AbstractController
 
                     $manager->flush();
 
-                    $person = $persons->findOneBy(["email"=>$person->getEmail()]);
+                    $signup = new Signup();
+
                     $signup->setPerson($person);
                     $signup->setStatus($status->find(1));
                     $signup->setCommentary("En attente de vérifications !");

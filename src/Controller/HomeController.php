@@ -65,6 +65,12 @@ class HomeController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @Route("/internal/view/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="view_profile_internal",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
      */
     public function viewPerson(Persons $person){
 
@@ -153,6 +159,18 @@ class HomeController extends AbstractController
      */
     public function userJobs(Persons $person){
         return $this->render('home/usersJobs.html.twig');
+    }
+
+    /**
+     * @Route("/internal/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="internal_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function internalJobs(Persons $person){
+        return $this->render('home/internalJobs.html.twig');
     }
     
 }
