@@ -58,12 +58,13 @@ class ApiController extends Controller
             $plainPassword = $request->get('_password');
 
             if($encoder->isPasswordValid($user, $plainPassword)){
+                $response->setContent('true');
                 $response->setStatusCode(200);
                 return $response;
             }
         }
+        $response->setContent('false');
         $response->setStatusCode(403);
-
         return $response;
     }
 
@@ -119,10 +120,12 @@ class ApiController extends Controller
                 $response->setContent($e);
             }
 
+            $response->setContent('true');
             $response->setStatusCode(200);
             return $response;
         }
         
+        $response->setContent('false');
         $response->setStatusCode(403);
         return $response;
     }

@@ -593,7 +593,10 @@ class Persons implements UserInterface
             return ['ROLE_ADMIN'];
         }elseif($this->getVolunteer() == 1){
             return ['ROLE_VOL'];
+        }elseif($this->getInternal() == 1){
+            return ['ROLE_INT'];
         }
+
         return ['ROLE_CLI'];
     }
 

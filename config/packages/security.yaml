@@ -41,3 +41,4 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/user, roles: ROLE_VOL }
          - { path: ^/client, roles: ROLE_CLI }
+         - { path: ^/internal, roles: ROLE_INT }
