@@ -8,13 +8,14 @@ use App\Entity\Persons;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use App\Repository\CollectRepository;
+use App\Repository\ArticlesRepository;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class HomeController extends AbstractController
 {
@@ -171,6 +172,23 @@ class HomeController extends AbstractController
      */
     public function internalJobs(Persons $person){
         return $this->render('home/internalJobs.html.twig');
+    }
+
+    /**
+     * @Route("/client/share/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="share_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function shareJobs(Persons $person, ArticlesRepository $articlesRep){
+
+        $articles = $articlesRep->findBy(["serviceType"=>6]);
+
+        return $this->render('services/shareJobs.html.twig',[
+            "articles" => $articles
+        ]);
     }
     
 }
