@@ -36,6 +36,7 @@
                         </thead>
                         <tbody>
                                 {% for person in persons %}
+                                {% if person.volunteer == 1 or person.internal == 1 or person.adminSite == 1 %}
                                 <tr>
                                     <th scope="row">{{person.id}}</th>
                                     <td>{{person.firstname}}</td>
@@ -46,6 +47,7 @@
                                     <td>{% if person.service.name is not defined %}<a href="{{ path('manage_no_services') }}">{% trans %}Attribuer ?{% endtrans %}</a>{% else %}{{person.service.name}}{% endif %}</td>
                                     <td>{% if person.adminSite == 1 %}<button class="mb-2 mr-2 btn-transition btn btn-outline-warning">{% trans %}Retirer droit{% endtrans %}</button>{% else %}<button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Donner droit{% endtrans %}</button>{% endif %}</td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                                 </tbody>
                     </table>
@@ -54,4 +56,54 @@
         </div>
     </div>
 </div>
+<div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                
+                <div>{% trans %}Clients Particulier / Pro{% endtrans %}
+                    <div class="page-title-subheading">{% trans %}Liste de tout les clients FFW{% endtrans %}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+<div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table" id="signups" >
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{% trans %}Prénom{% endtrans %}</th>
+                                <th>{% trans %}Nom{% endtrans %}</th>
+                                <th>{% trans %}Email{% endtrans %}</th>
+                                <th>{% trans %}Adresse{% endtrans %}</th>
+                                <th>{% trans %}Pays{% endtrans %}</th>
+                                <th>{% trans %}Pro ou Par{% endtrans %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                    {% for person in persons %}
+                                    {% if person.clientPar == 1 or person.clientPro == 1 %}
+                                    <tr>
+                                        <th scope="row">{{person.id}}</th>
+                                        <td>{{person.firstname}}</td>
+                                        <td>{{person.lastname}}</td>
+                                        <td>{{person.email}}</td>
+                                        <td>{{person.address}}</td>
+                                        <td>{{person.country}}</td>
+                                        <td>{% if person.clientPar == 1 %}{% trans %}Particulier{% endtrans %}{% else %}{% trans %}Pro{% endtrans %}{% endif %}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

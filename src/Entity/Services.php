@@ -26,9 +26,15 @@ class Services
      * @ORM\OneToMany(targetEntity="App\Entity\Persons", mappedBy="service")
      */
     private $persons;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Calendar", mappedBy="service")
+     */
+    private $calendars;
     public function __construct()
     {
         $this->persons = new ArrayCollection();
+        $this->calendars = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -76,6 +82,37 @@ class Services
                 $person->setService(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Calendar[]
+     */
+    public function getCalendars(): Collection
+    {
+        return $this->calendars;
+    }
+
+    public function addCalendar(Calendar $calendar): self
+    {
+        if (!$this->calendars->contains($calendar)) {
+            $this->calendars[] = $calendar;
+            $calendar->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalendar(Calendar $calendar): self
+    {
+        if ($this->calendars->contains($calendar)) {
+            $this->calendars->removeElement($calendar);
+            // set the owning side to null (unless already changed)
+            if ($calendar->getService() === $this) {
+                $calendar->setService(null);
+            }
+        }
+
         return $this;
     }
 }

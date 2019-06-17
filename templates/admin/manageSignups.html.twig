@@ -37,27 +37,28 @@
                             <tbody>
                                 {% for signup in signups %}
                                     <tr>
+                                    <form action="/post/user/signup/{{signup.person.id}}">
                                         <td scope="row">{{signup.person.firstname}}</td>
                                         <td>{{signup.person.lastname}}</td>
                                         <td>{{signup.person.email}}</td>
                                         <td>
-                                            <select class="form-control-sm form-control">
+                                            <select class="form-control-sm form-control" name="status">
                                                 {% for statu in status %}
                                                     <option {% if statu.id == 1 %} selected="selected" {% endif %}>{{ statu.status }}</option>
                                                 {% endfor %}
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control-sm form-control">
-                                                <option selected="selected">{% trans %}Aucun{% endtrans %}</option>
+                                            <select class="form-control-sm form-control" name="service">
                                                 {% for service in services %}
                                                     <option>{{ service.name }}</option>
                                                 {% endfor %}
                                             </select>
                                         </td>
                                         <td>
-                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Valider{% endtrans %}</button>
+                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success" type="submit">{% trans %}Valider{% endtrans %}</button>
                                         </td>
+                                    </form>
                                     </tr>
                                 {% endfor %}
                             </tbody>

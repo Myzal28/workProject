@@ -187,8 +187,60 @@ class HomeController extends AbstractController
         $articles = $articlesRep->findBy(["serviceType"=>6]);
 
         return $this->render('services/shareJobs.html.twig',[
-            "articles" => $articles
+            "articles" => $articles,
+            "type" => 6
+        ]);
+    }
+
+    /**
+     * @Route("/client/waste/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="waste_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function wasteJobs(Persons $person, ArticlesRepository $articlesRep){
+
+        $articles = $articlesRep->findBy(["serviceType"=>3]);
+
+        return $this->render('services/wasteJobs.html.twig',[
+            "articles" => $articles,
+            "type" => 3
         ]);
     }
     
+    /**
+     * @Route("/client/course/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="course_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function courseJobs(Persons $person, ArticlesRepository $articlesRep){
+
+        $articles = $articlesRep->findBy(["serviceType"=>6]);
+
+        return $this->render('services/courseJobs.html.twig',[
+            "articles" => $articles
+        ]);
+    }
+
+    /**
+     * @Route("/client/guard/jobs/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="guard_jobs",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function guardJobs(Persons $person, ArticlesRepository $articlesRep){
+
+        $articles = $articlesRep->findBy(["serviceType"=>6]);
+
+        return $this->render('services/courseJobs.html.twig',[
+            "articles" => $articles
+        ]);
+    }
 }

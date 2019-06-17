@@ -74,12 +74,12 @@ Header
                 {% else %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes Ramassages{% endtrans %}</a></li>
                     
-                    <li class="menu-has-children"><a href="#">{% trans %}Services{% endtrans %}</a>
+                    <li class="menu-has-children {% if app.request.server.get('REQUEST_URI') == path("share_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("waste_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("course_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("guard_jobs", {'id' : app.user.id}) %}menu-active {% endif  %}"><a href="#">{% trans %}Services{% endtrans %}</a>
                         <ul>
-                            <li><a href="#">{% trans %}Conseil anti-gaspi{% endtrans %}</a></li>
-                            <li><a href="#">{% trans %}Cours de cuisine{% endtrans %}</a></li>
+                            <li><a href="{{path("waste_jobs", {'id' : app.user.id})}}">{% trans %}Conseil anti-gaspi{% endtrans %}</a></li>
+                            <li><a href="{{path("course_jobs", {'id' : app.user.id})}}">{% trans %}Cours de cuisine{% endtrans %}</a></li>
                             <li><a href="{{path("share_jobs", {'id' : app.user.id})}}">{% trans %}Echange de services entre particulier{% endtrans %}</a></li>
-                            <li><a href="#">{% trans %}Gardiennage{% endtrans %}</a></li>
+                            <li><a href="{{path("guard_jobs", {'id' : app.user.id})}}">{% trans %}Gardiennage{% endtrans %}</a></li>
                         </ul>
                     </li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_client", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_client", {'id' : app.user.id})}}">{{app.user.username}}</a></li>

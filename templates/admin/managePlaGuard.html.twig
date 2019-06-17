@@ -1,0 +1,210 @@
+{% extends 'base.admin.html.twig' %}
+{% block planning %}class="mm-active" aria-expanded="true"
+{% endblock %}
+{% block managePlaGuard %}class="mm-active"
+{% endblock %}
+
+{% block mainPane %}
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>{% trans %}Planning des Chauffeurs : semaine n°{% endtrans %}
+                    {{ weeks.present}}
+                    <div class="page-title-subheading">
+                        <a href="{{ path('manage_pla_guard', {'num' : weeks.next}) }}">{% trans %}Semaine suivante{% endtrans %}</a><br>
+                        <a href="{{ path('manage_pla_guard', {'num' : weeks.past}) }}">{% trans %}Semaine précédente{% endtrans %}</a><br>
+                        <a href="{{ path('manage_pla_guard') }}">{% trans %}Semaine courante{% endtrans %}</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table table-striped">
+
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>
+                                        <b>{% trans %}Lundi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Mon }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Mardi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Tue }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Mercredi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Wed }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Jeudi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Thu }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Vendredi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Fri }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Samedi{% endtrans %}
+                                            :
+                                            {{ daysWeek.Sat }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{% trans %}Dimanche{% endtrans %}
+                                            :
+                                            {{ daysWeek.Sun }}</b>
+                                    </td>
+                                </tr>
+                                {% for time in times %}
+
+                                    <tr>
+                                        <th scope="row">
+                                            <i>{{time}}</i>
+                                        </th>
+                                        <td id="Mon{{loop.index}}">
+                                            {% set ind = 'Mon' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Thu{{loop.index}}">
+                                            {% set ind = 'Thu' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Wed{{loop.index}}">
+                                            {% set ind = 'Wed' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Tue{{loop.index}}">
+                                            {% set ind = 'Tue' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Fri{{loop.index}}">
+                                            {% set ind = 'Fri' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Sat{{loop.index}}">
+                                            {% set ind = 'Sat' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td id="Sun{{loop.index}}">
+                                            {% set ind = 'Sun' ~ loop.index %}
+                                            {% for event in events %}
+                                                {% if event.dayWeek == ind %}
+                                                    {% for person in event.persons %}
+                                                        {{person.firstname}}
+                                                        {{person.lastname}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="mb-0 table" id="signups">
+                            <thead>
+                                <tr>
+                                    <th>{% trans %}Prénom{% endtrans %}</th>
+                                    <th>{% trans %}Nom{% endtrans %}</th>
+                                    <th>{% trans %}Email{% endtrans %}</th>
+                                    <th>{% trans %}Nom évènement{% endtrans %}</th>
+                                    <th>{% trans %}date{% endtrans %}</th>
+                                    <th>{% trans %}Créneau{% endtrans %}</th>
+                                    <th>{% trans %}Validation{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for person in persons %}
+                                    <tr>
+                                        <form action="/post/user/event/new/{{person.id}}">
+                                            <td scope="row">{{person.firstname}}</td>
+                                            <td>{{person.lastname}}</td>
+                                            <td>{{person.email}}</td>
+                                            <td><input type="text" name="name" placeholder="{% trans %}Nom{% endtrans %}"></td>
+                                            <td><input name="date" type="date"></td>
+                                            <td>
+                                                <select class="form-control-sm form-control" name="date_range">
+                                                    {% for key, time in times %}
+                                                        <option value="{{ key }}">{{ time }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button class="mb-2 mr-2 btn-transition btn btn-outline-success" type="submit">{% trans %}Valider{% endtrans %}</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

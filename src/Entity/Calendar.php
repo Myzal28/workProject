@@ -43,6 +43,26 @@ class Calendar
      */
     private $persons;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $dayWeek;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $week;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $year;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\services", inversedBy="calendars")
+     */
+    private $service;
+
     public function __construct()
     {
         $this->persons = new ArrayCollection();
@@ -123,6 +143,54 @@ class Calendar
         if ($this->persons->contains($person)) {
             $this->persons->removeElement($person);
         }
+
+        return $this;
+    }
+
+    public function getDayWeek(): ?string
+    {
+        return $this->dayWeek;
+    }
+
+    public function setDayWeek(string $dayWeek): self
+    {
+        $this->dayWeek = $dayWeek;
+
+        return $this;
+    }
+
+    public function getWeek(): ?int
+    {
+        return $this->week;
+    }
+
+    public function setWeek(int $week): self
+    {
+        $this->week = $week;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getService(): ?services
+    {
+        return $this->service;
+    }
+
+    public function setService(?services $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }
