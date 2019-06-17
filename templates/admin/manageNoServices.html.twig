@@ -36,6 +36,7 @@
                         </thead>
                         <tbody>
                                 {% for person in persons %}
+                                {% if person.volunteer == 1 or person.internal == 1 %}
                                 <tr>
                                     <th scope="row">{{person.id}}</th>
                                     <td>{{person.firstname}}</td>
@@ -52,6 +53,7 @@
                                     </td>
                                     <td><button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Valider{% endtrans %}</button></td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                                 </tbody>
                     </table>

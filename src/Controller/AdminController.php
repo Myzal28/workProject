@@ -6,6 +6,7 @@ use App\Repository\SignupRepository;
 use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
+use App\Repository\CalendarRepository;
 use App\Repository\ServicesRepository;
 use App\Repository\VehiclesRepository;
 use App\Repository\WarehousesRepository;
@@ -181,6 +182,376 @@ class AdminController extends AbstractController
 
         return $this->render('admin/manageWarehouses.html.twig',[
             "warehouses" => $warehouses
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/driver/planning/week/{num}/{_locale}",
+     *     defaults={"num"= "present","_locale"="fr"},
+     *     name="manage_pla_driver",
+     * requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function managePlaDriver($num, PersonsRepository $personsRep, CalendarRepository $calendarsRep){
+
+        $persons = $personsRep->findBy(["service"=>1]);
+
+        if($num == "present"){
+            $week = date("W");
+            $day = date('w');
+            $monday = strtotime('-'.$day.' days') + 86400;
+
+            $date = [
+                0=>date("Y",$monday),
+                1=>date("m",$monday),
+                2=>date("d",$monday)
+            ];
+
+        }else{            
+            $date = explode("_",$num);
+            $monday = strtotime($date[0]."-".$date[1]."-".$date[2]);
+            $week = date("W", $monday);
+        }
+
+        $daysWeek = [
+                'Mon' => date('d/m', $monday),
+                'Tue' => date('d/m', $monday + 86400),
+                'Wed' => date('d/m', $monday + 86400 * 2),
+                'Thu' => date('d/m', $monday + 86400 * 3),
+                'Fri' => date('d/m', $monday + 86400 * 4),
+                'Sat' => date('d/m', $monday + 86400 * 5),
+                'Sun' => date('d/m', $monday + 86400 * 6)
+            ];
+        
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        
+        $weeks =[
+            "past"=>date("Y_m_d", $monday - 86400*7),
+            "present"=>$week,
+            "next"=>date("Y_m_d", $monday + 86400*7)
+        ];
+        $times = [
+            1=>"9h00 - 9h30",
+            2=>"9h30 - 10h00",
+            3=>"10h00 - 10h30",
+            4=>"10h30 - 11h00",
+            5=>"11h00 - 11h30",
+            6=>"11h30 - 12h00",
+            7=>"12h00 - 12h30",
+            8=>"12h30 - 13h00",
+            9=>"13h00 - 13h30",
+            10=>"13h30 - 14h00",
+            11=>"14h00 - 14h30",
+            12=>"14h30 - 15h00",
+            13=>"15h00 - 15h30",
+            14=>"15h30 - 16h00",
+            15=>"16h00 - 16h30",
+            16=>"16h30 - 17h00"
+        ];
+
+        return $this->render('admin/managePlaDriver.html.twig',[
+            "persons" => $persons,
+            "times" => $times,
+            "events" =>$events,
+            "weeks" => $weeks,
+            "daysWeek" => $daysWeek
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/Harrange/planning/week/{num}/{_locale}",
+    *     defaults={"num"= "present","_locale"="fr"},
+     *     name="manage_pla_harrange",
+     * requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function managePlaHarrange($num, PersonsRepository $personsRep, CalendarRepository $calendarsRep){
+
+        $persons = $personsRep->findBy(["service"=>2]);
+        
+        if($num == "present"){
+            $week = date("W");
+            $day = date('w');
+            $monday = strtotime('-'.$day.' days') + 86400;
+
+            $date = [
+                0=>date("Y",$monday),
+                1=>date("m",$monday),
+                2=>date("d",$monday)
+            ];
+
+        }else{            
+            $date = explode("_",$num);
+            $monday = strtotime($date[0]."-".$date[1]."-".$date[2]);
+            $week = date("W", $monday);
+        }
+
+        $daysWeek = [
+                'Mon' => date('d/m', $monday),
+                'Tue' => date('d/m', $monday + 86400),
+                'Wed' => date('d/m', $monday + 86400 * 2),
+                'Thu' => date('d/m', $monday + 86400 * 3),
+                'Fri' => date('d/m', $monday + 86400 * 4),
+                'Sat' => date('d/m', $monday + 86400 * 5),
+                'Sun' => date('d/m', $monday + 86400 * 6)
+            ];
+        
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        
+        $weeks =[
+            "past"=>date("Y_m_d", $monday - 86400*7),
+            "present"=>$week,
+            "next"=>date("Y_m_d", $monday + 86400*7)
+        ];
+        $times = [
+            1=>"9h00 - 9h30",
+            2=>"9h30 - 10h00",
+            3=>"10h00 - 10h30",
+            4=>"10h30 - 11h00",
+            5=>"11h00 - 11h30",
+            6=>"11h30 - 12h00",
+            7=>"12h00 - 12h30",
+            8=>"12h30 - 13h00",
+            9=>"13h00 - 13h30",
+            10=>"13h30 - 14h00",
+            11=>"14h00 - 14h30",
+            12=>"14h30 - 15h00",
+            13=>"15h00 - 15h30",
+            14=>"15h30 - 16h00",
+            15=>"16h00 - 16h30",
+            16=>"16h30 - 17h00"
+        ];
+
+        return $this->render('admin/managePlaHarrange.html.twig',[
+            "persons" => $persons,
+            "times" => $times,
+            "events" =>$events,
+            "weeks" => $weeks,
+            "daysWeek" => $daysWeek
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/waste/planning/week/{num}/{_locale}",
+     *     defaults={"num"= "present","_locale"="fr"},
+     *     name="manage_pla_waste",
+     * requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function managePlaWaste($num, PersonsRepository $personsRep, CalendarRepository $calendarsRep){
+
+        $persons = $personsRep->findBy(["service"=>3]);
+        
+        if($num == "present"){
+            $week = date("W");
+            $day = date('w');
+            $monday = strtotime('-'.$day.' days') + 86400;
+
+            $date = [
+                0=>date("Y",$monday),
+                1=>date("m",$monday),
+                2=>date("d",$monday)
+            ];
+
+        }else{            
+            $date = explode("_",$num);
+            $monday = strtotime($date[0]."-".$date[1]."-".$date[2]);
+            $week = date("W", $monday);
+        }
+
+        $daysWeek = [
+                'Mon' => date('d/m', $monday),
+                'Tue' => date('d/m', $monday + 86400),
+                'Wed' => date('d/m', $monday + 86400 * 2),
+                'Thu' => date('d/m', $monday + 86400 * 3),
+                'Fri' => date('d/m', $monday + 86400 * 4),
+                'Sat' => date('d/m', $monday + 86400 * 5),
+                'Sun' => date('d/m', $monday + 86400 * 6)
+            ];
+        
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        
+        $weeks =[
+            "past"=>date("Y_m_d", $monday - 86400*7),
+            "present"=>$week,
+            "next"=>date("Y_m_d", $monday + 86400*7)
+        ];
+        $times = [
+            1=>"9h00 - 9h30",
+            2=>"9h30 - 10h00",
+            3=>"10h00 - 10h30",
+            4=>"10h30 - 11h00",
+            5=>"11h00 - 11h30",
+            6=>"11h30 - 12h00",
+            7=>"12h00 - 12h30",
+            8=>"12h30 - 13h00",
+            9=>"13h00 - 13h30",
+            10=>"13h30 - 14h00",
+            11=>"14h00 - 14h30",
+            12=>"14h30 - 15h00",
+            13=>"15h00 - 15h30",
+            14=>"15h30 - 16h00",
+            15=>"16h00 - 16h30",
+            16=>"16h30 - 17h00"
+        ];
+
+        return $this->render('admin/managePlaWaste.html.twig',[
+            "persons" => $persons,
+            "times" => $times,
+            "events" =>$events,
+            "weeks" => $weeks,
+            "daysWeek" => $daysWeek
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/course/planning/week/{num}/{_locale}",
+     *     defaults={"num"= "present","_locale"="fr"},
+     *     name="manage_pla_course",
+     * requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function managePlaCourse($num, PersonsRepository $personsRep, CalendarRepository $calendarsRep){
+
+        $persons = $personsRep->findBy(["service"=>4]);
+        
+        if($num == "present"){
+            $week = date("W");
+            $day = date('w');
+            $monday = strtotime('-'.$day.' days') + 86400;
+
+            $date = [
+                0=>date("Y",$monday),
+                1=>date("m",$monday),
+                2=>date("d",$monday)
+            ];
+
+        }else{            
+            $date = explode("_",$num);
+            $monday = strtotime($date[0]."-".$date[1]."-".$date[2]);
+            $week = date("W", $monday);
+        }
+
+        $daysWeek = [
+                'Mon' => date('d/m', $monday),
+                'Tue' => date('d/m', $monday + 86400),
+                'Wed' => date('d/m', $monday + 86400 * 2),
+                'Thu' => date('d/m', $monday + 86400 * 3),
+                'Fri' => date('d/m', $monday + 86400 * 4),
+                'Sat' => date('d/m', $monday + 86400 * 5),
+                'Sun' => date('d/m', $monday + 86400 * 6)
+            ];
+        
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        
+        $weeks =[
+            "past"=>date("Y_m_d", $monday - 86400*7),
+            "present"=>$week,
+            "next"=>date("Y_m_d", $monday + 86400*7)
+        ];
+        $times = [
+            1=>"9h00 - 9h30",
+            2=>"9h30 - 10h00",
+            3=>"10h00 - 10h30",
+            4=>"10h30 - 11h00",
+            5=>"11h00 - 11h30",
+            6=>"11h30 - 12h00",
+            7=>"12h00 - 12h30",
+            8=>"12h30 - 13h00",
+            9=>"13h00 - 13h30",
+            10=>"13h30 - 14h00",
+            11=>"14h00 - 14h30",
+            12=>"14h30 - 15h00",
+            13=>"15h00 - 15h30",
+            14=>"15h30 - 16h00",
+            15=>"16h00 - 16h30",
+            16=>"16h30 - 17h00"
+        ];
+
+        return $this->render('admin/managePlaCourse.html.twig',[
+            "persons" => $persons,
+            "times" => $times,
+            "events" =>$events,
+            "weeks" => $weeks,
+            "daysWeek" => $daysWeek
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/guard/planning/week/{num}/{_locale}",
+     *     defaults={"num"= "present","_locale"="fr"},
+     *     name="manage_pla_guard",
+     * requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function managePlaGuard($num, PersonsRepository $personsRep, CalendarRepository $calendarsRep){
+
+        $persons = $personsRep->findBy(["service"=>5]);
+        
+        if($num == "present"){
+            $week = date("W");
+            $day = date('w');
+            $monday = strtotime('-'.$day.' days') + 86400;
+
+            $date = [
+                0=>date("Y",$monday),
+                1=>date("m",$monday),
+                2=>date("d",$monday)
+            ];
+
+        }else{            
+            $date = explode("_",$num);
+            $monday = strtotime($date[0]."-".$date[1]."-".$date[2]);
+            $week = date("W", $monday);
+        }
+
+        $daysWeek = [
+                'Mon' => date('d/m', $monday),
+                'Tue' => date('d/m', $monday + 86400),
+                'Wed' => date('d/m', $monday + 86400 * 2),
+                'Thu' => date('d/m', $monday + 86400 * 3),
+                'Fri' => date('d/m', $monday + 86400 * 4),
+                'Sat' => date('d/m', $monday + 86400 * 5),
+                'Sun' => date('d/m', $monday + 86400 * 6)
+            ];
+        
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        
+        $weeks =[
+            "past"=>date("Y_m_d", $monday - 86400*7),
+            "present"=>$week,
+            "next"=>date("Y_m_d", $monday + 86400*7)
+        ];
+        $times = [
+            1=>"9h00 - 9h30",
+            2=>"9h30 - 10h00",
+            3=>"10h00 - 10h30",
+            4=>"10h30 - 11h00",
+            5=>"11h00 - 11h30",
+            6=>"11h30 - 12h00",
+            7=>"12h00 - 12h30",
+            8=>"12h30 - 13h00",
+            9=>"13h00 - 13h30",
+            10=>"13h30 - 14h00",
+            11=>"14h00 - 14h30",
+            12=>"14h30 - 15h00",
+            13=>"15h00 - 15h30",
+            14=>"15h30 - 16h00",
+            15=>"16h00 - 16h30",
+            16=>"16h30 - 17h00"
+        ];
+
+        return $this->render('admin/managePlaGuard.html.twig',[
+            "persons" => $persons,
+            "times" => $times,
+            "events" =>$events,
+            "weeks" => $weeks,
+            "daysWeek" => $daysWeek
         ]);
     }
 }

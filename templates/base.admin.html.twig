@@ -28,7 +28,6 @@
         <link href="{{ asset('lib/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ asset('lib/peicon/pe-icon.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.css"/>
     </head>
 
     <body>
@@ -186,7 +185,7 @@
                                 <li class="app-sidebar__heading">{% trans %}Services{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_services')}}" {% block manageServices %} {% endblock %}>
-                                        {% trans %}Tout les services{% endtrans %}
+                                        {% trans %}Touts les services{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Gestion Collectes{% endtrans %}</li>
@@ -201,18 +200,32 @@
                                         <li><a href="#" {% block manageTDCollect %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes de la journée{% endtrans %}</a></li>
                                     </ul>
                                 </li>
+                                <li class="app-sidebar__heading">{% trans %}Calendrier{% endtrans %}</li>
+                                <li>
+                                        <a href="#" {% block planning %}{% endblock %}>
+                                                {% trans %}Calendrier{% endtrans %}
+                                            </a>
+                                        <ul>
+                                                <li><a href="{{ path('manage_pla_driver') }}" {% block managePlaDriver %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Chauffeur{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_harrange') }}"{% block managePlaHarrange %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Aide au Logement{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_waste') }}"{% block managePlaWaste %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Conseil Anti-gaspi{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_course') }}"{% block managePlaCourse %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Cours de cuisine{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_guard') }}"{% block managePlaGuard %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Gardiennage{% endtrans %}</a></li>
+                                        </ul>
+                                </li>
                                 <li class="app-sidebar__heading">{% trans %}Véhicules{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_vehicules') }}" {% block manageVehicules %} {% endblock %}>
-                                        {% trans %}Tout les Véhicules{% endtrans %}
+                                        {% trans %}Touts les Véhicules{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Entrepôts{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_warehouses') }}" {% block manageWarhouses %} {% endblock %}>
-                                        {% trans %}Tout les Entrepôts{% endtrans %}
+                                        {% trans %}Touts les Entrepôts{% endtrans %}
                                     </a>
                                 </li>
+                                
                                 <!-- Ajouté des dashboards ici -->
                                 </ul>
                             </div>
@@ -234,7 +247,6 @@
                     </div>
                 </div>
                 <script type="text/javascript" src="{{ asset('js/admin.js') }}"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
             </body>
 
         </html>

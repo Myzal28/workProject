@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+                <h1 id="title-underlined">Service de partages entre particulier</h1>
+                <h2>{% trans %}Mes annonces :{% endtrans %}</h2>
+                <div id="map">
+
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                                <th scope="col">{% trans %}Description{% endtrans %}</th>
+                                <th scope="col">{% trans %}Contenu{% endtrans %}</th>
+                                <th scope="col">{% trans %}Crée le{% endtrans %}</th>
+                                <th scope="col">{% trans %}Options{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for article in articles %}
+                                {% if article.personCreate == app.user %}
+                                    <tr>
+                                        <td scope="row">{{article.name}}</td>
+                                        <td>{{article.description}}</td>
+                                        <td>{{article.content}}</td>
+                                        <td>{{article.dateCreate | date('d/m/Y  H:i')}}</td>
+                                        <th>
+                                            <button class="btn btn-success" data-target="#modal{{article.id}}" data-toggle="modal">{% trans %}Modifier{% endtrans %}</button>
+                                            <button class="btn btn-warning">{% trans %}Supprimer{% endtrans %}</button>
+                                        </th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                    <button class="btn btn-success" data-target="#modalNew" data-toggle="modal">{% trans %}Nouveau{% endtrans %}</button>
+                    <h2>{% trans %}Annonces :{% endtrans %}</h2>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">{% trans %}Particulier{% endtrans %}</th>
+                                <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                                <th scope="col">{% trans %}Description{% endtrans %}</th>
+                                <th scope="col">{% trans %}Contenu{% endtrans %}</th>
+                                <th scope="col">{% trans %}Crée le{% endtrans %}</th>
+                                <th scope="col">{% trans %}Infos{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for article in articles %}
+                                {% if article.personCreate != app.user %}
+                                    <tr>
+                                        <td scope="row">{{article.personCreate.firstname}}
+                                            {{article.personCreate.lastname}}</td>
+                                        <td>{{article.name}}</td>
+                                        <td>{{article.description}}</td>
+                                        <td>{{article.content}}</td>
+                                        <td>{{article.dateCreate | date('d/m/Y  H:i')}}</td>
+                                        <th>
+                                            <button class="btn btn-primary" data-target="#modal{{article.id}}" data-toggle="modal">{% trans %}Infos{% endtrans %}</button>
+                                        </th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% for article in articles %}
+        {% if article.personCreate != app.user %}
+            <div aria-hidden="true" aria-labelledby="modal{{article.id}}title" class="modal fade bd-example-modal-lg" id="modal{{article.id}}" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal{{article.id}}title">{% trans %}Article numéro{% endtrans %}
+                                {{article.id}}</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">{% trans %}Personne{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Description{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Contenu{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Crée le{% endtrans %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table">
+
+                                    <tr>
+                                        <td scope="row">{{article.personCreate.firstname}}
+                                            {{article.personCreate.lastname}}</td>
+                                        <td>{{article.name}}</td>
+                                        <td>{{article.description}}</td>
+                                        <td>{{article.content}}
+                                        </td>
+                                        <td>{{article.dateCreate | date('d/m/Y  H:i')}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div aria-hidden="true" aria-labelledby="modal{{article.id}}title" class="modal fade bd-example-modal-lg" id="modal{{article.id}}" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal{{article.id}}title">{% trans %}Article numéro{% endtrans %}
+                                {{article.id}}</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Description{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Contenu{% endtrans %}</th>
+                                        <th scope="col">{% trans %}Validation{% endtrans %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table">
+                                    <tr>
+                                        <form action="/post/client/article/modify/{{article.id}}">
+                                            <td scope="row"><input type="text" name="name" value="{{article.name}}"></td>
+                                            <td><input type="text" name="description" value="{{article.description}}"></td>
+                                            <td>
+                                                <textarea name="content">{{article.content}}</textarea>
+                                            </td>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" type="submit">{% trans %}Valider{% endtrans %}</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>{% endif %}{% endfor %}
+<div aria-hidden="true" aria-labelledby="modalNewTitle" class="modal fade bd-example-modal-lg" id="modalNew" role="dialog" tabindex="-1"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="modalNewTitle">{% trans %}Nouvelle article{% endtrans %}</h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table>
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                    <th scope="col">{% trans %}Description{% endtrans %}</th>
+                    <th scope="col">{% trans %}Contenu{% endtrans %}</th>
+                    <th scope="col">{% trans %}Validation{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody class="table">
+                <tr>
+                    <form action="/post/client/article/new/{{type}}">
+                        <td scope="row"><input type="text" name="name" placeholder="{% trans %}Nom{% endtrans %}"></td>
+                        <td><input type="text" name="description" placeholder="{% trans %}Description{% endtrans %}"></td>
+                        <td>
+                            <textarea name="content" placeholder="{% trans %}Annonce bien expliqué{% endtrans %}"></textarea></textarea>
+                        </td>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="submit">{% trans %}Valider{% endtrans %}</button>
+                    </td>
+                </tr>
+            </tbody>
+        </form>
+    </tr>
+</tbody></table></div><div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button></div></div></div></div>{% endblock %}
