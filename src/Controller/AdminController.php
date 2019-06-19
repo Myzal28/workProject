@@ -133,17 +133,18 @@ class AdminController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function manageNoCheck(CollectRepository $collectRep, StatusRepository $statusRep, VehiclesRepository $vehiculesRep){
+    public function manageNoCheck(CollectRepository $collectRep, StatusRepository $statusRep, PersonsRepository $personsRep, ServicesRepository $servicesRep){
 
+        $service = $servicesRep->findOneBy(["id"=>1]);
         $collects = $collectRep->findBy(["status" => 4]);
         $status = $statusRep->findBy(["statusType" => "CLL"]);
-        $vehicules = $vehiculesRep->findAll();
+        $persons = $personsRep->findBy(["service"=>$service]);
         $datetime = new \Datetime;
 
         return $this->render('admin/manageNocheck.html.twig',[
             "collects" => $collects,
             "status" => $status,
-            "vehicules" => $vehicules,
+            "persons" => $persons,
             "datetime" => $datetime
         ]);
     }
@@ -156,14 +157,19 @@ class AdminController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function manageVehicules(VehiclesRepository $vehiculesRep, StatusRepository $statusRep){
+    public function manageVehicules(VehiclesRepository $vehiculesRep, StatusRepository $statusRep, PersonsRepository $personRep, ServicesRepository $servicesRep){
 
+        $service = $servicesRep->findOneBy(["id"=>1]);
         $vehicules = $vehiculesRep->findAll();
         $status = $statusRep->findBy(["statusType" => "VHE"]);
+        $persons = $personRep->findBy(["service"=>$service]);
+
+        
 
         return $this->render('admin/manageVehicules.html.twig',[
             "vehicules" => $vehicules,
-            "status" => $status
+            "status" => $status,
+            "persons" => $persons
         ]);
     }
 
@@ -261,7 +267,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/manage/Harrange/planning/week/{num}/{_locale}",
-    *     defaults={"num"= "present","_locale"="fr"},
+     *     defaults={"num"= "present","_locale"="fr"},
      *     name="manage_pla_harrange",
      * requirements={
      *         "_locale"="en|fr|pt|it"
@@ -298,7 +304,7 @@ class AdminController extends AbstractController
                 'Sun' => date('d/m', $monday + 86400 * 6)
             ];
         
-        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>2]);
         
         $weeks =[
             "past"=>date("Y_m_d", $monday - 86400*7),
@@ -372,7 +378,7 @@ class AdminController extends AbstractController
                 'Sun' => date('d/m', $monday + 86400 * 6)
             ];
         
-        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>3]);
         
         $weeks =[
             "past"=>date("Y_m_d", $monday - 86400*7),
@@ -446,7 +452,7 @@ class AdminController extends AbstractController
                 'Sun' => date('d/m', $monday + 86400 * 6)
             ];
         
-        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>4]);
         
         $weeks =[
             "past"=>date("Y_m_d", $monday - 86400*7),
@@ -520,7 +526,7 @@ class AdminController extends AbstractController
                 'Sun' => date('d/m', $monday + 86400 * 6)
             ];
         
-        $events = $calendarsRep->findBy(["week"=>$week, "service"=>1]);
+        $events = $calendarsRep->findBy(["week"=>$week, "service"=>5]);
         
         $weeks =[
             "past"=>date("Y_m_d", $monday - 86400*7),

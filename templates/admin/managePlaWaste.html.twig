@@ -13,7 +13,7 @@
                     {{ weeks.present}}
                     <div class="page-title-subheading">
                         <a href="{{ path('manage_pla_waste', {'num' : weeks.next}) }}">{% trans %}Semaine suivante{% endtrans %}</a><br>
-                        <a href="{{ path('manage_pla_waste', {'num' : weeks.past}) }}">{% trans %}Semaine précédente{% endtrans %}</a>
+                        <a href="{{ path('manage_pla_waste', {'num' : weeks.past}) }}">{% trans %}Semaine précédente{% endtrans %}</a><br>
                         <a href="{{ path('manage_pla_waste') }}">{% trans %}Semaine courante{% endtrans %}</a>
                     </div>
 

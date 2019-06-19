@@ -243,4 +243,62 @@ class HomeController extends AbstractController
             "articles" => $articles
         ]);
     }
+
+    /**
+     * @Route("/user/driver/work/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="drivers_work",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function driversWork(Persons $person, CollectRepository $collectsRep){
+
+
+        foreach($person->getVehicles() as $vehicule){
+            $collects = $collectsRep->findBy(["vehicle"=>$vehicule]);
+        }
+
+        $serializer = new Serializer(array(new ObjectNormalizer()));
+        $data = $serializer->normalize($collects, null, array('attributes' => array('id')));
+        
+        $i = 0;
+        foreach($data as $collect){
+            $finder = new Finder();
+            $finder->in($this->getParameter('kernel.root_dir').'/collects');
+            $finder->name($collect["id"].".json");
+            
+            foreach ($finder as $file) {
+                $contents = $file->getContents();
+                $collectA = json_decode($contents, true);
+                // ...
+            }
+            $data[$i]["articles"]=$collectA["articles"];
+
+            $i++;
+        }
+        
+        return $this->render('services/driversWork.html.twig',[
+            "collects" => $collects,
+            "data"=> $data
+        ]);
+    }
+
+    /**
+     * @Route("/user/stock/work/{id}/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="stock_work",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function stockWork(Persons $person, ArticlesRepository $articlesRep){
+
+        $articles = $articlesRep->findBy(["serviceType"=>6]);
+
+        return $this->render('services/stockWork.html.twig',[
+            "articles" => $articles
+        ]);
+    }
+
 }
