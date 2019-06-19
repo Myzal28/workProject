@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+        .img-product {
+            width: 50px;
+        }
+</style>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+                <h1 id="title-underlined">Mes collectes a venir:</h1>
+                <div id="map">
+
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">{% trans %}Client{% endtrans %}</th>
+                                <th scope="col">{% trans %}Status{% endtrans %}</th>
+                                <th scope="col">{% trans %}Commentaire{% endtrans %}</th>
+                                <th scope="col">{% trans %}Date de Ramassage{% endtrans %}</th>
+                                <th scope="col">{% trans %}Adresse{% endtrans %}</th>
+                                <th scope="col">{% trans %}Articles{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for collect in collects %}
+                                <tr>
+                                        <td scope="row">{{collect.id}}</td>
+                                        <td>{{collect.personCreate.Firstname}}
+                                            {{collect.personCreate.Lastname}}</td>
+                                        <td>{{collect.status.status}}</td>
+                                        <td>{{collect.commentary}}</td>
+                                        <td>{{collect.dateCollect | date('d/m/Y  H:i')}}</td>
+                                        <td>{{collect.personCreate.address}}</td>
+                                        <th>
+                                            <button class="btn btn-success" data-target="#modal{{collect.id}}" data-toggle="modal">{% trans %}Articles{% endtrans %}</button>
+                                        </th>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for collect in data %}
+    <div aria-hidden="true" aria-labelledby="modal{{collect.id}}title" class="modal fade bd-example-modal-lg" id="modal{{collect.id}}" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal{{collect.id}}title">{% trans %}Article numéro{% endtrans %}
+                        {{collect.id}}</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">{% trans %}Code{% endtrans %}</th>
+                                <th scope="col">{% trans %}Nom{% endtrans %}</th>
+                                <th scope="col">{% trans %}Poids{% endtrans %}</th>
+                                <th scope="col">{% trans %}Marques{% endtrans %}</th>
+                                <th scope="col">{% trans %}Quantités{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table">
+
+                            {% for article in collect.articles %}
+
+                                <tr>
+                                    <th scope="row">{{article.code}}<img src="{{article.image_url}}" class="img-product" alt="{{article.product_name}}"></th>
+                                    <td>{{article.product_name}}</td>
+                                    <td>{{article.quantity}}</td>
+                                    <td>{{article.brands}}</td>
+                                    <th>{{article.quantity_nbr}}</th>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

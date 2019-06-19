@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Signup;
+use App\Entity\Collect;
 use App\Entity\Persons;
 use App\Entity\Articles;
 use App\Entity\Calendar;
 use App\Entity\Services;
+use App\Entity\Vehicles;
 use App\Repository\SignupRepository;
 use App\Repository\StatusRepository;
 use App\Repository\PersonsRepository;
 use App\Repository\ServicesRepository;
+use App\Repository\VehiclesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -113,7 +116,7 @@ class PostController extends AbstractController
     /**
      * @Route("/post/user/event/new/{id}", name="event_new")
      */
-    public function EventNew(Persons $person, Request $request, ObjectManager $manager)
+    public function eventNew(Persons $person, Request $request, ObjectManager $manager)
     {
        $event = new Calendar;
        
@@ -132,5 +135,52 @@ class PostController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('manage_pla_driver');
+    }
+
+    /**
+     * @Route("/post/vehicule/add/user/{id}", name="vehicule_user")
+     */
+    public function vehiculeUser(Vehicles $vehicule, Request $request, ObjectManager $manager, PersonsRepository $personsRep, StatusRepository $statusRep)
+    {
+        if($request->get('user') !== "none"){
+            $vehicule->setPerson($personsRep->findOneBy(["id"=>$request->get('user')]))
+                ->setStatus($statusRep->findOneBy(["id"=>$request->get('status')]));
+        }else{
+            $vehicule->setPerson(null)
+                ->setStatus($statusRep->findOneBy(["id"=>$request->get('status')]));
+        }
+       
+
+        $manager->persist($vehicule);
+        $manager->flush();
+
+        return $this->redirectToRoute('manage_vehicules');
+    }
+
+    /**
+     * @Route("/post/collect/mod/{collect}/{person}", name="collect_mod")
+     */
+    public function collectMod(Collect $collect, Persons $person, Request $request, ObjectManager $manager, PersonsRepository $personsRep, StatusRepository $statusRep, VehiclesRepository $vehiculesRep)
+    {
+
+        $vehicules = $personsRep->find($request->get("user"))->getVehicles();
+        $serializer = new Serializer(array(new ObjectNormalizer()));
+        $vehicules = $serializer->normalize($vehicules, null, array('attributes' => array('id')));
+
+        foreach($vehicules as $vehicule ){
+            $pvehicule = $vehiculesRep->find($vehicule["id"]);
+        }
+
+        $collect->setPersonCheck($person)
+               ->setVehicle($pvehicule)
+               ->setStatus($statusRep->find($request->get("status")))
+               ->setCommentary($request->get("comment"))
+               ->setDateCollect(new \Datetime($request->get('date')));
+       
+
+        $manager->persist($collect);
+        $manager->flush();
+
+        return $this->redirectToRoute('manage_no_check');
     }
 }

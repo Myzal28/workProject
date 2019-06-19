@@ -1,0 +1,15 @@
+{
+"email":"peter.balivet@gmail.com",
+"password":"testtest",
+"articles":[
+	{
+	"code": "8764923704",
+	"product_name": "JDSFFSD",
+	"ingredients_text":"zerizeurzrizuerzeirzr",
+	"quantity":"330ml",
+	"brands":"Coca cola",
+	"image_url":"https://static.openfoodfacts.org/images/products/544/900/000/0439/front_en.46.400.jpg",
+	"quantity_nbr":"2"
+	}
+]
+}

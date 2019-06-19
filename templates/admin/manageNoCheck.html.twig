@@ -27,11 +27,11 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>{% trans %}Creer par:{% endtrans %}</th>
+                                    <th>{% trans %}Créée par:{% endtrans %}</th>
                                     <th>{% trans %}Status{% endtrans %}</th>
                                     <th>{% trans %}Commentaire{% endtrans %}</th>
                                     <th>{% trans %}Date de création{% endtrans %}</th>
-                                    <th>{% trans %}Véhicule utiliser{% endtrans %}</th>
+                                    <th>{% trans %}Chauffeur attribué{% endtrans %}</th>
                                     <th>{% trans %}Date de ramassage{% endtrans %}</th>
                                     <th>{% trans %}Autoriser{% endtrans %}</th>
                                 </tr>
@@ -39,54 +39,65 @@
                             <tbody>
                                 {% for collect in collects %}
                                     <tr>
-                                        <th scope="row">{{collect.id}}</th>
-                                        <td>{{collect.personCreate.email}}</td>
-                                        <td>
-                                            <select class="form-control-sm form-control">
-                                                {% for statu in status %}
-                                                    <option {% if collect.status.id == statu.id %} selected="selected" {% endif %}>{{ statu.status }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                        <td><input type="text" value="{{collect.commentary}}"></td>
-                                        <td>{{collect.dateRegister | date('d/m/Y  H:i')}}</td>
-                                        <td>
-                                            {% if collect.vehicle.id is not defined %}
-                                                <select class="form-control-sm form-control">
-                                                    <option>Aucun</option>
-                                                    {% for vehicule in vehicules %}
-                                                        <option>{{ vehicule.model }}
-                                                            :
-                                                            {{ vehicule.id }}</option>
+                                        <form action="{{ path('collect_mod', {"collect": collect.id, "person": app.user.id})}}">
+                                            <th scope="row">{{collect.id}}</th>
+                                            <td>{{collect.personCreate.email}}</td>
+                                            <td>
+                                                <select class="form-control-sm form-control" name="status">
+                                                    {% for statu in status %}
+                                                        <option value="{{ statu.id }}" {% if collect.status.id == statu.id %} selected="selected" {% endif %}>{{ statu.status }}</option>
                                                     {% endfor %}
                                                 </select>
-                                            {% else %}
-                                                <select class="form-control-sm form-control">
-                                                    <option>Aucun</option>
-                                                    {% for vehicule in vehicules %}
-                                                        <option {% if collect.vehicle.id == vehicule.id %} selected="selected" {% endif %}>{{ vehicule.model }}
-                                                            :
-                                                            {{ vehicule.id }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            {% endif %}
+                                            </td>
+                                            <td><input type="text" value="{{collect.commentary}}" name="comment" required></td>
+                                            <td>{{collect.dateRegister | date('d/m/Y  H:i')}}</td>
+                                            <td>
+                                                {% if collect.vehicule.id is not defined %}
+                                                    <select class="form-control-sm form-control" name="user">
+                                                        <option value="none">{% trans %}Aucun{% endtrans %}</option>
+                                                        {% for person in persons %}
+                                                            {% set i = 0 %}
+                                                            {% for vehicle in person.vehicles %}
+                                                                {% if i == 0 %}
+                                                                    <option value="{{ person.id }}">{{ person.email }}</option>
+                                                                    {% set i = 1 %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </select>
+                                                {% else %}
+                                                    <select class="form-control-sm form-control" name="user">
+                                                        <option value="none">{% trans %}Aucun{% endtrans %}</option>
+                                                        {% for person in persons %}
+                                                            {% set i = 0 %}
+                                                            {% for vehicle in person.vehicles %}
+                                                                {% if i == 0 %}
+                                                                    <option value="{{ person.id }}" {% if collect.vehicule.person.email == person.email %} selected="selected" {% endif %}>{{ person.email }}</option>
+                                                                    {% set i = 1 %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </select>
+                                                {% endif %}
+                                            </td>
                                         </td>
                                         <td>
                                             {% if collect.dateCollect == null %}
-                                                <input type="datetime-local">{% else %}<input type="datetime" value="{{collect.dateCollect | date('d/mm/Y H:i:s')}}">
-                                                {% endif %}
-                                        </td>
+                                                <input name="date" required type="datetime-local">{% else %}<input type="datetime" value="{{collect.dateCollect | date('d/mm/Y H:i:s')}}" name="date" required>
+                                            {% endif %}
                                         </td>
                                         <td>
-                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success">{% trans %}Autoriser{% endtrans %}</button>
+                                            <button class="mb-2 mr-2 btn-transition btn btn-outline-success" type="submit">{% trans %}Autoriser{% endtrans %}</button>
                                         </td>
                                     </tr>
-                                {% endfor %}
+                                </form>
                             </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+
+            </table>
         </div>
     </div>
-{% endblock %}
+</div></div></div>{% endblock %}
