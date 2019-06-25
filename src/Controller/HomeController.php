@@ -6,9 +6,11 @@ namespace App\Controller;
 
 use App\Entity\Persons;
 use Psr\Log\LoggerInterface;
+use App\Repository\StatusRepository;
 use Symfony\Component\Finder\Finder;
 use App\Repository\CollectRepository;
 use App\Repository\ArticlesRepository;
+use App\Repository\WarehousesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -285,19 +287,35 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/user/stock/work/{id}/{_locale}",
+     * @Route("/user/stock/work/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="stock_work",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function stockWork(Persons $person, ArticlesRepository $articlesRep){
+    public function stockWork(WarehousesRepository $warehousesRep, CollectRepository $collectsRep, StatusRepository $statusRep){
+        
+        $from = new \DateTime(date("Y-m-d")." 00:00:00");
+        $to = new \DateTime(date("Y-m-d")." 23:59:59");
+        $status = $statusRep->findBy(["statusType"=>"AST"]);
+        $statusEx = $statusRep->find(15);
 
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
+        $qb = $collectsRep->createQueryBuilder("e");
+        $qb->andWhere('e.dateCollect BETWEEN :from AND :to')
+        ->andWhere('e.status != :statusEx')
+        ->setParameter('from', $from )
+        ->setParameter('statusEx', $statusEx )
+        ->setParameter('to', $to);
+
+        $collects = $qb->getQuery()->getResult();
+
+        $warehouses = $warehousesRep->findAll();
 
         return $this->render('services/stockWork.html.twig',[
-            "articles" => $articles
+            "status" => $status,
+            "collects" => $collects,
+            "warehouses" => $warehouses
         ]);
     }
 

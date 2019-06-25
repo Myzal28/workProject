@@ -9,11 +9,15 @@ use App\Entity\Articles;
 use App\Entity\Calendar;
 use App\Entity\Services;
 use App\Entity\Vehicles;
+use App\Entity\Inventory;
+use App\Repository\FoodsRepository;
 use App\Repository\SignupRepository;
 use App\Repository\StatusRepository;
+use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
 use App\Repository\ServicesRepository;
 use App\Repository\VehiclesRepository;
+use App\Repository\WarehousesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -182,5 +186,58 @@ class PostController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('manage_no_check');
+    }
+
+    /**
+     * @Route("/post/user/collect/stock/{id}", name="stock_add")
+     */
+    public function stockAdd(Persons $person, Request $request, ObjectManager $manager, PersonsRepository $personsRep, StatusRepository $statusRep, WarehousesRepository $warehousesRep, CollectRepository $collectsRep, FoodsRepository $foodsRep )
+    {
+
+        $inventory = new Inventory;
+        $warehouse = $warehousesRep->find($request->get("warehouse"));
+        $status = $statusRep->find($request->get("status"));
+        $foods = $foodsRep->findOneBy(["code"=>$request->get("code")]);
+        $collect = $collectsRep->find($request->get("collect"));
+
+        
+
+        $inventory->setFoods($foods)
+               ->setPersonCreate($person)
+               ->setStatus($status)
+               ->setCollect($collect)
+               ->setWarehouse($warehouse)
+               ->setDateExpire(new \Datetime($request->get("expire")))
+               ->setDateRegister(new \Datetime())
+               ->setCommentary($request->get("commentary"))
+               ->setNumber($request->get("number"))
+               ->setWeight($request->get("weight"));
+       
+
+        $manager->persist($inventory);
+        $manager->flush();
+
+        return $this->redirectToRoute('stock_work');
+    }
+
+    /**
+     * @Route("/post/user/collect/close", name="collect_close")
+     */
+    public function collectClose(Request $request, ObjectManager $manager, StatusRepository $statusRep, CollectRepository $collectsRep )
+    {
+
+        $status = $statusRep->find(15);
+        $collect = $collectsRep->find($request->get("collect"));
+
+        
+
+        $collect->setStatus($status)
+               ->setCommentary($request->get("commentary"));
+        
+
+        $manager->persist($collect);
+        $manager->flush();
+
+        return $this->redirectToRoute('stock_work');
     }
 }

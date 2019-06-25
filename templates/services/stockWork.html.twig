@@ -3,12 +3,106 @@
 {% block body %}
 
     <div class="container-fluid">
+        
         <div class="row justify-content-center">
-
-            <div class="col-lg-8">
                 <h1 id="title-underlined">Enregistrement d'articles</h1>
-                <div id="map"></div>
+                <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">{% trans %}Code barre{% endtrans %}</th>
+                                <th scope="col">{% trans %}Etat{% endtrans %}</th>
+                                <th scope="col">{% trans %}Collecte{% endtrans %}</th>
+                                <th scope="col">{% trans %}Entrepôt{% endtrans %}</th>
+                                <th scope="col">{% trans %}Expire le :{% endtrans %}</th>
+                                <th scope="col">{% trans %}Commentaire{% endtrans %}</th>
+                                <th scope="col">{% trans %}Nombre{% endtrans %}</th>
+                                <th scope="col">{% trans %}Poids/Volume( en G/mL ){% endtrans %}</th>
+                                <th scope="col">{% trans %}Envoyé{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                        <form action="{{path("stock_add", {'id':app.user.getId()})}}">
+                                            <td scope="row"><input type="text" name="code" placeholder="{% trans %}Code barre{% endtrans %}"> </td>
+                                            <td >
+                                                <select class="form-control-sm form-control" name="status">
+                                                    {% for statu in status %}
+                                                    <option value="{{ statu.id }}">{{ statu.status }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td>
+                                                {% if collects is not empty %}
+                                                <select class="form-control-sm form-control" name="collect">
+                                                    {% for collect in collects %}
+                                                        <option value="{{ collect.id }}">{{ collect.personCreate.email }} : {{ collect.id }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                                {% else %}
+                                                {% trans %}Pas de collectes{% endtrans %}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <select class="form-control-sm form-control" name="warehouse">
+                                                    {% for warehouse in warehouses %}
+                                                        <option value="{{ warehouse.id }}">{{ warehouse.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td><input type="date" name="expire"> </td>
+                                            <td><input type="text" name="commentary" placeholder="{% trans %}Commentaire{% endtrans %}"> </td>
+                                            <td><input type="number" name="number" placeholder="{% trans %}Quantité{% endtrans %}"> </td>
+                                            <td><input type="number" name="weight" placeholder="{% trans %}Poids/Volume{% endtrans %}"> </td>
+                                        </td>
+                                        <td>{% if collects is not empty %}
+                                            <button class="btn btn-success" type="submit">{% trans %}Valider{% endtrans %}</button>
+                                            {% else %}
+                                                {% trans %}Pas de collectes{% endtrans %}
+                                            {% endif %}
+                                        </td>
+                                    </form>
+                                </tr>
 
-            </div>
+                        </tbody>
+                    </table>
+                <div class="col-lg-8">
+                        <h1  style="border-bottom: 3px solid #2dc997">{% trans %}Clotûre de collecte{% endtrans %}</h1>
+                        <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>{% trans %}Collecte{% endtrans %}</th>
+                                        <th>{% trans %}Commentaire{% endtrans %}</th>
+                                        <th>{% trans %}Cloture{% endtrans %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table">
+                                    <tr>
+                                        <form action="{{path('collect_close')}}">
+                                            <td scope="row">
+                                                    {% if collects is not empty %}
+                                                <select class="form-control-sm form-control" name="collect">
+                                                    {% for collect in collects %}
+                                                        <option value="{{ collect.id }}">{{ collect.personCreate.email }} : {{ collect.id }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {% else %}
+                                                {% trans %}Pas de collectes{% endtrans %}
+                                            {% endif %}
+                                            </td>
+                                            <td><input type="text" name="commentary" placeholder="{% trans %}Commentaire{% endtrans %}"></td>
+                                        </td>
+                                        <td>
+                                                {% if collects is not empty %}
+                                            <button class="btn btn-success" type="submit">{% trans %}Valider{% endtrans %}</button>
+                                            {% else %}
+                                                {% trans %}Pas de collectes{% endtrans %}
+                                            {% endif %}
+                                        </td>
+                                    </form>
+                                </tr>
+                    </tbody>
+                </table>
+                </div>
         </div>
     </div>
+{% endblock %}
