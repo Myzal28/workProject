@@ -197,12 +197,12 @@ class PostController extends AbstractController
         $inventory = new Inventory;
         $warehouse = $warehousesRep->find($request->get("warehouse"));
         $status = $statusRep->find($request->get("status"));
-        $foods = $foodsRep->findOneBy(["code"=>$request->get("code")]);
+        $food = $foodsRep->findOneBy(["code"=>$request->get("code")]);
         $collect = $collectsRep->find($request->get("collect"));
 
         
 
-        $inventory->setFoods($foods)
+        $inventory->setFoods($food)
                ->setPersonCreate($person)
                ->setStatus($status)
                ->setCollect($collect)
@@ -215,6 +215,8 @@ class PostController extends AbstractController
        
 
         $manager->persist($inventory);
+        $food->setNumber($food->GetNumber()+$request->get("number"));
+        $manager->persist($food);
         $manager->flush();
 
         return $this->redirectToRoute('stock_work');

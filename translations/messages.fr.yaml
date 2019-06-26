@@ -1,15 +1,151 @@
-Email: Email
-Plain password: Mot de passe
-Bienvenue sur: Bienvenue sur
 Accueil: Accueil
-Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage
-Débuter: Débuter
-Quelques mots sur nous: Quelques mots sur nous
-Services: Services
-Équipe: Équipe
-Notre équipe est composée d'étudiants en école d'informatique: Notre équipe est composée d'étudiants en école d'informatique
-Responsable Développement: Responsable Développement
-Responsable Réseau: Responsable Réseau
+A propos: A propos
+Portfolio: Portfolio
 Nous contacter: Nous contacter
 Connexion: Connexion
+Se connecter: Se connecter
+Votre nom: Votre nom
+Votre e-mail: Votre e-mail
+Sujet: Sujet
+Message: Message
+Envoyer: Envoyer
+Bienvenue sur: Bienvenue sur
+Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage
+Débuter: Débuter
 S'enregistrer: S'enregistrer
+Email: Email
+Mot de passe: Mot de passe
+Administrateur du site: Administrateur du site
+Tableau de bord principal: Tableau de bord principal
+Tableau de bord: Tableau de bord
+Gestion: Gestion
+Identifiants invalides.: Identifiants invalides
+Quelques mots sur nous: Quelques mots sur nous
+Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.
+Collectes: Collectes
+Nous organisons des collectes 3 fois par semaine auprès de particuliers et profesionnels pour récolter des denrées et boissons: Nous organisons des collectes 3 fois par semaine auprès de particuliers et profesionnels pour récolter des denrées et boissons
+Redistributions: Redistributions
+Le jour suivant les collectes, nous organisons une redistribution des produits collectés notamment à des organismes de charité: Le jour suivant les collectes, nous organisons une redistribution des produits collectés notamment à des organismes de charité
+Services: Services
+Nous proposons aussi une variété de services adressés aux adhérents: Nous proposons aussi une variété de services adressés aux adhérents
+Faits: Faits
+En chiffres: En chiffres
+Redistributions par an: Redistributions par an
+Adhérents: Adhérents
+Équipe: Équipe
+Notre équipe est composée d'étudiants en école d'informatique: Notre équipe est composée d'étudiants en école d'informatique
+Responsable: Responsable
+Responsable Développement: Responsable Développement
+Responsable Réseau: Responsable Réseau
+Mes Ramassages: Mes Ramassages
+Commentaire: Commentaire
+Date de création: Date de création
+Date de Ramassage: Date de Ramassage
+Status: Status
+Produits: Produits
+Aucune: Aucune
+Commande numéro: Commande numéro
+Code: Code
+Nom: Nom
+Poids: Poids
+Marques: Marques
+Quantités: Quantités
+Fermer: Fermer
+Sauvegarder les changements: Sauvegarder les changements
+Contact: Contact
+Si vous souhaitez nous contacter, laissez-nous un message ici: Si vous souhaitez nous contacter, laissez-nous un message ici
+Mes commandes: Mes commandes
+En attente: En attente
+Voici les opérations en attente !: Voici les opérations en attente !
+Total des personnes: Total des personnes
+Personnes en attente pour inscription: Personnes en attente pour inscription
+Collectes en attente de confirmations: Collectes en attente de confirmations
+Staff complet: Staff complet
+Liste de toute les personnes qui travaillent avec FFW: Liste de toute les personnes qui travaillent avec FFW
+Prénom: Prénom
+Adresse: Adresse
+Pays: Pays
+Admin: Admin
+Attribuer ?: Attribuer ?
+Retirer droit: Retirer droit
+Donner droit: Donner droit
+Clients Particulier / Pro: Clients Particulier / Pro
+Liste de tout les clients FFW: Liste de tout les clients FFW
+Pro ou Par: Pro ou Par
+Particulier: Particulier
+Pro: Pro
+Liste de toute les Collectes: Liste de toute les Collectes
+Autorisé par: Autorisé par
+Créé par: Créé par
+Véhicule utilisé: Véhicule utilisé
+Statut: Statut
+Autoriser ?: Autoriser ?
+Ajouter date ?: Ajouter date ?
+Collectes en attente: Collectes en attente
+Liste de toute collectes en attente: Liste de toute collectes en attente
+Autoriser: Autoriser
+Staff sans service: Staff sans service
+Liste des personnes sans service attribuer: Liste des personnes sans service attribuer
+Validation: Validation
+Valider: Valider
+'Planning des Chauffeurs : semaine n°': 'Planning des Chauffeurs : semaine n°'
+Semaine suivante: Semaine suivante
+Semaine précédente: Semaine précédente
+Semaine courante: Semaine courante
+Lundi: Lundi
+Mardi: Mardi
+Mercredi: Mercredi
+Jeudi: Jeudi
+Vendredi: Vendredi
+Samedi: Samedi
+Dimanche: Dimanche
+Nom événement: Nom événement
+Date: Date
+Créneau: Créneau
+Voici tout les services existants: Voici tout les services existants
+Identifiant: Identifiant
+Description: Description
+Créer nouveau service: Créer nouveau service
+Inscription: Inscription
+Bénévoles en attente de confirmations: Bénévoles en attente de confirmations
+Modèle: Modèle
+Personnes attribuées: Personnes attribuées
+Marque: Marque
+Kilomètrage: Kilomètrage
+Date d'enregistrement: Date d'enregistrement
+Date du dernier checkup: Date du dernier checkup
+Entrer email: Entrer email
+Pas de vérifications: Pas de vérifications
+Ajouter véhicule: Ajouter véhicule
+Entrepôts: Entrepôts
+Voici tout les entrepôt: Voici tout les entrepôt
+Code postal: Code postal
+Créer nouvel entrepôt: Créer nouvel entrepôt
+Accès Interdit: Accès Interdit
+Vous n'avez pas accès à cette ressource: Vous n'avez pas accès à cette ressource
+Retour à l'accueil: Retour à l'accueil
+Page non trouvée: Page non trouvée
+Oops, quelque chose est cassé: Oops, quelque chose est cassé
+Le serveur rencontre actuellement des problèmes: Le serveur rencontre actuellement des problèmes
+La page demandée n'a pas été trouvée: La page demandée n'a pas été trouvée
+Bonjour: Bonjour
+nous sommes heureux de t'avoir ici !: nous sommes heureux de t'avoir ici !
+'Ce message vient de :' : 'Ce message vient de :'
+Adresse email: Adresse email
+Cours Anti-gaspillage: Cours Anti-gaspillage
+Service de partages entre particulier: Service de partages entre particulier
+'Mes annonces :': 'Mes annonces :'
+Contenu: Contenu
+Créé le: Créé le
+Options: Options
+Modifier: Modifier
+Supprimer: Supprimer
+Nouveau: Nouveau
+'Annonces :': 'Annonces :'
+Infos: Infos
+Article numéro: Article numéro
+Personne: Personne
+Retour: Retour
+Nouvel article: Nouvel article
+Annonce bien expliquée: Annonce bien expliquée
+Cela devrait montrer votre profil: Cela devrait montrer votre profil

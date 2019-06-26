@@ -10,6 +10,7 @@ use App\Repository\StatusRepository;
 use Symfony\Component\Finder\Finder;
 use App\Repository\CollectRepository;
 use App\Repository\ArticlesRepository;
+use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -270,12 +271,15 @@ class HomeController extends AbstractController
             $finder->in($this->getParameter('kernel.root_dir').'/collects');
             $finder->name($collect["id"].".json");
             
-            foreach ($finder as $file) {
-                $contents = $file->getContents();
-                $collectA = json_decode($contents, true);
-                // ...
+                foreach ($finder as $file) {
+                    $contents = $file->getContents();
+                    $collectA = json_decode($contents, true);
+                    // ...
+                }
+            if(isset($collectA)){
+                $data[$i]["articles"]=$collectA["articles"];
             }
-            $data[$i]["articles"]=$collectA["articles"];
+            
 
             $i++;
         }
@@ -316,6 +320,23 @@ class HomeController extends AbstractController
             "status" => $status,
             "collects" => $collects,
             "warehouses" => $warehouses
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manage/inventory/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="manage_inventory",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function manageInventory(InventoryRepository $inventoriesRep){
+
+        $inventories = $inventoriesRep->findAll();
+
+        return $this->render('admin/manageInventory.html.twig',[
+            "inventories" => $inventories
         ]);
     }
 

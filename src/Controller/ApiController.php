@@ -93,7 +93,8 @@ class ApiController extends Controller
                         ->setCode($article["code"])
                         ->setQuantity($article["quantity"])
                         ->setBrands($article["brands"])
-                        ->setImageUrl($article["image_url"]);
+                        ->setImageUrl($article["image_url"])
+                        ->setNumber(0);
 
                     $manager->persist($food);
                     $manager->flush();

@@ -63,6 +63,11 @@ class Foods
      */
     private $code;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $number;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
@@ -213,6 +218,18 @@ class Foods
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): self
+    {
+        $this->number = $number;
 
         return $this;
     }
