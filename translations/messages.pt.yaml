@@ -1,9 +1,7 @@
-Accueil: Home
+Accueil: Bem-vindo
 A propos: Sobre
-Services: Serviços
-Portfolio: Portfólio
-Équipe: Equipe
-Nous contacter: Contato
+Portfolio: portfólio
+Nous contacter: Entre em contato conosco
 Connexion: Logar
 Se connecter: Login
 Votre nom: Seu nome
@@ -11,7 +9,144 @@ Votre e-mail: Seu e-mail
 Sujet: Assunto
 Message: Mensagem
 Envoyer: Enviar
-Bienvenue sur: Bem-vindo à lua
+Bienvenue sur: Bem-vindo ao
+Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: Somos uma equipe de estudantes de ciência da computação que lutam contra o desperdício
+Débuter: Começo
 S'enregistrer: Registrar
-Mot de passe: Password
-Plain password: Senha
+Email: E-mail
+Mot de passe: Senha
+Administrateur du site: Administrador do site
+Tableau de bord principal: Painel principal
+Tableau de bord: Painel
+Gestion: Gestão
+Identifiants invalides.: Identificadores inválidos
+Quelques mots sur nous: Algumas palavras sobre nós
+Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: O principal objetivo da nossa empresa é reduzir o desperdício. Oferecemos vários serviços para coletar e redistribuir alimentos e bebidas.
+Collectes: Coleções
+Nous organisons des collectes 3 fois par semaine auprès de particuliers et profesionnels pour récolter des denrées et boissons: Organizamos coletas 3 vezes por semana com particulares e profissionais para coletar alimentos e bebidas
+Redistributions: Redistribuições
+Le jour suivant les collectes, nous organisons une redistribution des produits collectés notamment à des organismes de charité: No dia seguinte às coletas, organizamos uma redistribuição dos produtos coletados, principalmente para organizações de caridade
+Services: Serviços
+Nous proposons aussi une variété de services adressés aux adhérents: Nós também oferecemos uma variedade de serviços aos membros
+Faits: Fatos
+En chiffres: Em figuras
+Redistributions par an: Redistribuições por ano
+Adhérents: Membros
+Équipe: Equipe
+Notre équipe est composée d'étudiants en école d'informatique: Nossa equipe é formada por alunos da escola de informática
+Responsable: Responsável
+Responsable Développement: Gerente de Desenvolvimento
+Responsable Réseau: Gerente de Rede
+Mes Ramassages: Meus captadores
+Commentaire: Comentário
+Date de création: Data de criação
+Date de Ramassage: Data de retirada
+Status: Estado
+Statut: Estado
+Produits: Produtos
+Aucune: Não
+Commande numéro: Número do pedido
+Code: Código
+Nom: Nome
+Poids: Peso
+Marques: Marcas
+Quantités: Quantidades
+Fermer: Feche
+Sauvegarder les changements: Salvar alterações
+Contact: Contato
+Si vous souhaitez nous contacter, laissez-nous un message ici: Se você deseja entrar em contato conosco, deixe-nos uma mensagem aqui
+Mes commandes: Minhas ordens
+En attente: Esperando
+Voici les opérations en attente !: Aqui estão as operações pendentes!
+Total des personnes: Total de pessoas
+Personnes en attente pour inscription: Pessoas à espera de registro
+Collectes en attente de confirmations: Coleções aguardando confirmação
+Staff complet: Equipe completa
+Liste de toute les personnes qui travaillent avec FFW: Lista de todas as pessoas que trabalham com o FFW
+Prénom: Primeiro nome
+Adresse: Endereço
+Pays: País
+Admin: Administrador
+Attribuer ?: Atribuir?
+Retirer droit: Remover certo
+Donner droit: Dar certo
+Clients Particulier / Pro: Clientes individuais / profissionais
+Liste de tout les clients FFW: Lista de todos os clientes da FFW
+Pro ou Par: Profissional ou individual
+Particulier: Particular
+Pro: Profissional
+Liste de toute les Collectes: Lista de todas as coleções
+Autorisé par: Autorizado por
+Créé par: Criado por
+Véhicule utilisé: Veiculo usado
+Autoriser ?: Permitir?
+Ajouter date ?: Adicionar data?
+Collectes en attente: Coleções pendentes
+Liste de toute collectes en attente: Lista de todas as coleções pendentes
+Autoriser: Autorização
+Staff sans service: Pessoal sem serviço
+Liste des personnes sans service attribuer: Lista de pessoas sem atribuição de serviço
+Validation: Validação
+Valider: Validar
+"Planning des Chauffeurs : semaine n°": "Horário do motorista: semana n °"
+Semaine suivante: Semana que vem
+Semaine précédente: Semana anterior
+Semaine courante: Semana atual
+Lundi: Segunda
+Mardi: Terça
+Mercredi: Quarta
+Jeudi: Quinta
+Vendredi: Sexta
+Samedi: Sábado
+Dimanche: Domingo
+Nom événement: Nome do evento
+Date: Data
+Créneau: Horário
+Voici tout les services existants: Aqui estão todos os serviços existentes
+Identifiant: Login
+Description: Descrição
+Créer nouveau service: Crie um novo serviço
+Inscription: Inscrição
+Bénévoles en attente de confirmations: Voluntários aguardando confirmações
+Modèle: Modelo
+Personnes attribuées: Pessoas designadas
+Marque: Marca
+Kilomètrage: Quilometragem
+Date d'enregistrement: Data de registro
+Date du dernier checkup: Data do último check-up
+Entrer email: Digite o email
+Pas de vérifications: Sem cheques
+Ajouter véhicule: Adicionar veículo
+Entrepôts: Armazéns
+Voici tout les entrepôt: Aqui estão todos os armazéns
+Code postal: Código postal
+Créer nouvel entrepôt: Criar novo armazém
+Accès Interdit: Acesso Proibido
+Vous n'avez pas accès à cette ressource: Você não tem acesso a este recurso
+Retour à l'accueil: De volta para casa
+Page non trouvée: Página não encontrada
+Oops, quelque chose est cassé: Oops, algo está quebrado
+Le serveur rencontre actuellement des problèmes: O servidor de computador está enfrentando problemas no momento
+La page demandée n'a pas été trouvée: A página solicitada não foi encontrada
+Bonjour: Olá
+nous sommes heureux de t'avoir ici !: estamos felizes em ter você aqui!
+"Ce message vient de :" : "Esta mensagem vem de:"
+Adresse email: Endereço de e-mail
+Cours Anti-gaspillage: Curso anti-desperdício
+Service de partages entre particulier: Serviço de compartilhamento privado
+"Mes annonces :": "Meus anúncios:"
+Contenu: Conteúdo
+Créé le: Criado em
+Options: Opções
+Modifier: Mudança
+Supprimer: Remover
+Nouveau: Novo
+"Annonces :": "Anúncios:"
+Infos: Informações
+Article numéro: Número do artigo
+Personne: Pessoa
+Retour: Retorno
+Nouvel article: Novo artigo
+Annonce bien expliquée: Anuncio bien explicado
+Cela devrait montrer votre profil: Anúncio bem explicado
+"Créé par :": "Criado por:"

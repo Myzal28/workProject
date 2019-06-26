@@ -69,13 +69,14 @@ Header
                 {% if app.user.getService().getId() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
                 {% elseif app.user.getService().getId() == 2 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("stock_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("stock_work", {'id' : app.user.id})}}">{% trans %}Rangements{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("stock_work") %} class="menu-active" {% endif  %}><a href="{{path("stock_work")}}">{% trans %}Rangements{% endtrans %}</a></li>
                 {% endif %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("user_jobs", {'id' : app.user.id})}}">{% trans %}Mes Missions{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% elseif app.user.getInternal() == 1 %}
-                
-                <li {% if app.request.server.get('REQUEST_URI') == path("internal_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("internal_jobs", {'id' : app.user.id})}}">{% trans %}Mes Services{% endtrans %}</a></li>
+                {% if app.user.getService().getId() == 1 %}
+                    <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
+
+                {% endif %}
                 <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_internal", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_internal", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% else %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes Ramassages{% endtrans %}</a></li>

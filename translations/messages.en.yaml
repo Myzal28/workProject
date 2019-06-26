@@ -1,28 +1,152 @@
 Accueil: Home
-A propos: About us
-Services: Services
+A propos: About
 Portfolio: Portfolio
-Équipe: Team
 Nous contacter: Contact us
-Connexion: Login
+Connexion: Log in
 Se connecter: Sign in
 Votre nom: Your name
-Votre e-mail: Your e-mail
+Votre e-mail: your e-mail
 Sujet: Subject
 Message: Message
 Envoyer: Send
 Bienvenue sur: Welcome to
-Notre équipe est composée d'étudiants en école d'informatique: Our team is composed by students in IT
-Quelques mots sur nous: Few words about us
-Responsable Développement: Developement Head
-Responsable Réseau: Network Head
-Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: Were a student team who fight against food waste
+Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: We are a team of computer science students who fight against waste
 Débuter: Get started
 S'enregistrer: Register
 Email: Email
 Mot de passe: Password
-Administrateur du site: Website Administrator
-Tableau de bord principal: Main Dashboard
+Administrateur du site: Administrator of the site
+Tableau de bord principal: Main dashboard
 Tableau de bord: Dashboard
 Gestion: Management
-Identifiants invalides.: Invalid creadentials
+Identifiants invalides.: Invalid credentials
+Quelques mots sur nous: A few words about us
+Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: The main goal of our company is to reduce waste. We offer several services to collect and redistribute food and beverages.
+Collectes: Collections
+Nous organisons des collectes 3 fois par semaine auprès de particuliers et profesionnels pour récolter des denrées et boissons: We organize collections 3 times a week with private individuals and professionals to collect food and drinks
+Redistributions: Redistributions
+Le jour suivant les collectes, nous organisons une redistribution des produits collectés notamment à des organismes de charité: The day after the collections, we organize a redistribution of the collected products notably to charity organizations
+Services: Services
+Nous proposons aussi une variété de services adressés aux adhérents: We also offer a variety of services to members
+Faits: Facts
+En chiffres: In numbers
+Redistributions par an: Redistributions per year
+Adhérents: Members
+Équipe: Team
+Notre équipe est composée d'étudiants en école d'informatique: Our team consists of students in computer school
+Responsable: Manager
+Responsable Développement: Developement Manager
+Responsable Réseau: Network Manager
+Mes Ramassages: My pickups
+Commentaire: Comment
+Date de création: Creation date
+Date de Ramassage: Date de Ramassage
+Status: Status
+Statut : Status
+Produits: Products
+Aucune: None
+Commande numéro: Command number
+Code: Code
+Nom: Name
+Poids: Weight
+Marques: Brands
+Quantités: Quantities
+Fermer: Close
+Sauvegarder les changements: Save changes
+Contact: Contact
+Si vous souhaitez nous contacter, laissez-nous un message ici: If you wish, leave us a message here
+Mes commandes: My comands
+En attente: Pending
+Voici les opérations en attente !: Here are the pending operations!
+Total des personnes: Total people
+Personnes en attente pour inscription: People waiting to sign up
+Collectes en attente de confirmations: Collections waiting for confirmation
+Staff complet: Full staff
+Liste de toute les personnes qui travaillent avec FFW: List of all people who work with FFW
+Prénom: First name
+Adresse: Address
+Pays: Country
+Admin: Admin
+Attribuer ?: Attribute?
+Retirer droit: Remove right
+Donner droit: Give right
+Clients Particulier / Pro: Individual / Pro customers
+Liste de tout les clients FFW: List of all FFW customers
+Pro ou Par: Professional or Individual
+Particulier: Particular
+Pro: Professional
+Liste de toute les Collectes: List of all the Collections
+Autorisé par: Authorized by
+Créé par: Created by
+Véhicule utilisé: Vehicle used
+Autoriser ?: Allow?
+Ajouter date ?: Add date?
+Collectes en attente: Pending collections
+Liste de toute collectes en attente: List of all pending collections
+Autoriser: Allow
+Staff sans service: Staff without service
+Liste des personnes sans service attribuer: List of people without service assign
+Validation: Validation
+Valider: Validate
+"Planning des Chauffeurs : semaine n°": "Driver's schedule: week n °"
+Semaine suivante: Following week
+Semaine précédente: Previous week
+Semaine courante: Current week
+Lundi: Monday
+Mardi: Tuesday
+Mercredi: Wednesday
+Jeudi: Thursday
+Vendredi: Friday
+Samedi: Satursday
+Dimanche: Sunday
+Nom événement: Event name
+Date: Date
+Créneau: Time slot
+Voici tout les services existants: Here are all the existing services
+Identifiant: Login
+Description: Description
+Créer nouveau service: Create new service
+Inscription: Registration
+Bénévoles en attente de confirmations: Volunteers waiting for confirmations
+Modèle: Model
+Personnes attribuées: Assigned persons
+Marque: Brand
+Kilomètrage: Mileage
+Date d'enregistrement: Registration Date
+Date du dernier checkup: Date of the last checkup
+Entrer email: Enter email
+Pas de vérifications: No checks
+Ajouter véhicule: Add vehicle
+Entrepôts: Warehouses
+Voici tout les entrepôt: Here are all the warehouses
+Code postal: Postal code
+Créer nouvel entrepôt: Create new warehouse
+Accès Interdit: Access forbidden
+Vous n'avez pas accès à cette ressource: You do not have access to this resource
+Retour à l'accueil: Back to Home
+Page non trouvée: Page not found
+Oops, quelque chose est cassé: Oops, something is broken
+Le serveur rencontre actuellement des problèmes: The server is currently experiencing problems
+La page demandée n'a pas été trouvée: The requested page has not been found
+Bonjour: Hello
+nous sommes heureux de t'avoir ici !: we are happy to have you here!
+"Ce message vient de :" : "This message comes from:"
+Adresse email: E-mail adress
+Cours Anti-gaspillage: Anti-waste course
+Service de partages entre particulier: Private sharing service
+"Mes annonces :": "My announcements:"
+Contenu: Contents
+Créé le: Created on
+Options: Options
+Modifier: Edit
+Supprimer: Remove
+Nouveau: New
+"Annonces :": "Announcements"
+Infos: Info
+Article numéro: Article number
+Personne: Person
+Retour: Return
+Nouvel article: New article
+Annonce bien expliquée: 
+Cela devrait montrer votre profil: 
+"Créé par :": "Created by :"

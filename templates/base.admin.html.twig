@@ -185,7 +185,7 @@
                                 <li class="app-sidebar__heading">{% trans %}Services{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_services')}}" {% block manageServices %} {% endblock %}>
-                                        {% trans %}Touts les services{% endtrans %}
+                                        {% trans %}Tous les services{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Gestion Collectes{% endtrans %}</li>
@@ -216,13 +216,19 @@
                                 <li class="app-sidebar__heading">{% trans %}Véhicules{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_vehicules') }}" {% block manageVehicules %} {% endblock %}>
-                                        {% trans %}Touts les Véhicules{% endtrans %}
+                                        {% trans %}Tous les Véhicules{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Entrepôts{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_warehouses') }}" {% block manageWarhouses %} {% endblock %}>
-                                        {% trans %}Touts les Entrepôts{% endtrans %}
+                                        {% trans %}Tous les Entrepôts{% endtrans %}
+                                    </a>
+                                </li>
+                                <li class="app-sidebar__heading">{% trans %}Inventaires{% endtrans %}</li>
+                                <li>
+                                    <a href="{{path('manage_inventory')}}" {% block manageInventory %} {% endblock %}>
+                                        {% trans %}Tous l'Inventaire{% endtrans %}
                                     </a>
                                 </li>
                                 

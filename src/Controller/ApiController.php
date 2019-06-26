@@ -93,7 +93,8 @@ class ApiController extends Controller
                         ->setCode($article["code"])
                         ->setQuantity($article["quantity"])
                         ->setBrands($article["brands"])
-                        ->setImageUrl($article["image_url"]);
+                        ->setImageUrl($article["image_url"])
+                        ->setNumber(0);
 
                     $manager->persist($food);
                     $manager->flush();
@@ -118,6 +119,7 @@ class ApiController extends Controller
                 $fs->dumpFile($this->get('kernel')->getRootDir().'/collects/'.$collect->getId().'.json', $request->getContent());
             }catch(IOException $e) {
                 $response->setContent($e);
+                return $response;
             }
 
             $response->setContent('true');
