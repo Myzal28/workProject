@@ -80,7 +80,7 @@ Créé par: Créé par
 Véhicule utilisé: Véhicule utilisé
 Statut: Statut
 Autoriser ?: Autoriser ?
-Ajouter date ?: Ajouter date ?
+Ajouter date ?: Ajouter date ?.
 Collectes en attente: Collectes en attente
 Liste de toute collectes en attente: Liste de toute collectes en attente
 Autoriser: Autoriser
@@ -88,7 +88,7 @@ Staff sans service: Staff sans service
 Liste des personnes sans service attribuer: Liste des personnes sans service attribuer
 Validation: Validation
 Valider: Valider
-'Planning des Chauffeurs : semaine n°': 'Planning des Chauffeurs : semaine n°'
+"Planning des Chauffeurs : semaine n°": "Planning des Chauffeurs : semaine n°"
 Semaine suivante: Semaine suivante
 Semaine précédente: Semaine précédente
 Semaine courante: Semaine courante
@@ -149,3 +149,4 @@ Retour: Retour
 Nouvel article: Nouvel article
 Annonce bien expliquée: Annonce bien expliquée
 Cela devrait montrer votre profil: Cela devrait montrer votre profil
+"Créé par :": "Created by :"

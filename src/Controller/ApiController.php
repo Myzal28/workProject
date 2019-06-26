@@ -119,6 +119,7 @@ class ApiController extends Controller
                 $fs->dumpFile($this->get('kernel')->getRootDir().'/collects/'.$collect->getId().'.json', $request->getContent());
             }catch(IOException $e) {
                 $response->setContent($e);
+                return $response;
             }
 
             $response->setContent('true');

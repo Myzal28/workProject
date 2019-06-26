@@ -276,9 +276,9 @@ class HomeController extends AbstractController
                     $collectA = json_decode($contents, true);
                     // ...
                 }
-            if(isset($collectA)){
+            
                 $data[$i]["articles"]=$collectA["articles"];
-            }
+            
             
 
             $i++;
