@@ -147,8 +147,12 @@ class PostController extends AbstractController
     public function vehiculeUser(Vehicles $vehicule, Request $request, ObjectManager $manager, PersonsRepository $personsRep, StatusRepository $statusRep)
     {
         if($request->get('user') !== "none"){
-            $vehicule->setPerson($personsRep->findOneBy(["id"=>$request->get('user')]))
+            $person = $personsRep->findOneBy(["id"=>$request->get('user')]);
+            if($person->getVehicles() == NULL){
+                $vehicule->setPerson($person)
                 ->setStatus($statusRep->findOneBy(["id"=>$request->get('status')]));
+            }
+            
         }else{
             $vehicule->setPerson(null)
                 ->setStatus($statusRep->findOneBy(["id"=>$request->get('status')]));

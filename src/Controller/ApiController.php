@@ -160,6 +160,7 @@ class ApiController extends Controller
      */
     public function apiGoogle()
     {
+        
         return $this->render('tests/googleapi.html.twig');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Persons;
+use App\Entity\Delivery;
+use App\Form\DeliveryType;
 use Psr\Log\LoggerInterface;
 use App\Repository\StatusRepository;
 use Symfony\Component\Finder\Finder;
@@ -35,6 +37,26 @@ class HomeController extends AbstractController
     public function index()
     {
         return $this->render('home/index.html.twig');
+    }
+
+    /**
+     * @Route("/delivery/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="delivery",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function delivery(){
+
+        $delivery = new Delivery();
+
+        $form = $this->createForm(DeliveryType::class, $delivery); 
+
+
+        return $this->render('home/delivery.html.twig',[
+            "form" => $form->createView()
+        ]);
     }
 
     /**
@@ -255,15 +277,46 @@ class HomeController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function driversWork(Persons $person, CollectRepository $collectsRep){
+    public function driversWork(Persons $person, CollectRepository $collectsRep, StatusRepository $statusRep){
 
+        $from = new \DateTime(date("Y-m-d")." 00:00:00");
+        $to = new \DateTime(date("Y-m-d")." 23:59:59");
+        $status = $statusRep->find(5);
 
         foreach($person->getVehicles() as $vehicule){
-            $collects = $collectsRep->findBy(["vehicle"=>$vehicule]);
+            $qb = $collectsRep->createQueryBuilder("e");
+            $qb->andWhere('e.dateCollect BETWEEN :from AND :to')
+            ->andWhere('e.vehicle = :vehicle')
+            ->andWhere('e.status != :status')
+            ->setParameter('from', $from )
+            ->setParameter('status', $status )
+            ->setParameter('vehicle', $vehicule )
+            ->setParameter('to', $to);
+
+            $collects = $qb->getQuery()->getResult();
         }
+
 
         $serializer = new Serializer(array(new ObjectNormalizer()));
         $data = $serializer->normalize($collects, null, array('attributes' => array('id')));
+
+        $collectsTemp = $serializer->normalize($collects, null, array('attributes' => array('personCheck'=>array('address','zipcode','country','firstname','lastname') )));
+        
+        
+        if($collectsTemp != NULL){
+            $i = 0;
+            foreach($collectsTemp as $collect){
+                $collectsJson[$i]['location'] = $collect["personCheck"]['address'].', '.$collect["personCheck"]['zipcode'].', '.$collect["personCheck"]['country'];
+                $collectsJson[$i]['fullName'] = $collect["personCheck"]['firstname'].', '.$collect["personCheck"]['lastname'];
+                $i++;
+            }
+    
+            $collectsJson = json_encode($collectsJson);
+        }else{
+            $collectsJson = NULL;
+        }
+        
+        
         
         $i = 0;
         foreach($data as $collect){
@@ -279,12 +332,13 @@ class HomeController extends AbstractController
             
                 $data[$i]["articles"]=$collectA["articles"];
             
-            
-
             $i++;
         }
+
+    
         
         return $this->render('services/driversWork.html.twig',[
+            "jsonTab" => $collectsJson,
             "collects" => $collects,
             "data"=> $data
         ]);
@@ -339,5 +393,4 @@ class HomeController extends AbstractController
             "inventories" => $inventories
         ]);
     }
-
 }
