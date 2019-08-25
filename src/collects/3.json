@@ -1,0 +1,22 @@
+{
+"email":"maxime.lalo.pro@gmail.com",
+"password":"testtest",
+"articles":[
+{
+"code":"3534290030081",
+"product_name":"Eau minérale naturelle Chevreuse",
+"ingredients_text":"Eau minérale naturelle",
+"quantity":"50cl",
+"brands":"Chevreuse",
+"image_url":"https://static.openfoodfacts.org/images/products/353/429/003/0081/front_en.3.400.jpg",
+"quantity_nbr":"5"
+},
+{
+"code":"3268840001008",
+"product_name":"Cristaline",
+"ingredients_text":"Eau de source",
+"quantity":"50 cl",
+"brands":"Cristaline",
+"image_url":"https://static.openfoodfacts.org/images/products/326/884/000/1008/front_fr.258.400.jpg",
+"quantity_nbr":"10"
+}]}

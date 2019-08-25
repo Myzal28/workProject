@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Persons;
+use App\Entity\Warehouses;
+
 use Psr\Log\LoggerInterface;
 use App\Repository\StatusRepository;
 use Symfony\Component\Finder\Finder;
@@ -84,7 +86,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/email/send/{email}/{name}",name="email_send")
+     * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {

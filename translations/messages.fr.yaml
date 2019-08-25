@@ -81,7 +81,6 @@ Véhicule utilisé: Véhicule utilisé
 Statut: Statut
 Autoriser ?: Autoriser ?
 Ajouter date ?: Ajouter date ?.
-Collectes en attente: Collectes en attente
 Liste de toute collectes en attente: Liste de toute collectes en attente
 Autoriser: Autoriser
 Staff sans service: Staff sans service
@@ -150,3 +149,31 @@ Nouvel article: Nouvel article
 Annonce bien expliquée: Annonce bien expliquée
 Cela devrait montrer votre profil: Cela devrait montrer votre profil
 "Créé par :": "Created by :"
+Calendrier: Calendrier
+Toutes les collectes: Toutes les collectes
+Collectes en attente: Collectes en attente
+Collectes de la journée: Collectes de la journée
+Staff sans ervice: Staff sans ervice
+Tous les véhicules: Tous les véhicules
+Tous les entrpôts: Tous les entrpôts
+Gestion staff: Gestion staff
+Gestion collectes: Gestion collectes
+Véhicules: Véhicules
+Inventaires: Inventaires
+Lastname: Nom de famille
+Firstname: Prénom
+Birthday: Anniversaire
+Password: Mot de passe
+Confirm password: Confirmer le mot de passe
+Phone nbr: Téléphone
+Country: Pays
+Zipcode: Code postal
+Address: Adresse
+Company: Entreprise
+Type choice: Type
+Intern: Employé
+Volunteer: Bénévole
+Client Pro: Client professionnel
+Client Par: Client particulier
+City: Ville
+Les mots de passe ne correspondent pas: Les mots de passe ne correspondent pas
