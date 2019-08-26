@@ -18,15 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Omines\DataTablesBundle\Adapter\ArrayAdapter;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Omines\DataTablesBundle\Controller\DataTablesTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ApiController extends AbstractController
 {
     /**
      * @Route("/api/users/collect/add", name="add_articles")
+     * @param PersonsRepository $personsRep
+     * @param Request $request
+     * @return Response
      */
     public function articlesAdd(PersonsRepository $personsRep, Request $request)
     {   
@@ -46,6 +48,10 @@ class ApiController extends AbstractController
 
     /**
      * @Route("api/user/connect", name="user_connect")
+     * @param Request $request
+     * @param PersonsRepository $personsRep
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
      */
     public function apiConexion(Request $request, PersonsRepository $personsRep, UserPasswordEncoderInterface $encoder)
     {
@@ -70,6 +76,13 @@ class ApiController extends AbstractController
 
     /**
      * @Route("/api/client/collect/create", name="create_collect")
+     * @param Request $request
+     * @param PersonsRepository $personsRep
+     * @param ObjectManager $manager
+     * @param FoodsRepository $foodsRep
+     * @param StatusRepository $statusRep
+     * @return Response
+     * @throws \Exception
      */
     public function collectCreate(Request $request, PersonsRepository $personsRep, ObjectManager $manager, FoodsRepository $foodsRep, StatusRepository $statusRep)
     {   
