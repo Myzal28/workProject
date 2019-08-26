@@ -32,7 +32,11 @@
 </head>
 
 <body>
-
+{% if debug is defined %}
+    <pre>
+        {{ dump(debug) }}
+    </pre>
+{% endif %}
 {% block firstPage %}
 
 {% endblock %}
@@ -66,14 +70,14 @@ Header
                     <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %} class="menu-active" {% endif  %} ><a href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_admin", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% elseif app.user.getVolunteer() == 1 %}
-                {% if app.user.getService().getId() == 1 %}
+                {% if app.user.getService().getId() is defined and app.user.getService().getId() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
-                {% elseif app.user.getService().getId() == 2 %}
+                {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 2 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("stock_work") %} class="menu-active" {% endif  %}><a href="{{path("stock_work")}}">{% trans %}Rangements{% endtrans %}</a></li>
                 {% endif %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% elseif app.user.getInternal() == 1 %}
-                {% if app.user.getService().getId() == 1 %}
+                {% if app.user.getService().getId() is defined and app.user.getService().getId() == 1 %}
                     <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
 
                 {% endif %}
@@ -126,6 +130,7 @@ Header
 </header><!-- #header -->
 
 <main id="main">
+
         {% block body %}
         {% endblock %}
 </main>
@@ -148,11 +153,21 @@ Header
 <script src="{{ asset('lib/touchSwipe/jquery.touchSwipe.min.js') }}"></script>
 <!-- Contact Form JavaScript File -->
 <script src="{{ asset('contactform/contactform.js') }}"></script>
-
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <!-- Template Main Javascript File -->
 <script src="{{ asset('js/main.js') }}"></script>
 
 {% block javascript %}
 {% endblock %}
+{% if quickAlert is defined %}
+    <script type="text/javascript">
+        Swal.fire({
+            'title': '{{ quickAlert.title }}',
+            'html': '{{ quickAlert.text }}',
+            'type': '{{ quickAlert.icon }}'
+        });
+    </script>
+{% endif %}
 </body>
 </html>

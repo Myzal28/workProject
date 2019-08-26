@@ -84,7 +84,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/email/send/{email}/{name}",name="email_send")
+     * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {

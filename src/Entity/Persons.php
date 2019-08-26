@@ -42,7 +42,7 @@ class Persons implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\EqualTo(propertyPath="confirm_password", message="Passwords Don't match !")
+     * @Assert\EqualTo(propertyPath="confirm_password", message="Les mots de passe ne correspondent pas")
      */
     private $password;
 
@@ -75,6 +75,11 @@ class Persons implements UserInterface
      * @ORM\Column(type="string", length=60)
      */
     private $zipcode;
+
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $city;
 
     /**
      * @ORM\Column(type="datetime")
@@ -232,6 +237,18 @@ class Persons implements UserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
