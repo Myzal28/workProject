@@ -59,7 +59,7 @@ class Calendar
     private $year;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\services", inversedBy="calendars")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Services", inversedBy="calendars")
      */
     private $service;
 
@@ -183,12 +183,12 @@ class Calendar
         return $this;
     }
 
-    public function getService(): ?services
+    public function getService(): ?Services
     {
         return $this->service;
     }
 
-    public function setService(?services $service): self
+    public function setService(?Services $service): self
     {
         $this->service = $service;
 

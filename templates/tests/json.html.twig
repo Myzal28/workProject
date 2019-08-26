@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>test</title>
-</head>
-<body>
-    {{ dump(table) }}
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
 
-</body>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+    <script>
+
+      $(document).ready(function() {
+      var calendar = $('#calendar').fullCalendar({
+        editable:true,
+        header:{
+          left:'prev,next today',
+          center:'title',
+        },
+        firstDay:1,
+        events: "{{path('calendar_load')}}",
+        editable: true,
+        eventDrop: function(event, delta) {
+          start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+          end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+          $.ajax({
+            url: "{{path('calendar_load')}}",
+            data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,
+            type: "POST",
+            success: function(json) {
+              alert("OK");
+            }
+          });
+        },
+        eventResize: function(event) {
+          start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+          end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+            $.ajax({
+              url: 'http://localhost/fullcalendar/update_events.php',
+              data: 'title='+ event.title+'&start='+ start +'&end='+ end +'&id='+ event.id ,
+              type: "POST",
+              success: function(json) {
+                alert("OK");
+              }
+            });
+ 
+        },
+        eventLimit: true,
+
+        eventClick:function(event,jsEvent,view){
+          //    document.location.href="eventDetails.php?id="+event.id;
+          console.log(event.title);
+        }
+
+    });
+
+  });
+
+    </script>
+  </head>
+  <body>
+
+    <div id='calendar'></div>
+
+  </body>
 </html>

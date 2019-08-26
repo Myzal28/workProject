@@ -64,7 +64,7 @@ Header
                     <li {% if app.request.server.get('REQUEST_URI') == path('security_signup') %} class="menu-active" {% endif  %}><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path('delivery') %} class="menu-active" {% endif  %}><a href="{{path("delivery")}}">{% trans %}Donations{% endtrans %}</a></li>
                 {% elseif app.user.getAdminSite() == 1 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("admin_manage") %} class="menu-active" {% endif  %} ><a href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
+                    <li {% if app.request.server.get('REQUEST_URI') == path("manage_staff") %} class="menu-active" {% endif  %} ><a href="{{path("manage_staff")}}">{% trans %}Gestion{% endtrans %}</a></li>
                     <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_admin", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% elseif app.user.getVolunteer() == 1 %}
                 {% if app.user.getService().getId() == 1 %}

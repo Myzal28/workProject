@@ -9,7 +9,9 @@ use App\Repository\FoodsRepository;
 use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
+use App\Repository\CalendarRepository;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Omines\DataTablesBundle\Column\TextColumn;
@@ -19,9 +21,14 @@ use Omines\DataTablesBundle\Adapter\ArrayAdapter;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Omines\DataTablesBundle\Controller\DataTablesTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+
+
+
 
 class ApiController extends Controller
 {
@@ -30,8 +37,7 @@ class ApiController extends Controller
      */
     public function articlesAdd(PersonsRepository $personsRep, Request $request)
     {   
-        
-        
+   
         $data = json_decode($request->getContent(), true);
         
         //$response->setStatusCode(200);
@@ -131,6 +137,34 @@ class ApiController extends Controller
         $response->setStatusCode(403);
         return $response;
     }
+
+    /**
+     * @Route("/calendar/load", name="calendar_load")
+     */
+    public function calendarLoad(CalendarRepository $calendarRep){
+
+        $response = new Response();
+
+        $events = $calendarRep->findAll();
+        $tab = array();
+        $serializer = new Serializer(array(new ObjectNormalizer()));
+        $eventsTab = $serializer->normalize($events, null, array('attributes' => array('id', 'dateStart', 'dateEnd', 'name')));
+        
+        foreach($eventsTab as $event){
+
+            $eventObj = $calendarRep->find($event["id"]);
+            $tab[]= array(
+                "id" => $event["id"],
+                "start" => $eventObj->getDateStart()->format('Y-m-d H:i:s'),
+                "end" => $eventObj->getDateEnd()->format('Y-m-d H:i:s'),
+                "title" => $event["name"]
+            );
+        }
+
+        $response->setContent(json_encode($tab));
+        $response->setStatusCode(200);
+        return $response;
+    }
     
     /**
      * @Route("/test")
@@ -155,12 +189,23 @@ class ApiController extends Controller
         return $this->render('tests/list.html.twig', ['datatable' => $table]);
     }
 
+    
+
     /**
      * @Route("/test/google", name="api")
      */
     public function apiGoogle()
     {
-        
         return $this->render('tests/googleapi.html.twig');
     }
+
+    /**
+     * @Route("/test/calendar", name="calendar")
+     */
+    public function apiCalendar()
+    {
+        return $this->render('tests/calendar.html.twig');
+    }
+
+
 }
