@@ -42,7 +42,7 @@ class Persons implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\EqualTo(propertyPath="confirm_password", message="Passwords Don't match !")
+     * @Assert\EqualTo(propertyPath="confirm_password", message="Les mots de passe ne correspondent pas")
      */
     private $password;
 
@@ -75,6 +75,11 @@ class Persons implements UserInterface
      * @ORM\Column(type="string", length=60)
      */
     private $zipcode;
+
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $city;
 
     /**
      * @ORM\Column(type="datetime")
@@ -147,9 +152,9 @@ class Persons implements UserInterface
     private $calendars;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Articles", mappedBy="personCreate", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\IndividualOffer", mappedBy="personCreate", orphanRemoval=true)
      */
-    private $articles;
+    private $individualOffer;
 
     /**
      * @ORM\Column(type="integer")
@@ -168,7 +173,7 @@ class Persons implements UserInterface
         $this->collectsCreate = new ArrayCollection();
         $this->inventories = new ArrayCollection();
         $this->calendars = new ArrayCollection();
-        $this->articles = new ArrayCollection();
+        $this->individualOffer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +237,18 @@ class Persons implements UserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
@@ -550,30 +567,30 @@ class Persons implements UserInterface
     }
 
     /**
-     * @return Collection|Articles[]
+     * @return Collection|IndividualOffer[]
      */
-    public function getArticles(): Collection
+    public function getIndividualOffers(): Collection
     {
-        return $this->articles;
+        return $this->individualOffer;
     }
 
-    public function addArticle(Articles $article): self
+    public function addArticle(IndividualOffer $individualOffer): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->setPersonCreate($this);
+        if (!$this->individualOffer->contains($individualOffer)) {
+            $this->individualOffer[] = $individualOffer;
+            $individualOffer->setPersonCreate($this);
         }
 
         return $this;
     }
 
-    public function removeArticle(Articles $article): self
+    public function removeIndividualOffers(IndividualOffer $individualOffers): self
     {
-        if ($this->articles->contains($article)) {
-            $this->articles->removeElement($article);
+        if ($this->individualOffer->contains($individualOffers)) {
+            $this->individualOffer->removeElement($individualOffers);
             // set the owning side to null (unless already changed)
-            if ($article->getPersonCreate() === $this) {
-                $article->setPersonCreate(null);
+            if ($individualOffers->getPersonCreate() === $this) {
+                $individualOffers->setPersonCreate(null);
             }
         }
 

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Signup;
 use App\Entity\Collect;
 use App\Entity\Persons;
-use App\Entity\Articles;
+use App\Entity\IndividualOffer;
 use App\Entity\Calendar;
 use App\Entity\Services;
 use App\Entity\Vehicles;
@@ -50,7 +50,7 @@ class PostController extends AbstractController
     /**
      * @Route("/post/client/article/modify/{id}", name="article_mod")
      */
-    public function articleMod(Articles $article, Request $request, ObjectManager $manager)
+    public function articleMod(IndividualOffer $article, Request $request, ObjectManager $manager)
     {
        $person = $article->getPersonCreate();
        $article->setName($request->get('name'))
@@ -62,29 +62,6 @@ class PostController extends AbstractController
         return $this->redirectToRoute('share_jobs', ['id' => $person->getId()]);
     }
 
-    /**
-     * @Route("/post/client/article/new/{id}", name="article_new")
-     */
-    public function articleNew(Services $service, Request $request, ObjectManager $manager, ServicesRepository $servicesRep)
-    {
-       
-       $person = $this->getUser();
-
-       $article = new Articles;
-
-       $article->setName($request->get('name'))
-               ->setDescription($request->get("description"))
-               ->setContent($request->get("content"))
-               ->setPersonCreate($person)
-               ->setServiceType($service)
-               ->setDateCreate(new \Datetime);
-        $manager->persist($article);
-        $manager->flush();
-        if($service->getId()== 6){
-            return $this->redirectToRoute('share_jobs', ['id' => $person->getId()]);
-        }
-        return $this->redirectToRoute('waste_jobs', ['id' => $person->getId()]);
-    }
 
     /**
      * @Route("/post/user/signup/{id}", name="user_signup")

@@ -27,6 +27,7 @@ class SignupPersonType extends AbstractType
             ->add('email')
             ->add('country')
             ->add('zipcode')
+            ->add('city')
             ->add('address')
             ->add('company')
             ->add('type_choice', ChoiceType::class, [

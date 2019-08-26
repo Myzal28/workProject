@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{%  block title %}
+    {{ parent() }} {% trans %}Gardiennage{% endtrans %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+                <h1 id="title-underlined">{% trans %}Gardiennage{% endtrans %}</h1>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

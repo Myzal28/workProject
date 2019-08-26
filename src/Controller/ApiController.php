@@ -23,7 +23,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class ApiController extends Controller
+class ApiController extends AbstractController
 {
     /**
      * @Route("/api/users/collect/add", name="add_articles")

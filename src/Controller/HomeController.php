@@ -5,25 +5,23 @@ namespace App\Controller;
 
 
 use App\Entity\Persons;
-use Psr\Log\LoggerInterface;
+
 use App\Repository\StatusRepository;
-use Symfony\Component\Finder\Finder;
 use App\Repository\CollectRepository;
 use App\Repository\ArticlesRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
+
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 
 class HomeController extends AbstractController
 {
-
-    
     /**
      * @Route("/{_locale}",
      *     defaults={"_locale"="fr"},
@@ -44,47 +42,26 @@ class HomeController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function contact(){
         return $this->render('home/contact.html.twig');
     }
 
     /**
-     * @Route("/user/view/{id}/{_locale}",
+     * @Route("/profile/{_locale}",
      *     defaults={"_locale"="fr"},
-     *     name="view_profile_user",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     * @Route("/admin/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_admin",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     * @Route("/client/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_client",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     * @Route("/internal/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_internal",
+     *     name="view_profile",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
      */
-    public function viewPerson(Persons $person){
-
-        return $this->render('view/profile.html.twig', [
-            'person' => $person
-        ]);
+    public function viewProfile(){
+        return $this->render('view/profile.html.twig');
     }
 
     /**
-     * @Route("/email/send/{email}/{name}",name="email_send")
+     * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {
@@ -166,7 +143,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/internal/jobs/{id}/{_locale}",
+     * @Route("/internal/jobs/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="internal_jobs",
      *     requirements={
@@ -175,76 +152,6 @@ class HomeController extends AbstractController
      */
     public function internalJobs(Persons $person){
         return $this->render('home/internalJobs.html.twig');
-    }
-
-    /**
-     * @Route("/client/share/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="share_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function shareJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/shareJobs.html.twig',[
-            "articles" => $articles,
-            "type" => 6
-        ]);
-    }
-
-    /**
-     * @Route("/client/waste/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="waste_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function wasteJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>3]);
-
-        return $this->render('services/wasteJobs.html.twig',[
-            "articles" => $articles,
-            "type" => 3
-        ]);
-    }
-    
-    /**
-     * @Route("/client/course/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="course_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function courseJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/courseJobs.html.twig',[
-            "articles" => $articles
-        ]);
-    }
-
-    /**
-     * @Route("/client/guard/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="guard_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function guardJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/courseJobs.html.twig',[
-            "articles" => $articles
-        ]);
     }
 
     /**
