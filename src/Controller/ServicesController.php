@@ -93,35 +93,44 @@ class ServicesController extends AbstractController
      *         "_locale"="en|fr|pt|it"
      * })
      * @param Request $request
+     * @return Response
      * @throws Exception
+     *
+     * Micro API REST permettant de gérer les annonces PàP
      */
     public function apiIndividualOffers(Request $request)
     {
+        // On récupère le repo
+        $repo = $this->getDoctrine()->getRepository(IndividualOffer::class);
+
+        // On crée une réponse de base
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+
+        // On récupère le manager de la BDD
         $manager = $this->getDoctrine()->getManager();
-        // Micro API REST permettant de gérer les annonces PàP
+
+        // En fonction du type de requête
         switch ($request->getMethod()){
             // Création
             case 'POST':
+                // On récupère le user en cours
                 $person = $this->getUser();
 
+                // On crée une nouvelle annonce qu'on alimente avec les champs du formulaire
                 $offer = new IndividualOffer();
-
                 $offer->setName($request->get('name'))
                     ->setPersonCreate($person)
                     ->setDescription($request->get('description'))
                     ->setDateCreate(new \Datetime)
                     ->setContact($request->get('contact'));
 
+                // On persiste l'entité et on envoie ça en BDD
                 $manager->persist($offer);
                 $manager->flush();
-                return $offer;
-                break;
-            // Modification
-            case 'PUT':
-                $repo = $this->getDoctrine()->getRepository(IndividualOffer::class);
-                $offer = $repo->find($request->get('offer'));
-                $manager->flush();
-                return $offer;
+
+                // On renvoie vers l'affichage des annonces
+                return $this->redirectToRoute('individual_offers');
                 break;
             // Suppression
             case 'DELETE':
@@ -129,11 +138,16 @@ class ServicesController extends AbstractController
                 $offer = $repo->find($request->get('offer'));
                 $manager->remove($offer);
                 $manager->flush();
+                $response->setStatusCode(Response::HTTP_OK);
+                $response->setContent(json_encode(['status' => "deleted"]));
                 break;
-            // Pas besoin de GET donc GET et le reste en default
+            // GET par défaut
             default:
+                $repo = $this->getDoctrine()->getRepository(IndividualOffer::class);
+                $offer = $repo->find($request->get('offer'));
+                echo json_encode($offer);
                 break;
         }
-
+        return $response;
     }
 }

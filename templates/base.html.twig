@@ -164,13 +164,13 @@ Header
 <!-- Bibliothèque et options de base pour l'éditeur de textarea WYSIWYG -->
 <script type="text/javascript" src="{{ asset('lib/TinyMCE/tinymce.min.js') }}"></script>
 <script type="text/javascript">
-    var defaultToolbar = "undo redo | bold underline italic | forecolor backcolor fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link | table | image emoticons";
+    var defaultToolbar = "undo redo | bold underline italic | forecolor backcolor fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link | table | emoticons";
     tinymce.init({
         menubar:false,
         statusbar: true,
         selector: 'textarea',
         language: 'fr_FR',
-        plugins: 'link table textcolor image autolink wordcount contextmenu emoticons imagetools lists',
+        plugins: 'link table textcolor image autolink wordcount contextmenu emoticons lists',
         toolbar: defaultToolbar,
         relative_urls: false,
         height: 300,

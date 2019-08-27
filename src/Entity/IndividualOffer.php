@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IndividualOfferRepository")
  */
-class IndividualOffer
+class IndividualOffer implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -17,7 +17,7 @@ class IndividualOffer
      */
     private $name;
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text")
      */
     private $description;
     /**
@@ -86,5 +86,17 @@ class IndividualOffer
         $this->contact = $contact;
 
         return $this;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }

@@ -10,11 +10,14 @@ use Symfony\Component\PropertyInfo\DependencyInjection\PropertyInfoPass;
 /**
  * @method IndividualOffer|null find($id, $lockMode = null, $lockVersion = null)
  * @method IndividualOffer|null findOneBy(array $criteria, array $orderBy = null)
- * @method IndividualOffer[]    findAll()
  * @method IndividualOffer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class IndividualOfferRepository extends ServiceEntityRepository
 {
+    public function findAll()
+    {
+        return $this->findBy(array(), array('dateCreate' => 'DESC'));
+    }
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, IndividualOffer::class);
