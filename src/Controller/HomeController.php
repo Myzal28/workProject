@@ -14,6 +14,7 @@ use App\Repository\WarehousesRepository;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -94,23 +95,25 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/client/jobs/{id}/{_locale}",
+     * @Route("/client/jobs/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="client_jobs",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @param CollectRepository $collectsRep
+     * @return Response
+     * @throws ExceptionInterface
      */
-    public function clientsJobs(Persons $person, CollectRepository $collectsRep){
-
+    public function clientsJobs(CollectRepository $collectsRep){
+        $person = $this->getUser();
         $allCollects = $collectsRep->findBy(["personCreate"=>$person]);
 
         $serializer = new Serializer(array(new ObjectNormalizer()));
         $data = $serializer->normalize($allCollects, null, array('attributes' => 
           array('id','personCheck'=>array('email'),'personCreate'=>array('email'),'vehicle'=>array("id"),'status'=>array("id","status"),'commentary','dateRegister','dateCollect')));
         
-        $i = 0;
-        foreach($data as $collect){
+        foreach($data as $i => $collect){
             $finder = new Finder();
             $finder->in($this->getParameter('kernel.root_dir').'/collects');
             $finder->name($collect["id"].".json");
@@ -118,11 +121,8 @@ class HomeController extends AbstractController
             foreach ($finder as $file) {
                 $contents = $file->getContents();
                 $collectA = json_decode($contents, true);
-                // ...
             }
             $data[$i]["articles"]=$collectA["articles"];
-
-            $i++;
         }
         
         return $this->render('home/clientsJobs.html.twig',[

@@ -134,7 +134,6 @@ class ServicesController extends AbstractController
                 break;
             // Suppression
             case 'DELETE':
-                $repo = $this->getDoctrine()->getRepository(IndividualOffer::class);
                 $offer = $repo->find($request->get('offer'));
                 $manager->remove($offer);
                 $manager->flush();
