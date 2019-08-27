@@ -196,7 +196,6 @@ Header
 {% block customJs %}
 {% endblock %}
 {% if quickAlert is defined %}
-    {{ dump(quickAlert) }}
     <script type="text/javascript">
         Swal.fire({
             'title': '{{ quickAlert.title }}',
