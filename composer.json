@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "symfony/debug-pack": "*",
+        "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*"
     },
