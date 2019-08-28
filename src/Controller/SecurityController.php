@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Signup;
 use App\Entity\Persons;
-use App\Entity\Warehouses;
 
 use App\Form\SignupPersonType;
-use App\Service\Curl;
+
+use App\Service\Geolocation;
 
 use App\Repository\StatusRepository;
 use Datetime;
@@ -32,52 +32,18 @@ class SecurityController extends AbstractController
      * @return RedirectResponse|Response
      * @throws Exception
      */
-    public function signup(Request $request, Curl $curl, UserPasswordEncoderInterface $encoder,StatusRepository $status)
+    public function signup(Request $request, UserPasswordEncoderInterface $encoder,StatusRepository $status)
     {
         $person = new Persons();
 
         $form = $this->createForm(SignupPersonType::class, $person);
-
-
-
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
 
-            // On formatte l'adresse de la personne pour pouvoir l'utiliser après dans l'API
-            $formattedAddress = str_replace(" ","+",$person->getAddress());
-            $formattedAddress .= "+".str_replace(" ", "+",$person->getCity());
-            $formattedAddress .= "+".str_replace(" ","+",$person->getZipcode());
-
-            // L'URL avec l'API Key google ressemblera à ça, on l'envoie ensuite à cURL
-            $urlWithAddress = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $formattedAddress . "&key=AIzaSyDE9fld3JmAgIk2oZdBeiIf3lFxPIkCTko";
-
-            // On vient chercher les coordonnées de la personne en cURL sur l'API Google Maps
-            $geoData = $curl->getJson($urlWithAddress);
-
-
-            $closeEnough = false;
-            if (isset($geoData['status'])){
-                switch ($geoData['status']){
-                    case "OK":
-                        $lat = $geoData['results'][0]['geometry']['location']['lat'];
-                        $lng = $geoData['results'][0]['geometry']['location']['lng'];
-
-                        $warehouses = $this->getDoctrine()->getRepository(Warehouses::class)->findAll();
-                        foreach ($warehouses as $warehouse){
-                            $urlTravelTime = "https://maps.googleapis.com/maps/api/distancematrix/json?&origins=".$lat.",".$lng."&destinations=".$warehouse->getLatitude().",".$warehouse->getLongitude()."&key=AIzaSyDE9fld3JmAgIk2oZdBeiIf3lFxPIkCTko";
-                            $travelTime = $curl->getJson($urlTravelTime);
-                            $total[] = $travelTime;
-                            if ($travelTime['rows'][0]['elements'][0]['distance']['value'] < 3600){
-                                // si a moins d'une heure de route d'un de nos entrepôts alors on l'accepte
-                                $closeEnough = true;
-                            }
-                        }
-                        break;
-                    default:
-                        $closeEnough = false;
-                        break;
-                }
-            }
+            // Via le service de geolocalisation on regarde si la personne est assez proche d'un de nos entrepôts
+            $geoService = new Geolocation();
+            $closeEnough = $geoService->closeEnough($person->getAddress(),$person->getCity(),$person->getZipcode(),$this->getDoctrine());
 
             if ($closeEnough){
                 $hash = $encoder->encodePassword($person, $person->getPassword());
@@ -121,14 +87,10 @@ class SecurityController extends AbstractController
                 }
 
                 // On envoie toutes nos modifications en base de données
-                /*
-                $manager->persist($person);
-                $manager->flush();
-                */
-                //return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
-                return $this->render('security/registration.html.twig', [
-                    'form' => $form->createView(),
-                ]);
+                $this->getDoctrine()->getManager()->persist($person);
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
             }else{
                 $quickAlert['icon'] = "error";
                 $quickAlert['title'] = "Erreur";
