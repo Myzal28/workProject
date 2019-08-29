@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Delivery;
 use App\Entity\Persons;
 
+use App\Entity\Warehouses;
+use App\Form\DeliveryType;
 use App\Form\ModifyUserType;
 use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
@@ -102,6 +105,10 @@ class HomeController extends AbstractController
             $geoService = new Geolocation();
             $closeEnough = $geoService->closeEnough($data['address'],$data['city'],$data['zipCode'],$this->getDoctrine());
             if ($closeEnough){
+
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+
+                $user->setWarehouse($closestWarehouse);
                 $user->setLastName($data['lastname']);
                 $user->setFirstName($data['firstname']);
                 $user->setBirthday($data['birthday']);

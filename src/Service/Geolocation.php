@@ -30,10 +30,16 @@ class Geolocation
                     $lng = $geoData['results'][0]['geometry']['location']['lng'];
 
                     $warehouses = $doctrine->getRepository(Warehouses::class)->findAll();
+                    $travelTimeToWarehouses = [];
                     foreach ($warehouses as $warehouse){
                         $urlTravelTime = "https://maps.googleapis.com/maps/api/distancematrix/json?&origins=".$lat.",".$lng."&destinations=".$warehouse->getLatitude().",".$warehouse->getLongitude()."&key=AIzaSyDE9fld3JmAgIk2oZdBeiIf3lFxPIkCTko";
                         $travelTime = $curl->getJson($urlTravelTime);
-                        $total[] = $travelTime;
+
+                        $travelTimeToWarehouses[] = [
+                            'id' => $warehouse->getId(),
+                            'travelTime' => $travelTime['rows'][0]['elements'][0]['distance']['value']
+                        ];
+
                         if ($travelTime['rows'][0]['elements'][0]['distance']['value'] < 30000){
                             // si a moins d'une heure de route d'un de nos entrepôts alors on l'accepte
                             $closeEnough = true;
@@ -45,6 +51,23 @@ class Geolocation
                     break;
             }
         }
-        return $closeEnough;
+        if ($closeEnough){
+            $minVal = NULL;
+            $closestWarehouse = NULL;
+            foreach ($travelTimeToWarehouses as $travelTimeToWarehouse){
+                if ($minVal === NULL){
+                    $minVal = $travelTimeToWarehouse['travelTime'];
+                    $closestWarehouse = $travelTimeToWarehouse['id'];
+                }else{
+                    if ($travelTimeToWarehouse['travelTime'] < $minVal){
+                        $minVal = $travelTimeToWarehouse['travelTime'];
+                        $closestWarehouse = $travelTimeToWarehouse['id'];
+                    }
+                }
+            }
+            return $closestWarehouse;
+        }else{
+            return $closeEnough;
+        }
     }
 }

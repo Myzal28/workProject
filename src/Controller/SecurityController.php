@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Signup;
 use App\Entity\Persons;
 
+use App\Entity\Warehouses;
 use App\Form\SignupPersonType;
 
 use App\Service\Geolocation;
@@ -26,7 +27,6 @@ class SecurityController extends AbstractController
     /**
      * @Route("/signup/{_locale}", name="security_signup", defaults={"_locale"="fr"})
      * @param Request $request
-     * @param Curl $curl
      * @param UserPasswordEncoderInterface $encoder
      * @param StatusRepository $status
      * @return RedirectResponse|Response
@@ -48,10 +48,12 @@ class SecurityController extends AbstractController
             if ($closeEnough){
                 $hash = $encoder->encodePassword($person, $person->getPassword());
 
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+                $person->setWarehouse($closestWarehouse);
+
                 $person->setPassword($hash);
                 $person->setDateRegister(new Datetime);
                 $person->setAdminSite(0);
-
                 // On set toutes les variables à 0, celle sélectionnée sera passée à 1 après
                 $person->setInternal(0);
                 $person->setVolunteer(0);
