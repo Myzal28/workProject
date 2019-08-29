@@ -37,7 +37,7 @@ Notre équipe est composée d'étudiants en école d'informatique: Notre équipe
 Responsable: Responsable
 Responsable Développement: Responsable Développement
 Responsable Réseau: Responsable Réseau
-Mes Ramassages: Mes Ramassages
+Mes ramassages: Mes ramassages
 Commentaire: Commentaire
 Date de création: Date de création
 Date de Ramassage: Date de Ramassage
@@ -110,7 +110,7 @@ Bénévoles en attente de confirmations: Bénévoles en attente de confirmations
 Modèle: Modèle
 Personnes attribuées: Personnes attribuées
 Marque: Marque
-Kilomètrage: Kilomètrage
+Kilométrage: Kilométrage
 Date d'enregistrement: Date d'enregistrement
 Date du dernier checkup: Date du dernier checkup
 Entrer email: Entrer email
@@ -148,7 +148,7 @@ Retour: Retour
 Nouvel article: Nouvel article
 Annonce bien expliquée: Annonce bien expliquée
 Cela devrait montrer votre profil: Cela devrait montrer votre profil
-"Créé par :": "Created by :"
+"Créé par :": "Créé par :"
 Calendrier: Calendrier
 Toutes les collectes: Toutes les collectes
 Collectes en attente: Collectes en attente
@@ -177,3 +177,56 @@ Client Pro: Client professionnel
 Client Par: Client particulier
 City: Ville
 Les mots de passe ne correspondent pas: Les mots de passe ne correspondent pas
+Service: Service
+'Autorisé par :': 'Autorisé par :'
+Date de ramassage: Date de ramassage
+Chauffeur attribué: Chauffeur attribué
+Aucun: Aucun
+date: date
+Staff: Staff
+Inscriptions: Inscriptions
+Tous les services: Tous les services
+Calendrier chauffeur: Calendrier chauffeur
+Calendrier aide au logement: Calendrier aide au logement
+Calendrier conseil anti-gaspi: Calendrier conseil anti-gaspi
+Calendrier cours de cuisine: Calendrier cours de cuisine
+Calendrier gardiennage: Calendrier gardiennage
+Tout l'inventaire: Tout l'inventaire
+Rangements: Rangements
+Conseils anti-gaspi: Conseils anti-gaspi
+Cours de cuisine: Cours de cuisine
+Service PàP: Service PàP
+Gardiennage: Gardiennage
+État: État
+Donations: Donations
+Cours anti-gaspi: Cours anti-gaspi
+En route !: En route!
+Client: Client
+Articles: Articles
+Ajouter une annonce: Ajouter une annonce
+Mes annonces: Mes annonces
+Titre: Titre
+Créée le: Créée le
+Annonces des utilisateurs: Annonces des utilisateurs
+En savoir plus: En savior plus
+Ajouter: Ajouter
+Attention: Attention
+Êtes-vous sûr de vouloir supprimer cette annonce ?: Êtes-vous sûr de vouloir supprimer cette annonce ?
+Annuler: Annuler
+Succès: Succès
+Votre annonce a bien été supprimée: Votre annonce a bien été supprimée
+Erreur: Erreur
+Erreur lors de la suppression: Erreur lors de la suppression
+Code-barres: Code-barres
+Etat: Etat
+Collecte: Collecte
+Entrepôt: Entrepôt
+'Expire le :': 'Expire le :'
+Nombre: Nombre
+Poids/Volume (en G/mL): Poids/Volume (en G/mL)
+Envoyé: Envoyé
+Pas de collectes: Pas de collectes
+Quantité: Quantité
+Poids/Volume: Poids/Volume
+Clôture de collecte: Clôture de collecte
+Clôture: Clôture

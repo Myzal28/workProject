@@ -8,7 +8,7 @@ use App\Entity\Warehouses;
 use App\Service\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Geolocalisation extends AbstractController
+class Geolocation extends AbstractController
 {
     public function closeEnough($address,$city,$zipcode,Curl $curl){
         // On formatte l'adresse de la personne pour pouvoir l'utiliser après dans l'API

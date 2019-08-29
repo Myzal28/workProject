@@ -159,6 +159,60 @@ Tous les entrpôts: All the warehouses
 Gestion staff: Staff management
 Gestion collectes: Collections management
 Véhicules: Vehicles
-Inventaires: Inventory
-Les mots de passe ne correspondent pas: Passwords doesn't match
-trad: trad
+Inventaire: Inventory
+Inventaires: Inventories
+Les mots de passe ne correspondent pas: Passwords don't match
+
+Service: Service
+'Autorisé par :': 'Authorized by:'
+Date de ramassage: Pickup date
+Chauffeur attribué: Driver assigned
+Aucun: None
+date: date
+Staff: Staff
+Inscriptions: Inscriptions
+Tous les services: All the services
+Calendrier chauffeur: Driver calendar
+Calendrier aide au logement: Help with housing calendar
+Calendrier conseil anti-gaspi: Anti-waste advice calendar
+Calendrier cours de cuisine: Cooking lessons calendar
+Calendrier gardiennage: Guarding calendar
+Tout l'inventaire: Whole inventory
+Rangements: Arrangements
+Conseils anti-gaspi: Anti-waste advice
+Cours de cuisine: Cooking lessons
+Service PàP: PtP service
+Gardiennage: Guarding
+État: State
+Donations: Donations
+Cours anti-gaspi: Anti-waste course
+En route !: On the way !
+Client: Client
+Articles: Articles
+Ajouter une annonce: Add an ad
+Mes annonces: My ads
+Titre: Title
+Créée le: Created on
+Annonces des utilisateurs: Users' ads
+En savoir plus: Learn more
+Ajouter: Add
+Attention: Warning
+Êtes-vous sûr de vouloir supprimer cette annonce ?: Are you sure you want to delete this ad?
+Annuler: Cancel
+Succès: Success
+Votre annonce a bien été supprimée: Your ad has been deleted
+Erreur: Error
+Erreur lors de la suppression: Error while deleting
+Code-barres: Bar code
+Etat: State
+Collecte: Collection
+Entrepôt: Warehouse
+'Expire le :': 'Expires on:'
+Nombre: Amount
+Poids/Volume (en G/mL): Weight/Volume (in G/mL)
+Envoyé: Sent
+Pas de collectes: No collections
+Quantité: Quantity
+Poids/Volume: Weight/Volume
+Clôture de collecte: Closing collection
+Clôture: Closing
