@@ -166,6 +166,16 @@ class Persons implements UserInterface
      */
     private $ClientPro;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AntiWasteAdvice", mappedBy="user", orphanRemoval=true)
+     */
+    private $antiWasteAdvices;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AntiWasteAdvice", mappedBy="upvoted")
+     */
+    private $upvotedWasteAdvices;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -174,6 +184,8 @@ class Persons implements UserInterface
         $this->inventories = new ArrayCollection();
         $this->calendars = new ArrayCollection();
         $this->individualOffer = new ArrayCollection();
+        $this->antiWasteAdvices = new ArrayCollection();
+        $this->upvotedWasteAdvices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -637,6 +649,65 @@ class Persons implements UserInterface
     public function setClientPro(int $ClientPro): self
     {
         $this->ClientPro = $ClientPro;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AntiWasteAdvice[]
+     */
+    public function getAntiWasteAdvices(): Collection
+    {
+        return $this->antiWasteAdvices;
+    }
+
+    public function addAntiWasteAdvice(AntiWasteAdvice $antiWasteAdvice): self
+    {
+        if (!$this->antiWasteAdvices->contains($antiWasteAdvice)) {
+            $this->antiWasteAdvices[] = $antiWasteAdvice;
+            $antiWasteAdvice->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAntiWasteAdvice(AntiWasteAdvice $antiWasteAdvice): self
+    {
+        if ($this->antiWasteAdvices->contains($antiWasteAdvice)) {
+            $this->antiWasteAdvices->removeElement($antiWasteAdvice);
+            // set the owning side to null (unless already changed)
+            if ($antiWasteAdvice->getUser() === $this) {
+                $antiWasteAdvice->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AntiWasteAdvice[]
+     */
+    public function getUpvotedWasteAdvices(): Collection
+    {
+        return $this->upvotedWasteAdvices;
+    }
+
+    public function addUpvotedWasteAdvice(AntiWasteAdvice $upvotedWasteAdvice): self
+    {
+        if (!$this->upvotedWasteAdvices->contains($upvotedWasteAdvice)) {
+            $this->upvotedWasteAdvices[] = $upvotedWasteAdvice;
+            $upvotedWasteAdvice->addUpvoted($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUpvotedWasteAdvice(AntiWasteAdvice $upvotedWasteAdvice): self
+    {
+        if ($this->upvotedWasteAdvices->contains($upvotedWasteAdvice)) {
+            $this->upvotedWasteAdvices->removeElement($upvotedWasteAdvice);
+            $upvotedWasteAdvice->removeUpvoted($this);
+        }
 
         return $this;
     }

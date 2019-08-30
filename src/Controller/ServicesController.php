@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AntiWasteAdvice;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -31,10 +32,51 @@ class ServicesController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function wasteAdvices(){
-        return $this->render('services/wasteAdvices.html.twig');
+    public function wasteAdvices(Request $request){
+        // On récupère le manager Doctrine
+        $manager = $this->getDoctrine()->getManager();
+
+        // Si on ajoute un conseil on récupère le conseil
+        $addAdvice = $request->get('addAdvice');
+        if ($addAdvice){
+            // On crée un objet conseil qu'on alimente
+            $advice = new AntiWasteAdvice();
+            $advice->setAdvice($addAdvice);
+            $advice->setDate(new \DateTime(date('Y-m-d')));
+            $advice->setUser($this->getUser());
+
+            // On l'envoie en BDD
+            $manager->persist($advice);
+            $manager->flush();
+        }
+
+        $upVoteAdvice = $request->get('upvoteAdvice');
+        if ($upVoteAdvice){
+            $advice = $this->getDoctrine()->getRepository(AntiWasteAdvice::class)->find($upVoteAdvice);
+            if ($request->getMethod() == 'POST'){
+                $advice->addUpvoted($this->getUser());
+            }else{
+                $advice->removeUpvoted($this->getUser());
+            }
+            $manager->flush();
+        }
+
+        $order = $request->get('order');
+        if ($order == 'date'){
+            $type = 'date';
+            $advices = $this->getDoctrine()->getRepository(AntiWasteAdvice::class)->findAllById();
+        }else{
+            $type = 'upvotes';
+            $advices = $this->getDoctrine()->getRepository(AntiWasteAdvice::class)->findAllByUpvotes();
+        }
+        return $this->render('services/wasteAdvices.html.twig',[
+            'advices' => $advices,
+            'type' => $type
+        ]);
     }
 
     /**
