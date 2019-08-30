@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  message= "L'email que vous avez choisi, existe déjà !"
  * )
  */
-class Persons implements UserInterface
+class Persons implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -176,6 +176,16 @@ class Persons implements UserInterface
      */
     private $upvotedWasteAdvices;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CookingClass", mappedBy="professor")
+     */
+    private $cookingClasses;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CookingClass", mappedBy="registeredPeople")
+     */
+    private $registeredToCookingClass;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -186,6 +196,8 @@ class Persons implements UserInterface
         $this->individualOffer = new ArrayCollection();
         $this->antiWasteAdvices = new ArrayCollection();
         $this->upvotedWasteAdvices = new ArrayCollection();
+        $this->cookingClasses = new ArrayCollection();
+        $this->registeredToCookingClass = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -710,6 +722,70 @@ class Persons implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|CookingClass[]
+     */
+    public function getCookingClasses(): Collection
+    {
+        return $this->cookingClasses;
+    }
+
+    public function addCookingClass(CookingClass $cookingClass): self
+    {
+        if (!$this->cookingClasses->contains($cookingClass)) {
+            $this->cookingClasses[] = $cookingClass;
+            $cookingClass->setProfessor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCookingClass(CookingClass $cookingClass): self
+    {
+        if ($this->cookingClasses->contains($cookingClass)) {
+            $this->cookingClasses->removeElement($cookingClass);
+            // set the owning side to null (unless already changed)
+            if ($cookingClass->getProfessor() === $this) {
+                $cookingClass->setProfessor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CookingClass[]
+     */
+    public function getRegisteredToCookingClass(): Collection
+    {
+        return $this->registeredToCookingClass;
+    }
+
+    public function addRegisteredToCookingClass(CookingClass $registeredToCookingClass): self
+    {
+        if (!$this->registeredToCookingClass->contains($registeredToCookingClass)) {
+            $this->registeredToCookingClass[] = $registeredToCookingClass;
+            $registeredToCookingClass->addRegisteredPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegisteredToCookingClass(CookingClass $registeredToCookingClass): self
+    {
+        if ($this->registeredToCookingClass->contains($registeredToCookingClass)) {
+            $this->registeredToCookingClass->removeElement($registeredToCookingClass);
+            $registeredToCookingClass->removeRegisteredPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
 }
