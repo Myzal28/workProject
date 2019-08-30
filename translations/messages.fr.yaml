@@ -19,7 +19,7 @@ Administrateur du site: Administrateur du site
 Tableau de bord principal: Tableau de bord principal
 Tableau de bord: Tableau de bord
 Gestion: Gestion
-Identifiants invalides.: Identifiants invalides
+Identifiants invalides: Identifiants invalides
 Quelques mots sur nous: Quelques mots sur nous
 Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.
 Collectes: Collectes
@@ -40,8 +40,8 @@ Responsable Réseau: Responsable Réseau
 Mes ramassages: Mes ramassages
 Commentaire: Commentaire
 Date de création: Date de création
-Date de Ramassage: Date de Ramassage
-Status: Status
+Date de ramassage: Date de ramassage
+Statut: Statut
 Produits: Produits
 Aucune: Aucune
 Commande numéro: Commande numéro
@@ -74,17 +74,16 @@ Liste de tout les clients FFW: Liste de tout les clients FFW
 Pro ou Par: Pro ou Par
 Particulier: Particulier
 Pro: Pro
-Liste de toute les Collectes: Liste de toute les Collectes
-Autorisé par: Autorisé par
+Liste de toutes les collectes: Liste de toutes les collectes
 Créé par: Créé par
 Véhicule utilisé: Véhicule utilisé
-Statut: Statut
 Autoriser ?: Autoriser ?
-Ajouter date ?: Ajouter date ?.
+Ajouter date ?: Ajouter date ?
+Collectes en attente: Collectes en attente
 Liste de toute collectes en attente: Liste de toute collectes en attente
 Autoriser: Autoriser
 Staff sans service: Staff sans service
-Liste des personnes sans service attribuer: Liste des personnes sans service attribuer
+Liste des personnes sans service attribué: Liste des personnes sans service attribué
 Validation: Validation
 Valider: Valider
 "Planning des Chauffeurs : semaine n°": "Planning des Chauffeurs : semaine n°"
@@ -101,14 +100,14 @@ Dimanche: Dimanche
 Nom événement: Nom événement
 Date: Date
 Créneau: Créneau
-Voici tout les services existants: Voici tout les services existants
+Voici tous les services existants: Voici tous les services existants
 Identifiant: Identifiant
 Description: Description
 Créer nouveau service: Créer nouveau service
 Inscription: Inscription
 Bénévoles en attente de confirmations: Bénévoles en attente de confirmations
 Modèle: Modèle
-Personnes attribuées: Personnes attribuées
+'Personnes attribuées :': 'Personnes attribuées :'
 Marque: Marque
 Kilométrage: Kilométrage
 Date d'enregistrement: Date d'enregistrement
@@ -131,7 +130,6 @@ Bonjour: Bonjour
 nous sommes heureux de t'avoir ici !: nous sommes heureux de t'avoir ici !
 'Ce message vient de :' : 'Ce message vient de :'
 Adresse email: Adresse email
-Cours Anti-gaspillage: Cours Anti-gaspillage
 Service de partages entre particulier: Service de partages entre particulier
 'Mes annonces :': 'Mes annonces :'
 Contenu: Contenu
@@ -151,38 +149,18 @@ Cela devrait montrer votre profil: Cela devrait montrer votre profil
 "Créé par :": "Créé par :"
 Calendrier: Calendrier
 Toutes les collectes: Toutes les collectes
-Collectes en attente: Collectes en attente
 Collectes de la journée: Collectes de la journée
-Staff sans ervice: Staff sans ervice
 Tous les véhicules: Tous les véhicules
 Tous les entrpôts: Tous les entrpôts
 Gestion staff: Gestion staff
 Gestion collectes: Gestion collectes
 Véhicules: Véhicules
 Inventaires: Inventaires
-Lastname: Nom de famille
-Firstname: Prénom
-Birthday: Anniversaire
-Password: Mot de passe
-Confirm password: Confirmer le mot de passe
-Phone nbr: Téléphone
-Country: Pays
-Zipcode: Code postal
-Address: Adresse
-Company: Entreprise
-Type choice: Type
-Intern: Employé
-Volunteer: Bénévole
-Client Pro: Client professionnel
-Client Par: Client particulier
-City: Ville
 Les mots de passe ne correspondent pas: Les mots de passe ne correspondent pas
 Service: Service
 'Autorisé par :': 'Autorisé par :'
-Date de ramassage: Date de ramassage
 Chauffeur attribué: Chauffeur attribué
 Aucun: Aucun
-date: date
 Staff: Staff
 Inscriptions: Inscriptions
 Tous les services: Tous les services
@@ -195,11 +173,10 @@ Tout l'inventaire: Tout l'inventaire
 Rangements: Rangements
 Conseils anti-gaspi: Conseils anti-gaspi
 Cours de cuisine: Cours de cuisine
-Service PàP: Service PàP
+Services PàP: Services PàP
 Gardiennage: Gardiennage
 État: État
 Donations: Donations
-Cours anti-gaspi: Cours anti-gaspi
 En route !: En route!
 Client: Client
 Articles: Articles
@@ -230,3 +207,6 @@ Quantité: Quantité
 Poids/Volume: Poids/Volume
 Clôture de collecte: Clôture de collecte
 Clôture: Clôture
+Voici tous les entrepôts: Voici tous les entrepôts
+Tous les entrepôts: Tous les entrepôts
+'Créée :': 'Créée :'

@@ -165,7 +165,7 @@
                         <div class="app-sidebar__inner">
                             <ul class="vertical-nav-menu">
                                 
-                                <li class="app-sidebar__heading">{% trans %}Gestion Staff{% endtrans %}</li>
+                                <li class="app-sidebar__heading">{% trans %}Gestion staff{% endtrans %}</li>
                                 
                                 <li>
                                     <a href="#" {% block staff %}{% endblock %}>
@@ -174,7 +174,7 @@
                                     <ul>
                                         <li><a href="{{ path('manage_staff')}}" {% block manageStaff %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff complet{% endtrans %}</a></li>
                                         <li><a href="{{ path('manage_signups')}}"{% block manageSignups %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Inscriptions{% endtrans %}</a></li>
-                                        <li><a href="{{ path('manage_no_services')}}" {% block manageNoServices %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff sans services{% endtrans %}</a></li>
+                                        <li><a href="{{ path('manage_no_services')}}" {% block manageNoServices %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Staff sans service{% endtrans %}</a></li>
                                     </ul>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Services{% endtrans %}</li>
@@ -183,7 +183,7 @@
                                         {% trans %}Tous les services{% endtrans %}
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">{% trans %}Gestion Collectes{% endtrans %}</li>
+                                <li class="app-sidebar__heading">{% trans %}Gestion collectes{% endtrans %}</li>
                                 
                                 <li>
                                     <a href="#" {% block collects %}{% endblock %}>
@@ -191,7 +191,7 @@
                                     </a>
                                     <ul>
                                         <li><a href="{{ path('manage_collects') }}" {% block manageCollects %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Toutes les collectes{% endtrans %}</a></li>
-                                        <li><a href="{{ path('manage_no_check') }}"{% block manageNoCheck %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes en attentes{% endtrans %}</a></li>
+                                        <li><a href="{{ path('manage_no_check') }}"{% block manageNoCheck %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes en attente{% endtrans %}</a></li>
                                         <li><a href="#" {% block manageTDCollect %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Collectes de la journée{% endtrans %}</a></li>
                                     </ul>
                                 </li>
@@ -201,29 +201,29 @@
                                                 {% trans %}Calendrier{% endtrans %}
                                             </a>
                                         <ul>
-                                                <li><a href="{{ path('manage_pla_driver') }}" {% block managePlaDriver %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Chauffeur{% endtrans %}</a></li>
-                                                <li><a href="{{ path('manage_pla_harrange') }}"{% block managePlaHarrange %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Aide au Logement{% endtrans %}</a></li>
-                                                <li><a href="{{ path('manage_pla_waste') }}"{% block managePlaWaste %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Conseil Anti-gaspi{% endtrans %}</a></li>
-                                                <li><a href="{{ path('manage_pla_course') }}"{% block managePlaCourse %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Cours de cuisine{% endtrans %}</a></li>
-                                                <li><a href="{{ path('manage_pla_guard') }}"{% block managePlaGuard %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier Gardiennage{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_driver') }}" {% block managePlaDriver %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier chauffeur{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_harrange') }}"{% block managePlaHarrange %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier aide au logement{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_waste') }}"{% block managePlaWaste %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier conseil anti-gaspi{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_course') }}"{% block managePlaCourse %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier cours de cuisine{% endtrans %}</a></li>
+                                                <li><a href="{{ path('manage_pla_guard') }}"{% block managePlaGuard %} {% endblock %}><i class="metismenu-icon"></i>{% trans %}Calendrier gardiennage{% endtrans %}</a></li>
                                         </ul>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Véhicules{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_vehicules') }}" {% block manageVehicules %} {% endblock %}>
-                                        {% trans %}Tous les Véhicules{% endtrans %}
+                                        {% trans %}Tous les véhicules{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Entrepôts{% endtrans %}</li>
                                 <li>
                                     <a href="{{ path('manage_warehouses') }}" {% block manageWarhouses %} {% endblock %}>
-                                        {% trans %}Tous les Entrepôts{% endtrans %}
+                                        {% trans %}Tous les entrepôts{% endtrans %}
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">{% trans %}Inventaires{% endtrans %}</li>
                                 <li>
                                     <a href="{{path('manage_inventory')}}" {% block manageInventory %} {% endblock %}>
-                                        {% trans %}Tous l'Inventaire{% endtrans %}
+                                        {% trans %}Tout l'inventaire{% endtrans %}
                                     </a>
                                 </li>
                                 

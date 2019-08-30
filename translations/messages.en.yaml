@@ -19,7 +19,7 @@ Administrateur du site: Administrator of the site
 Tableau de bord principal: Main dashboard
 Tableau de bord: Dashboard
 Gestion: Management
-Identifiants invalides.: Invalid credentials
+Identifiants invalides: Invalid credentials
 Quelques mots sur nous: A few words about us
 Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: The main goal of our company is to reduce waste. We offer several services to collect and redistribute food and beverages.
 Collectes: Collections
@@ -37,12 +37,11 @@ Notre équipe est composée d'étudiants en école d'informatique: Our team cons
 Responsable: Manager
 Responsable Développement: Developement Manager
 Responsable Réseau: Network Manager
-Mes Ramassages: My pickups
+Mes ramassages: My pickups
 Commentaire: Comment
 Date de création: Creation date
-Date de Ramassage: Date de Ramassage
-Status: Status
-Statut : Status
+Date de ramassage: Date de Ramassage
+Statut: Status
 Produits: Products
 Aucune: None
 Commande numéro: Command number
@@ -75,8 +74,7 @@ Liste de tout les clients FFW: List of all FFW customers
 Pro ou Par: Professional or Individual
 Particulier: Particular
 Pro: Professional
-Liste de toute les Collectes: List of all the Collections
-Autorisé par: Authorized by
+Liste de toutes les collectes: List of all the collections
 Créé par: Created by
 Véhicule utilisé: Vehicle used
 Autoriser ?: Allow?
@@ -85,7 +83,7 @@ Collectes en attente: Pending collections
 Liste de toute collectes en attente: List of all pending collections
 Autoriser: Allow
 Staff sans service: Staff without service
-Liste des personnes sans service attribuer: List of people without service assign
+Liste des personnes sans service attribué: List of people without service assign
 Validation: Validation
 Valider: Validate
 "Planning des Chauffeurs : semaine n°": "Driver's schedule: week n °"
@@ -102,16 +100,16 @@ Dimanche: Sunday
 Nom événement: Event name
 Date: Date
 Créneau: Time slot
-Voici tout les services existants: Here are all the existing services
+Voici tous les services existants: Here are all the existing services
 Identifiant: Login
 Description: Description
 Créer nouveau service: Create new service
 Inscription: Registration
 Bénévoles en attente de confirmations: Volunteers waiting for confirmations
 Modèle: Model
-Personnes attribuées: Assigned persons
+'Personnes attribuées :': 'Assigned persons:'
 Marque: Brand
-Kilomètrage: Mileage
+Kilométrage: Mileage
 Date d'enregistrement: Registration Date
 Date du dernier checkup: Date of the last checkup
 Entrer email: Enter email
@@ -132,7 +130,6 @@ Bonjour: Hello
 nous sommes heureux de t'avoir ici !: we are happy to have you here!
 "Ce message vient de :" : "This message comes from:"
 Adresse email: E-mail adress
-Cours Anti-gaspillage: Anti-waste course
 Service de partages entre particulier: Private sharing service
 "Mes annonces :": "My announcements:"
 Contenu: Contents
@@ -153,22 +150,17 @@ Cela devrait montrer votre profil: This should show your profile
 Calendrier: Calendar
 Toutes les collectes: All the collections
 Collectes de la journée: Colletions of the day
-Staff sans ervice: Staff without service
 Tous les véhicules: All the vehicles
 Tous les entrpôts: All the warehouses
 Gestion staff: Staff management
 Gestion collectes: Collections management
 Véhicules: Vehicles
-Inventaire: Inventory
 Inventaires: Inventories
 Les mots de passe ne correspondent pas: Passwords don't match
-
 Service: Service
 'Autorisé par :': 'Authorized by:'
-Date de ramassage: Pickup date
 Chauffeur attribué: Driver assigned
 Aucun: None
-date: date
 Staff: Staff
 Inscriptions: Inscriptions
 Tous les services: All the services
@@ -181,11 +173,10 @@ Tout l'inventaire: Whole inventory
 Rangements: Arrangements
 Conseils anti-gaspi: Anti-waste advice
 Cours de cuisine: Cooking lessons
-Service PàP: PtP service
+Services PàP: PtP service
 Gardiennage: Guarding
 État: State
 Donations: Donations
-Cours anti-gaspi: Anti-waste course
 En route !: On the way !
 Client: Client
 Articles: Articles
@@ -216,3 +207,6 @@ Quantité: Quantity
 Poids/Volume: Weight/Volume
 Clôture de collecte: Closing collection
 Clôture: Closing
+Voici tous les entrepôts: Here are all the warehouses
+Tous les entrepôts: All the warehouses
+'Créée :': 'Created on:'
