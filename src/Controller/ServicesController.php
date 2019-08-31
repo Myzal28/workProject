@@ -87,6 +87,7 @@ class ServicesController extends AbstractController
      * })
      * @param Request $request
      * @return Mixed
+     * @throws Exception
      */
     public function cookingClass(Request $request){
         $method = $request->getMethod();
