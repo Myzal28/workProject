@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\AntiWasteAdvice;
 use App\Entity\CookingClass;
 
+use App\Service\QuickAlert;
 use Exception;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -113,21 +114,30 @@ class ServicesController extends AbstractController
                     return $response;
                 }elseif($method == 'POST'){
                     // Si on ajoute un cours
-                    $class = new CookingClass();
-                    $class->setName($request->get('name'));
-                    $class->setPlace($request->get('place'));
-                    $class->setDuration($request->get('duration'));
-                    $class->setCapacity($request->get('capacity'));
-                    $class->setProfessor($this->getUser());
-                    $class->setBeginning(new \DateTime($request->get('beginning_date')." ".$request->get('beginning_hour')));
+                    $dateClass = new \DateTime($request->get('beginning_date'). " " . $request->get('beginning_hour'));
+                    $today = new \DateTime(date('Y-m-d H:i:s'));
+                    // si il essaye de créer un cours dans le passé on refuse la saisie
+                    if($dateClass->getTimestamp() < $today->getTimestamp()){
+                        $qA = new QuickAlert('error','Erreur','Vous essayez de créer un cours dans le passé');
+                    }else{
+                        $class = new CookingClass();
+                        $class->setName($request->get('name'));
+                        $class->setPlace($request->get('place'));
+                        $class->setDuration($request->get('duration'));
+                        $class->setCapacity($request->get('capacity'));
+                        $class->setProfessor($this->getUser());
+                        $class->setBeginning($dateClass);
+                        // On persiste l'entité et on l'envoie en BDD
+                        $this->getDoctrine()->getManager()->persist($class);
+                        $this->getDoctrine()->getManager()->flush();
 
-                    // On persiste l'entité et on l'envoie en BDD
-                    $this->getDoctrine()->getManager()->persist($class);
-                    $this->getDoctrine()->getManager()->flush();
+                        $qA = new QuickAlert('success','Succès','Votre cours a bien été ajouté, les utilisateurs peuvent désormais s\'y inscrire');
+                    }
 
                     $classes = $this->getDoctrine()->getRepository(CookingClass::class)->findBy(array('professor' => $this->getUser()));
                     return $this->render('services/cookingClass.html.twig',[
                         "cookingClasses" => $classes,
+                        "quickAlert" => $qA
                     ]);
                 }else{
                     // Dernier scénario, si il souhaite uniquement afficher ses cours
