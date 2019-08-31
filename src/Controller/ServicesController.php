@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\AntiWasteAdvice;
 use App\Entity\CookingClass;
+use App\Entity\Guarding;
 
 use App\Service\QuickAlert;
 use Exception;
@@ -113,8 +114,8 @@ class ServicesController extends AbstractController
                     $response = new Response(json_encode(array('status','deleted')));
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;
+                // Si il souhaite en ajouter un
                 }elseif($method == 'POST'){
-                    // Si on ajoute un cours
                     $dateClass = new \DateTime($request->get('beginning_date'). " " . $request->get('beginning_hour'));
                     $today = new \DateTime(date('Y-m-d H:i:s'));
                     // si il essaye de créer un cours dans le passé on refuse la saisie
@@ -188,9 +189,94 @@ class ServicesController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @return Mixed
+     * @throws Exception
      */
-    public function guarding(){
-        return $this->render('services/guarding.html.twig');
+    public function guarding(Request $request){
+        // On récupère nos variables et nos managers
+        $method = $request->getMethod();
+        $manager = $this->getDoctrine()->getManager();
+        $repo = $this->getDoctrine()->getRepository(Guarding::class);
+
+        // Si on appelle l'API pour récupérer une seule demande
+        if($request->get('getDemand') != NULL){
+            $demand = $repo->find($request->get('getDemand'));
+            $response = new Response(json_encode($demand));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+            // Sinon on les affiche toutes
+        }
+
+        // Si la personne fait partie du service gardiennage
+        if (($this->getUser()->getService() != NULL) && ($this->getUser()->getService()->getId() === 5)) {
+
+            $demands = $repo->findForIntern($this->getUser());
+            if ($method == "POST"){
+                $demand = $repo->find($request->get('demand'));
+                $demand->setUserGuarding($this->getUser());
+                $manager->flush();
+
+                $response = new Response(json_encode(['status' => 'added']));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }elseif($method == "DELETE"){
+                $demand = $repo->find($request->get('demand'));
+                $demand->setUserGuarding(NULL);
+                $manager->flush();
+
+                $response = new Response(json_encode(['status' => 'deleted']));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
+            return $this->render('services/guarding.html.twig',['demands' => $demands]);
+
+
+        }else{
+            // Si l'adhérent veut supprimer sa demande
+            if($method == "DELETE"){
+                $demand = $repo->find($request->get('demand'));
+                $manager->remove($demand);
+                $manager->flush();
+
+                $response = new Response(json_encode(array("status" => "deleted")));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            // Si l'adhérent veut ajouter une demande
+            }elseif($method == "POST"){
+                $dateDemand = new \DateTime($request->get('date'). " " . $request->get('hour'));
+                $today = new \DateTime(date('Y-m-d H:i:s'));
+                // si il essaye de créer un cours dans le passé on refuse la saisie
+                if($dateDemand->getTimestamp() < $today->getTimestamp()){
+                    $qA = new QuickAlert('error','Erreur','Vous essayez de créer une demande dans le passé');
+                }else{
+                    $demand= new Guarding();
+                    $demand->setDescription($request->get('description'));
+                    $demand->setUserToGuard($this->getUser());
+                    $demand->setDate($dateDemand);
+                    // On persiste l'entité et on l'envoie en BDD
+                    $this->getDoctrine()->getManager()->persist($demand);
+                    $this->getDoctrine()->getManager()->flush();
+
+                    $qA = new QuickAlert('success','Succès','Votre demande a bien été ajoutée');
+                }
+            }
+        }
+
+        $myDemands = $repo->findBy(
+            ['userToGuard' => $this->getUser()],
+            ['date' => 'DESC']
+        );
+        if (isset($qA)){
+            return $this->render('services/guarding.html.twig',[
+                'myDemands' => $myDemands,
+                'quickAlert' => $qA,
+            ]);
+        }else{
+            return $this->render('services/guarding.html.twig',[
+                'myDemands' => $myDemands,
+            ]);
+        }
+
     }
 
     /**

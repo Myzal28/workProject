@@ -186,6 +186,16 @@ class Persons implements UserInterface, \JsonSerializable
      */
     private $registeredToCookingClass;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guarding", mappedBy="userToGuard", orphanRemoval=true)
+     */
+    private $toGuard;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guarding", mappedBy="userGuarding")
+     */
+    private $guardings;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -198,6 +208,8 @@ class Persons implements UserInterface, \JsonSerializable
         $this->upvotedWasteAdvices = new ArrayCollection();
         $this->cookingClasses = new ArrayCollection();
         $this->registeredToCookingClass = new ArrayCollection();
+        $this->toGuard = new ArrayCollection();
+        $this->guardings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -786,6 +798,68 @@ class Persons implements UserInterface, \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @return Collection|Guarding[]
+     */
+    public function getToGuard(): Collection
+    {
+        return $this->toGuard;
+    }
+
+    public function addToGuard(Guarding $toGuard): self
+    {
+        if (!$this->toGuard->contains($toGuard)) {
+            $this->toGuard[] = $toGuard;
+            $toGuard->setUserToGuard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToGuard(Guarding $toGuard): self
+    {
+        if ($this->toGuard->contains($toGuard)) {
+            $this->toGuard->removeElement($toGuard);
+            // set the owning side to null (unless already changed)
+            if ($toGuard->getUserToGuard() === $this) {
+                $toGuard->setUserToGuard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guarding[]
+     */
+    public function getGuardings(): Collection
+    {
+        return $this->guardings;
+    }
+
+    public function addGuarding(Guarding $guarding): self
+    {
+        if (!$this->guardings->contains($guarding)) {
+            $this->guardings[] = $guarding;
+            $guarding->setUserGuarding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuarding(Guarding $guarding): self
+    {
+        if ($this->guardings->contains($guarding)) {
+            $this->guardings->removeElement($guarding);
+            // set the owning side to null (unless already changed)
+            if ($guarding->getUserGuarding() === $this) {
+                $guarding->setUserGuarding(null);
+            }
+        }
+
+        return $this;
     }
 
 }

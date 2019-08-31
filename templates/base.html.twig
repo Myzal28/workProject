@@ -86,6 +86,8 @@ Header
                         <li><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
                     {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 4 %}
                         <li><a href="{{ path('cooking_class') }}">{% trans %}Mes cours de cuisine{% endtrans %}</a></li>
+                    {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 5 %}
+                        <li><a href="{{ path('guarding') }}">{% trans %}Gardiennage{% endtrans %}</a></li>
                     {% endif %}
 
                 {# Si on est client ??? #}

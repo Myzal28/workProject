@@ -1029,3 +1029,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 .margin-auto{
   margin: auto;
 }
+
+#main{
+  margin-top: 5vh;
+}
