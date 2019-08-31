@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} {% trans %} Services PàP {% endtrans %}{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+            <h1 id="title-underlined">
+                {% trans %}Services PàP{% endtrans %}
+                <span class="float-right">
+                    <button class="btn btn-success" data-target="#modalNew" data-toggle="modal"><i class="fa fa-plus"></i> {% trans %}Ajouter une annonce{% endtrans %}</button>
+                </span>
+            </h1>
+            <div id="map">
+                <h2>{% trans %}Mes annonces{% endtrans %}</h2>
+                <table class="table table-striped table-sm text-center" id="offersTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">{% trans %}Titre{% endtrans %}</th>
+                        <th scope="col">{% trans %}Créée le{% endtrans %}</th>
+                        <th scope="col">{% trans %}Contact{% endtrans %}</th>
+                        <th scope="col">{% trans %}Options{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in userOffers %}
+                            <tr id="myOffer{{ offer.id }}">
+                                <td>{{ offer.name }}</td>
+                                <td>{{ offer.dateCreate | date('d/m  H:i') }}</td>
+                                <td>{{ offer.contact }}</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="seeOffer({{ offer.id }})"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-danger" onclick="deleteOffer({{ offer.id }})"><i class="fa fa-trash" style="color:white"></i></button>
+                                </td>
+                            </tr>
+                    {% else %}
+                            <tr id="noOffers">
+                                <td colspan="4">Vous n'avez pas encore mis d'annonces en ligne</td>
+                            </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% if offers is not empty %}
+                <h2>{% trans %}Annonces des utilisateurs{% endtrans %}</h2>
+                <table class="table table-sm table-striped text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>{% trans %}Particulier{% endtrans %}</th>
+                        <th>{% trans %}Titre{% endtrans %}</th>
+                        <th>{% trans %}Créée le{% endtrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for offer in offers %}
+                        {% if offer.personCreate != app.user %}
+                            <tr>
+                                <td>{{offer.personCreate.firstname}} {{offer.personCreate.lastname}}</td>
+                                <td>{{offer.name}}</td>
+                                <td>{{offer.dateCreate | date('d/m  H:i')}}</td>
+                                <th>
+                                    <button class="btn btn-primary" onclick="seeOffer({{offer.id}})">{% trans %}En savoir plus{% endtrans %}</button>
+                                </th>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% else %}
+                <h2>Il n'y a pas encore d'annonces disponibles</h2>
+            {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour ajouter un objet -->
+<div aria-hidden="true" aria-labelledby="modalNewTitle" class="modal fade bd-example-modal-lg" id="modalNew" role="dialog" tabindex="-1"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalNewTitle">{% trans %}Ajouter une annonce{% endtrans %}</h5>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ path('individual_offers_api')}}" id="addOffer" method="POST">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Titre</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" name="description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Contact</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="contact" value="{{ app.user.email }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button>
+            <button class="btn btn-success" onclick="$('#addOffer').submit();" data-dismiss="modal">{% trans %}Ajouter{% endtrans %}</button>
+        </div>
+    </div>
+
+</div>
+</div>
+{% endblock %}
+{% block customJs %}
+    <script type="text/javascript">
+        function modifyOffer(offer){
+
+        }
+        function seeOffer(offer){
+            $.get(
+                '{{ path('individual_offers_api') }}?offer=' + offer,
+                function(data, textStatus, xhr){
+                    if (xhr.status === 200){
+                        Swal.fire({
+                            title: data.name,
+                            html: data.description + "<br> Contact : " + data.contact
+                        })
+                    }
+                }
+            )
+        }
+        function deleteOffer(offer){
+            Swal.fire({
+                title: '{% trans %}Attention{% endtrans %} !',
+                text: "{% trans %}Êtes-vous sûr de vouloir supprimer cette annonce ?{% endtrans %}",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: '{% trans %}Annuler{% endtrans %}',
+                confirmButtonText: '{% trans %}Supprimer{% endtrans %}',
+                customClass: {
+                    confirmButton: 'btn btn-danger ml-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false,
+                reverseButtons : 'true'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url : '{{ path('individual_offers_api') }}',
+                        data:  {
+                            'offer': offer
+                        }
+                    }).done(function(data, textStatus, xhr){
+                        if (xhr.status === 200){
+                            $('#myOffer' + offer).remove();
+                            Swal.fire({
+                                title: "{% trans %}Succès{% endtrans %}",
+                                type: "success",
+                                text: "{% trans %}Votre annonce a bien été supprimée{% endtrans %}"
+                            });
+                        }else{
+                            Swal.fire({
+                                title: "{% trans %}Erreur{% endtrans %}",
+                                type: "error",
+                                text: "{% trans %}Erreur lors de la suppression{% endtrans %}"
+                            });
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+{% endblock %}

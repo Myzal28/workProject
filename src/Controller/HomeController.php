@@ -2,30 +2,32 @@
 
 namespace App\Controller;
 
-
-
-use App\Entity\Persons;
 use App\Entity\Delivery;
+use App\Entity\Persons;
+
+use App\Entity\Warehouses;
 use App\Form\DeliveryType;
-use Psr\Log\LoggerInterface;
+use App\Form\ModifyUserType;
 use App\Repository\StatusRepository;
-use Symfony\Component\Finder\Finder;
 use App\Repository\CollectRepository;
-use App\Repository\ArticlesRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
-use Symfony\Component\Serializer\Serializer;
+
+use App\Service\Geolocation;
+use App\Service\QuickAlert;
+
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 
 class HomeController extends AbstractController
 {
-
-    
     /**
      * @Route("/{_locale}",
      *     defaults={"_locale"="fr"},
@@ -66,47 +68,80 @@ class HomeController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function contact(){
         return $this->render('home/contact.html.twig');
     }
 
     /**
-     * @Route("/user/view/{id}/{_locale}",
+     * @Route("/profile/{_locale}",
      *     defaults={"_locale"="fr"},
-     *     name="view_profile_user",
+     *     name="view_profile",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
-     * @Route("/admin/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_admin",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     * @Route("/client/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_client",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     * @Route("/internal/view/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="view_profile_internal",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
+     * @param Request $request
+     * @return Response
      */
-    public function viewPerson(Persons $person){
+    public function viewProfile(Request $request){
 
-        return $this->render('view/profile.html.twig', [
-            'person' => $person
+        $user = $this->getUser();
+        $options = [
+            'lastname' => $user->getLastName(),
+            'firstname' => $user->getFirstName(),
+            'birthday' => $user->getBirthday(),
+            'phoneNbr' => $user->getPhoneNbr(),
+            'country' => $user->getCountry(),
+            'city' => $user->getCity(),
+            'zipCode' => $user->getZipcode(),
+            'address' => $user->getAddress(),
+        ];
+        $form = $this->createForm(ModifyUserType::class,$options);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $geoService = new Geolocation();
+            $closeEnough = $geoService->closeEnough($data['address'],$data['city'],$data['zipCode'],$this->getDoctrine());
+            if ($closeEnough){
+
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+
+                $user->setWarehouse($closestWarehouse);
+                $user->setLastName($data['lastname']);
+                $user->setFirstName($data['firstname']);
+                $user->setBirthday($data['birthday']);
+                $user->setAddress($data['address']);
+                $user->setPhoneNbr($data['phoneNbr']);
+                $user->setCountry($data['country']);
+                $user->setZipcode($data['zipCode']);
+                $user->setCity($data['city']);
+
+                $m = $this->getDoctrine()->getManager();
+
+                $m->persist($user);
+                $m->flush();
+                // Modifier les informations en BDD
+                $quickAlert = new QuickAlert("success",'Succès',"Vos informations ont bien été modifiées");
+            }else{
+                $quickAlert = new QuickAlert("error",'Erreur',"Désolé, notre service n'est pas encore disponible pour cette adresse");
+            }
+
+            return $this->render('view/profile.html.twig',[
+                'form' => $form->createView(),
+                'quickAlert' => $quickAlert
+            ]);
+        }else{
+            $debug = "";
+        }
+        return $this->render('view/profile.html.twig',[
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/email/send/{email}/{name}",name="email_send")
+     * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {
@@ -139,23 +174,25 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/client/jobs/{id}/{_locale}",
+     * @Route("/client/jobs/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="client_jobs",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @param CollectRepository $collectsRep
+     * @return Response
+     * @throws ExceptionInterface
      */
-    public function clientsJobs(Persons $person, CollectRepository $collectsRep){
-
+    public function clientsJobs(CollectRepository $collectsRep){
+        $person = $this->getUser();
         $allCollects = $collectsRep->findBy(["personCreate"=>$person]);
 
         $serializer = new Serializer(array(new ObjectNormalizer()));
         $data = $serializer->normalize($allCollects, null, array('attributes' => 
           array('id','personCheck'=>array('email'),'personCreate'=>array('email'),'vehicle'=>array("id"),'status'=>array("id","status"),'commentary','dateRegister','dateCollect')));
         
-        $i = 0;
-        foreach($data as $collect){
+        foreach($data as $i => $collect){
             $finder = new Finder();
             $finder->in($this->getParameter('kernel.root_dir').'/collects');
             $finder->name($collect["id"].".json");
@@ -163,11 +200,8 @@ class HomeController extends AbstractController
             foreach ($finder as $file) {
                 $contents = $file->getContents();
                 $collectA = json_decode($contents, true);
-                // ...
             }
             $data[$i]["articles"]=$collectA["articles"];
-
-            $i++;
         }
         
         return $this->render('home/clientsJobs.html.twig',[
@@ -188,7 +222,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/internal/jobs/{id}/{_locale}",
+     * @Route("/internal/jobs/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="internal_jobs",
      *     requirements={
@@ -197,76 +231,6 @@ class HomeController extends AbstractController
      */
     public function internalJobs(Persons $person){
         return $this->render('home/internalJobs.html.twig');
-    }
-
-    /**
-     * @Route("/client/share/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="share_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function shareJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/shareJobs.html.twig',[
-            "articles" => $articles,
-            "type" => 6
-        ]);
-    }
-
-    /**
-     * @Route("/client/waste/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="waste_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function wasteJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>3]);
-
-        return $this->render('services/wasteJobs.html.twig',[
-            "articles" => $articles,
-            "type" => 3
-        ]);
-    }
-    
-    /**
-     * @Route("/client/course/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="course_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function courseJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/courseJobs.html.twig',[
-            "articles" => $articles
-        ]);
-    }
-
-    /**
-     * @Route("/client/guard/jobs/{id}/{_locale}",
-     *     defaults={"_locale"="fr"},
-     *     name="guard_jobs",
-     *     requirements={
-     *         "_locale"="en|fr|pt|it"
-     * })
-     */
-    public function guardJobs(Persons $person, ArticlesRepository $articlesRep){
-
-        $articles = $articlesRep->findBy(["serviceType"=>6]);
-
-        return $this->render('services/courseJobs.html.twig',[
-            "articles" => $articles
-        ]);
     }
 
     /**

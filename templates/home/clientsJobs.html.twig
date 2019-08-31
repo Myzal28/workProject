@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} {% trans %}Mes ramassages{% endtrans %} {% endblock %}
 {% block body %}
 
 <style>
@@ -16,7 +17,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">{% trans %}Commentaire{% endtrans %}</th>
+                                <th scope="col">{% trans %}État{% endtrans %}</th>
                                 <th scope="col">{% trans %}Date de création{% endtrans %}</th>
                                 <th scope="col">{% trans %}Date de Ramassage{% endtrans %}</th>
                                 <th scope="col">{% trans %}Status{% endtrans %}</th>
@@ -30,12 +31,12 @@
                                 <tr>
                                     <th scope="row">{{collect.id}}</th>
                                     <td>{{collect.commentary}}</td>
-                                    <td>{{collect.dateRegister.timestamp | date('d/m/Y  H:i')}}</td>
+                                    <td>{{collect.dateRegister.timestamp | date('d/m  H:i')}}</td>
                                     <td>
                                         {% if collect.dateCollect == null %}
                                             {% trans %}Aucune{% endtrans %}
                                         {% else %}
-                                            {{collect.dateCollect.timestamp | date('d/m/Y  H:i')}}
+                                            {{collect.dateCollect.timestamp | date('d/m  H:i')}}
                                         {% endif %}
                                     </td>
                                     <th>{{collect.status.status}}</th>

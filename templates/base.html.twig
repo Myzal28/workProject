@@ -32,7 +32,11 @@
 </head>
 
 <body>
-
+{% if debug is defined %}
+    <pre>
+        {{ dump(debug) }}
+    </pre>
+{% endif %}
 {% block firstPage %}
 
 {% endblock %}
@@ -58,68 +62,70 @@ Header
                 {% block navbar %}
                 {% endblock %}
 
-                <li {% if app.request.server.get('REQUEST_URI') == path('contact') %} class="menu-active" {% endif  %} ><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
+                <li><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
+                {# Si on est pas connecté #}
                 {% if app.user == false %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path('security_login') %} class="menu-active" {% endif  %}><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
-                    <li {% if app.request.server.get('REQUEST_URI') == path('security_signup') %} class="menu-active" {% endif  %}><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
-                    <li {% if app.request.server.get('REQUEST_URI') == path('delivery') %} class="menu-active" {% endif  %}><a href="{{path("delivery")}}">{% trans %}Donations{% endtrans %}</a></li>
+                    <li><a href="{{path("security_login")}}">{% trans %}Connexion{% endtrans %}</a></li>
+                    <li><a href="{{path("security_signup")}}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+
+                {# Si on est admin du site #}
                 {% elseif app.user.getAdminSite() == 1 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("manage_staff") %} class="menu-active" {% endif  %} ><a href="{{path("manage_staff")}}">{% trans %}Gestion{% endtrans %}</a></li>
-                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_admin", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_admin", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
+                    <li><a href="{{path("admin_manage")}}">{% trans %}Gestion{% endtrans %}</a></li>
+
+                {# Si on est bénévole #}
                 {% elseif app.user.getVolunteer() == 1 %}
-                {% if app.user.getService().getId() == 1 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
-                {% elseif app.user.getService().getId() == 2 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("stock_work") %} class="menu-active" {% endif  %}><a href="{{path("stock_work")}}">{% trans %}Rangements{% endtrans %}</a></li>
-                {% endif %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_user", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_user", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
+                    {% if app.user.getService().getId() is defined and app.user.getService().getId() == 1 %}
+                        <li><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
+                    {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 2 %}
+                        <li><a href="{{path("stock_work")}}">{% trans %}Rangements{% endtrans %}</a></li>
+                    {% endif %}
+
+                {# Si on est interne #}
                 {% elseif app.user.getInternal() == 1 %}
-                {% if app.user.getService().getId() == 1 %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("drivers_work", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
+                    {% if app.user.getService().getId() is defined and app.user.getService().getId() == 1 %}
+                        <li><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
+                    {% endif %}
 
-                {% endif %}
-                <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_internal", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_internal", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
+                {# Si on est client ??? #}
                 {% else %}
-                    <li {% if app.request.server.get('REQUEST_URI') == path("client_jobs", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("client_jobs", {'id' : app.user.id})}}">{% trans %}Mes Ramassages{% endtrans %}</a></li>
+                    <li><a href="{{ path("client_jobs") }}">{% trans %}Mes Ramassages{% endtrans %}</a></li>
                     
-                    <li class="menu-has-children {% if app.request.server.get('REQUEST_URI') == path("share_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("waste_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("course_jobs", {'id' : app.user.id}) or app.request.server.get('REQUEST_URI') == path("guard_jobs", {'id' : app.user.id}) %}menu-active {% endif  %}"><a href="#">{% trans %}Services{% endtrans %}</a>
+                    <li class="menu-has-children"><a href="#">{% trans %}Services{% endtrans %}</a>
                         <ul>
-                            <li><a href="{{path("waste_jobs", {'id' : app.user.id})}}">{% trans %}Conseil anti-gaspi{% endtrans %}</a></li>
-                            <li><a href="{{path("course_jobs", {'id' : app.user.id})}}">{% trans %}Cours de cuisine{% endtrans %}</a></li>
-                            <li><a href="{{path("share_jobs", {'id' : app.user.id})}}">{% trans %}Echange de services entre particulier{% endtrans %}</a></li>
-                            <li><a href="{{path("guard_jobs", {'id' : app.user.id})}}">{% trans %}Gardiennage{% endtrans %}</a></li>
+                            <li><a href="{{path("waste_advices")}}">{% trans %}Conseils anti-gaspi{% endtrans %}</a></li>
+                            <li><a href="{{path("cooking_class")}}">{% trans %}Cours de cuisine{% endtrans %}</a></li>
+                            <li><a href="{{path("individual_offers")}}">{% trans %}Services PàP{% endtrans %}</a></li>
+                            <li><a href="{{path("guarding")}}">{% trans %}Gardiennage{% endtrans %}</a></li>
                         </ul>
                     </li>
-                    <li {% if app.request.server.get('REQUEST_URI') == path("view_profile_client", {'id' : app.user.id}) %} class="menu-active" {% endif  %}><a href="{{path("view_profile_client", {'id' : app.user.id})}}">{{app.user.username}}</a></li>
                 {% endif %}
-                {% if app.request.attributes.get('_route') %}
-                    <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
-                        <ul>
-                            {% if app.request.locale != 'fr' %}
-                                <li><a href="{{ path('home',{'_locale' : 'fr'}) }}"><img src="{{ asset('/img/flags/fr.png') }}" height="32px" alt="french flag"></a></li>
-                            {% endif %}
 
-                            {% if app.request.locale != 'pt' %}
-                                <li><a href="{{ path('home',{'_locale' : 'pt'}) }}"><img src="{{ asset('/img/flags/pt.png') }}" height="32px" alt="portuguese flag"></a></li>
-                            {% endif %}
-
-                            {% if app.request.locale != 'it' %}
-                                <li><a href="{{ path('home',{'_locale' : 'it'}) }}"><img src="{{ asset('/img/flags/it.png') }}" height="32px" alt="italian flag"></a></li>
-                            {% endif %}
-
-                            {% if app.request.locale != 'en' %}
-                                <li><a href="{{ path('home',{'_locale' : 'en'}) }}"><img src="{{ asset('/img/flags/en.png') }}" height="32px" alt="uk flag"></a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                {% else %}
-                    <li>
-                        <img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag">
-                    </li>
-                {% endif %}
+                {# Si on est connecté, on affiche le bouton de déconnexion #}
                 {% if app.user %}
+                    <li><a href="{{ path("view_profile") }}">{{app.user.username}}</a></li>
                     <li><a href="{{ path('security_logout') }}"><i class="fa fa-power-off"></i></a></li>
                 {% endif %}
+
+                {# Bloc concernant l'affichage des drapeaux #}
+                <li class="menu-has-children"><a href="#"><img src="{{ asset('/img/flags/' ~ app.request.locale ~ '.png') }}" height="32px" alt="selected flag"></a>
+                    <ul>
+                        {# A chaque fois si le drapeau est celui sélectionné alors on ne l'affiche pas #}
+                        {% if app.request.locale != 'fr' %}
+                            <li><a href="{{ path(app.request.get('_route'),{'_locale' : 'fr'}) }}"><img src="{{ asset('/img/flags/fr.png') }}" height="32px" alt="french flag"></a></li>
+                        {% endif %}
+
+                        {% if app.request.locale != 'pt' %}
+                            <li><a href="{{ path(app.request.get('_route'),{'_locale' : 'pt'}) }}"><img src="{{ asset('/img/flags/pt.png') }}" height="32px" alt="portuguese flag"></a></li>
+                        {% endif %}
+                        {% if app.request.locale != 'it' %}
+                            <li><a href="{{ path(app.request.get('_route'),{'_locale' : 'it'}) }}"><img src="{{ asset('/img/flags/it.png') }}" height="32px" alt="italian flag"></a></li>
+                        {% endif %}
+
+                        {% if app.request.locale != 'en' %}
+                            <li><a href="{{ path(app.request.get('_route'),{'_locale' : 'en'}) }}"><img src="{{ asset('/img/flags/en.png') }}" height="32px" alt="uk flag"></a></li>
+                        {% endif %}
+                    </ul>
+                </li>
             </ul>
 
         </nav><!-- #nav-menu-container -->
@@ -127,6 +133,7 @@ Header
 </header><!-- #header -->
 
 <main id="main">
+
         {% block body %}
         {% endblock %}
 </main>
@@ -153,10 +160,49 @@ Header
 
 <!-- Contact Form JavaScript File -->
 <script src="{{ asset('contactform/contactform.js') }}"></script>
-
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <!-- Template Main Javascript File -->
 <script src="{{ asset('js/main.js') }}"></script>
 
+<!-- Bibliothèque et options de base pour l'éditeur de textarea WYSIWYG -->
+<script type="text/javascript" src="{{ asset('lib/TinyMCE/tinymce.min.js') }}"></script>
+<script type="text/javascript">
+    var defaultToolbar = "undo redo | bold underline italic | forecolor backcolor fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link | table | emoticons";
+    tinymce.init({
+        menubar:false,
+        statusbar: true,
+        selector: 'textarea',
+        language: 'fr_FR',
+        plugins: 'link table textcolor image autolink wordcount contextmenu emoticons lists',
+        toolbar: defaultToolbar,
+        relative_urls: false,
+        height: 300,
+        default_link_target: "_blank",
+        link_title: false,
+        branding: false,
+        contextmenu: "link image inserttable | cell row column deletetable"
+    });
 
+    const swalBootstrap = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+
+</script>
+{% block customJs %}
+{% endblock %}
+{% if quickAlert is defined %}
+    <script type="text/javascript">
+        Swal.fire({
+            'title': '{{ quickAlert.title }}',
+            'html': '{{ quickAlert.text }}',
+            'type': '{{ quickAlert.icon }}'
+        });
+    </script>
+{% endif %}
 </body>
 </html>

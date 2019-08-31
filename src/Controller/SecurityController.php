@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Signup;
 use App\Entity\Persons;
+
+use App\Entity\Warehouses;
 use App\Form\SignupPersonType;
 
+use App\Service\Geolocation;
+
 use App\Repository\StatusRepository;
-use App\Repository\PersonsRepository;
+use Datetime;
+use Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,83 +23,90 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
+
     /**
      * @Route("/signup/{_locale}", name="security_signup", defaults={"_locale"="fr"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param StatusRepository $status
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
-    public function signup(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, PersonsRepository $persons,StatusRepository $status)
+    public function signup(Request $request, UserPasswordEncoderInterface $encoder,StatusRepository $status)
     {
         $person = new Persons();
 
         $form = $this->createForm(SignupPersonType::class, $person);
-
-
-       
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
 
-            $hash = $encoder->encodePassword($person, $person->getPassword());
+            // Via le service de geolocalisation on regarde si la personne est assez proche d'un de nos entrepôts
+            $geoService = new Geolocation();
+            $closeEnough = $geoService->closeEnough($person->getAddress(),$person->getCity(),$person->getZipcode(),$this->getDoctrine());
 
-            $person->setPassword($hash);
-            $person->setDateRegister(new \Datetime);
-            $person->setAdminSite(0);
-            
-            switch ($person->type_choice) {
-                case 1:
-                    $person->setInternal(1);
-                    $person->setVolunteer(0);
-                    $person->setClientPro(0);
-                    $person->setClientPar(0);
+            if ($closeEnough){
+                $hash = $encoder->encodePassword($person, $person->getPassword());
 
-                    $manager->persist($person);
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+                $person->setWarehouse($closestWarehouse);
 
-                    $manager->flush();
+                $person->setPassword($hash);
+                $person->setDateRegister(new Datetime);
+                $person->setAdminSite(0);
+                // On set toutes les variables à 0, celle sélectionnée sera passée à 1 après
+                $person->setInternal(0);
+                $person->setVolunteer(0);
+                $person->setClientPro(0);
+                $person->setClientPar(0);
 
-                    break;
-                case 2:
-                    $person->setInternal(0);
-                    $person->setVolunteer(1);
-                    $person->setClientPro(0);
-                    $person->setClientPar(0);
-                    $manager->persist($person);
+                // On passe à 1 la variable qui nous intéresse
+                switch ($person->type_choice) {
+                    case 1:
+                        $person->setInternal(1);
 
-                    $manager->flush();
+                        break;
+                    case 2:
+                        $person->setVolunteer(1);
 
-                    $signup = new Signup();
+                        $signup = new Signup();
 
-                    $signup->setPerson($person);
-                    $signup->setStatus($status->find(1));
-                    $signup->setCommentary("En attente de vérifications !");
-                    $signup->setDateLastUpdate(new \Datetime);
+                        // Dans le cas d'un bénévole il faudra qu'il soit vérifié
+                        $signup->setPerson($person);
+                        $signup->setStatus($status->find(1));
+                        $signup->setCommentary("En attente de vérifications !");
+                        $signup->setDateLastUpdate(new Datetime);
 
-                    $manager->persist($signup);
+                        //$manager->persist($signup);
+                        //$manager->flush();
+                        break;
+                    case 3:
+                        $person->setClientPro(1);
+                        break;
+                    case 4:
+                        $person->setClientPar(1);
+                        break;
+                }
 
-                    $manager->flush();
-                    break;
-                case 3:
-                    $person->setInternal(0);
-                    $person->setVolunteer(0);
-                    $person->setClientPro(1);
-                    $person->setClientPar(0);
+                // On envoie toutes nos modifications en base de données
+                $this->getDoctrine()->getManager()->persist($person);
+                $this->getDoctrine()->getManager()->flush();
 
-                    $manager->persist($person);
+                return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
+            }else{
+                $quickAlert['icon'] = "error";
+                $quickAlert['title'] = "Erreur";
+                $quickAlert['text'] = "Notre service n'est malheureusement pas encore disponible dans votre ville";
 
-                    $manager->flush();
-                    break;
-                case 4:
-                    $person->setInternal(0);
-                    $person->setVolunteer(0);
-                    $person->setClientPro(0);
-                    $person->setClientPar(1);
 
-                    $manager->persist($person);
-
-                    $manager->flush();
-                    break;
+                return $this->render('security/registration.html.twig', [
+                    'form' => $form->createView(),
+                    'quickAlert' => $quickAlert
+                ]);
             }
-            
-            
-            return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
         }
+
+
 
         return $this->render('security/registration.html.twig', [
             'form' => $form->createView()
@@ -102,8 +114,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-    * @Route("/login/{_locale}", name="security_login", defaults={"_locale"="fr"})
-    */
+     * @Route("/login/{_locale}", name="security_login", defaults={"_locale"="fr"})
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one

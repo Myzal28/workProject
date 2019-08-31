@@ -2,9 +2,9 @@
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ArticlesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\IndividualOfferRepository")
  */
-class Articles
+class IndividualOffer implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -17,27 +17,24 @@ class Articles
      */
     private $name;
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
-    /**
      * @ORM\Column(type="text")
      */
-    private $content;
+    private $description;
     /**
      * @ORM\Column(type="datetime")
      */
     private $dateCreate;
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Persons", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Persons", inversedBy="individualOffer")
      * @ORM\JoinColumn(nullable=false)
      */
     private $personCreate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Services")
+     * @ORM\Column(type="string", length=255)
      */
-    private $serviceType;
+    private $contact;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,15 +57,6 @@ class Articles
         $this->description = $description;
         return $this;
     }
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-        return $this;
-    }
     public function getDateCreate(): ?\DateTimeInterface
     {
         return $this->dateCreate;
@@ -88,15 +76,27 @@ class Articles
         return $this;
     }
 
-    public function getServiceType(): ?Services
+    public function getContact(): ?string
     {
-        return $this->serviceType;
+        return $this->contact;
     }
 
-    public function setServiceType(?Services $serviceType): self
+    public function setContact(string $contact): self
     {
-        $this->serviceType = $serviceType;
+        $this->contact = $contact;
 
         return $this;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }

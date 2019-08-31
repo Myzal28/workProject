@@ -33,7 +33,9 @@
         "symfony/web-link": "4.2.*",
         "symfony/web-profiler-bundle": "4.2.*",
         "symfony/web-server-bundle": "4.2.*",
-        "symfony/yaml": "4.2.*"
+        "symfony/yaml": "4.2.*",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
