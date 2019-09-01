@@ -13,6 +13,7 @@ use App\Repository\CollectRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
 
+use App\Service\Curl;
 use App\Service\Geolocation;
 use App\Service\QuickAlert;
 
@@ -109,7 +110,7 @@ class HomeController extends AbstractController
             $closeEnough = $geoService->closeEnough($data['address'],$data['city'],$data['zipCode'],$this->getDoctrine());
             if ($closeEnough){
 
-                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough['closestWarehouse']);
 
                 $user->setWarehouse($closestWarehouse);
                 $user->setLastName($data['lastname']);
@@ -120,6 +121,8 @@ class HomeController extends AbstractController
                 $user->setCountry($data['country']);
                 $user->setZipcode($data['zipCode']);
                 $user->setCity($data['city']);
+                $user->setLatitude($closeEnough['lat']);
+                $user->setLongitude($closeEnough['lng']);
 
                 $m = $this->getDoctrine()->getManager();
 

@@ -10,6 +10,7 @@ use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
 use App\Repository\CalendarRepository;
+use App\Service\Curl;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Filesystem\Filesystem;
@@ -98,7 +99,11 @@ class ApiController extends AbstractController
 
         $user = $personsRep->findOneBy(["email"=> $data["email"]]);
         if($user){
+            $totalWeight = 0;
             foreach($data["articles"] as $article){
+                $curl = new Curl();
+                $foodFromApi = $curl->getFood($article['code']);
+                $totalWeight = $foodFromApi['product_quantity'];
 
                 $food = $foodsRep->findOneBy(["code"=>$article["code"]]);
 
@@ -125,8 +130,8 @@ class ApiController extends AbstractController
             $collect->setPersonCreate($user)
                     ->setStatus($status)
                     ->setCommentary("Collecte en attente de confirmation.")
-                    ->setDateRegister($date = new \Datetime);
-
+                    ->setDateRegister($date = new \Datetime)
+                    ->setTotalWeight($totalWeight);
             $manager->persist($collect);
             $manager->flush();
             
