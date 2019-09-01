@@ -9,21 +9,21 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">{% trans %}Code barre{% endtrans %}</th>
+                        <th scope="col">{% trans %}Code-barres{% endtrans %}</th>
                         <th scope="col">{% trans %}Etat{% endtrans %}</th>
                         <th scope="col">{% trans %}Collecte{% endtrans %}</th>
                         <th scope="col">{% trans %}Entrepôt{% endtrans %}</th>
                         <th scope="col">{% trans %}Expire le :{% endtrans %}</th>
                         <th scope="col">{% trans %}Commentaire{% endtrans %}</th>
                         <th scope="col">{% trans %}Nombre{% endtrans %}</th>
-                        <th scope="col">{% trans %}Poids/Volume( en G/mL ){% endtrans %}</th>
+                        <th scope="col">{% trans %}Poids/Volume (en G/mL){% endtrans %}</th>
                         <th scope="col">{% trans %}Envoyé{% endtrans %}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <form action="{{path("stock_add", {'id':app.user.getId()})}}">
-                            <td scope="row"><input type="text" name="code" placeholder="{% trans %}Code barre{% endtrans %}">
+                            <td scope="row"><input type="text" name="code" placeholder="{% trans %}Code-barres{% endtrans %}">
                             </td>
                             <td>
                                 <select class="form-control-sm form-control" name="status">
@@ -76,13 +76,13 @@
     </tbody>
 </table>
 <div class="col-lg-8">
-    <h1 style="border-bottom: 3px solid #2dc997">{% trans %}Clotûre de collecte{% endtrans %}</h1>
+    <h1 style="border-bottom: 3px solid #2dc997">{% trans %}Clôture de collecte{% endtrans %}</h1>
     <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th>{% trans %}Collecte{% endtrans %}</th>
                 <th>{% trans %}Commentaire{% endtrans %}</th>
-                <th>{% trans %}Cloture{% endtrans %}</th>
+                <th>{% trans %}Clôture{% endtrans %}</th>
             </tr>
         </thead>
         <tbody class="table">
