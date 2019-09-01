@@ -18,7 +18,15 @@ class VehiclesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Vehicles::class);
     }
+    public function findWaiting(){
+        $qb = $this->createQueryBuilder('q');
 
+        $qb->where('q.person IS NOT NULL')
+            ->andWhere('q.status = 7')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
     // /**
     //  * @return Vehicles[] Returns an array of Vehicles objects
     //  */

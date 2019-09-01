@@ -36,7 +36,7 @@
                                         {% if collect.dateCollect == null %}
                                             {% trans %}Aucune{% endtrans %}
                                         {% else %}
-                                            {{collect.dateCollect.timestamp | date('d/m  H:i')}}
+                                            {{collect.dateCollect.timestamp | date('d/m')}}
                                         {% endif %}
                                     </td>
                                     <th>{{collect.status.status}}</th>

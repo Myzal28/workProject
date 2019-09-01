@@ -17,8 +17,10 @@
                 
             <div class="col-lg-8">
                 
-                <h1 id="title-underlined">Mes collectes de la journée:<button class="btn btn-success" ><a href="{{ link }}" target="blank">{% trans %}En route !{% endtrans %}</a></button></h1>
-                
+                <h1 id="title-underlined">
+                    {% trans %}Ma prochaine collecte{% endtrans %}
+                    <a href="{{ link }}" target="blank" class="btn btn-success float-right">{% trans %}En route !{% endtrans %}</a>
+                </h1>
                 <div>
 
                     <table class="table">
@@ -42,7 +44,7 @@
                                             {{collect.personCreate.Lastname}}</td>
                                         <td>{{collect.status.status}}</td>
                                         <td>{{collect.commentary}}</td>
-                                        <td>{{collect.dateCollect | date('d/m/Y  H:i')}}</td>
+                                        <td>{{collect.dateCollect | date('d/m')}}</td>
                                         <td>{{collect.personCreate.address}}</td>
                                         <th>
                                             <button class="btn btn-success" data-target="#modal{{collect.id}}" data-toggle="modal">{% trans %}Articles{% endtrans %}</button>

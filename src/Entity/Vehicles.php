@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VehiclesRepository")
  */
-class Vehicles
+class Vehicles implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -63,6 +63,11 @@ class Vehicles
      * @ORM\OneToMany(targetEntity="App\Entity\Delivery", mappedBy="vehicle")
      */
     private $deliveries;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $capacity;
 
     public function __construct()
     {
@@ -217,6 +222,23 @@ class Vehicles
                 $delivery->setVehicle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(int $capacity): self
+    {
+        $this->capacity = $capacity;
 
         return $this;
     }
