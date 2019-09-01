@@ -60,6 +60,11 @@ class Collect
      */
     private $inventories;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $totalWeight;
+
     public function __construct()
     {
         $this->inventories = new ArrayCollection();
@@ -181,6 +186,18 @@ class Collect
                 $inventory->setCollect(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalWeight(): ?int
+    {
+        return $this->totalWeight;
+    }
+
+    public function setTotalWeight(int $totalWeight): self
+    {
+        $this->totalWeight = $totalWeight;
 
         return $this;
     }

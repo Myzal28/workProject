@@ -13,6 +13,7 @@ use App\Repository\CollectRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
 
+use App\Service\Curl;
 use App\Service\Geolocation;
 use App\Service\QuickAlert;
 
@@ -25,6 +26,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class HomeController extends AbstractController
 {
@@ -106,7 +110,7 @@ class HomeController extends AbstractController
             $closeEnough = $geoService->closeEnough($data['address'],$data['city'],$data['zipCode'],$this->getDoctrine());
             if ($closeEnough){
 
-                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough['closestWarehouse']);
 
                 $user->setWarehouse($closestWarehouse);
                 $user->setLastName($data['lastname']);
@@ -117,6 +121,8 @@ class HomeController extends AbstractController
                 $user->setCountry($data['country']);
                 $user->setZipcode($data['zipCode']);
                 $user->setCity($data['city']);
+                $user->setLatitude($closeEnough['lat']);
+                $user->setLongitude($closeEnough['lng']);
 
                 $m = $this->getDoctrine()->getManager();
 
@@ -140,13 +146,25 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    private function sendMail($email,$parameters,$view,$subject,\Swift_Mailer $mailer){
+        $message = (new \Swift_Message($subject))
+            ->setFrom('planitcalendar2018@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView($view,$parameters),
+                'text/html'
+            );
+        $mailer->send($message);
+    }
+
     /**
      * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {
-        $message = (new \Swift_Message('Welcome on board !'))
-            ->setFrom('planitcalendar2018@gmail.com')
+        $message = (new \Swift_Message('Bienvenue !'))
+            ->setFrom('ffw.pmv@gmail.com')
             ->setTo($email)
             ->setBody(
                 $this->renderView(
@@ -156,18 +174,7 @@ class HomeController extends AbstractController
                 ),
                 'text/html'
             )
-            /*
-            * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'emails/registration.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )
-            */
         ;
-
         $mailer->send($message);
 
         return $this->redirectToRoute('security_login');

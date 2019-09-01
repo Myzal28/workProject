@@ -9,9 +9,241 @@
         <div class="row justify-content-center">
 
             <div class="col-lg-8">
-                <h1 id="title-underlined">{% trans %}Gardiennage{% endtrans %}</h1>
+                <h1 id="title-underlined">
+                    {% trans %}Gardiennage{% endtrans %}
+                    {% if app.user.service.id is not defined or app.user.service.id != 5 %}
+                        <span class="float-right">
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                                <i class="fa fa-plus"></i> {% trans %}Créer une demande{% endtrans %}
+                            </button>
+                        </span>
+                    {% endif %}
+                </h1>
+                <!-- Si on ne fait pas partie du service de guardiennage -->
+                {% if app.user.service.id is not defined or app.user.service.id != 5 %}
+                    {% if myDemands is not empty %}
+                        <p class="lead">{% trans %}Mes demandes de guardiennage{% endtrans %}</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Prise en charge</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for demand in myDemands %}
+                                <tr id="demandRow{{ demand.id }}">
+                                    <td>{{ demand.date|date('d/m H:i') }}</td>
+                                    <td>
+                                        {% if demand.date|date('Y-m-d H:i:s') > "now"|date('Y-m-d H:i:s') %}
+                                            {% if demand.userGuarding is null %}
+                                                {% trans %}Pas encore pris en charge{% endtrans %}
+                                            {% else %}
+                                                {{ demand.userGuarding.firstname ~ " " ~ demand.userGuarding.lastname }}
+                                            {% endif %}
+                                        {% else %}
+                                            {% trans %}Date passée{% endtrans %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="viewDescription({{ demand.id }})">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-danger" onclick="removeMyDemand({{ demand.id }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
 
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="lead">{% trans %}Vous n'avez pas encore effectué de demande de guardiennage{% endtrans %}</p>
+                        <p class="lead"><a data-toggle="modal" data-target="#addModal" href="#">{% trans %}En ajouter une maintenant{% endtrans %}</a></p>
+                    {% endif %}
+                <!-- Si on fait partie du service de gardiennage -->
+                {% else %}
+                    {% if demands is not empty %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{% trans %}Utilisateur{% endtrans %}</th>
+                                    <th>{% trans %}Date{% endtrans %}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for demand in demands %}
+                                    <tr>
+                                        <td>{{ demand.userToGuard.firstname ~ " " ~ demand.userToGuard.lastname }}</td>
+                                        <td>{{ demand.date|date('d/m H:i') }}</td>
+                                        <td>
+                                            <button class="btn btn-success" onclick="viewDescription({{ demand.id }})">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            {% if demand.userGuarding == app.user %}
+                                                <button class="btn btn-danger" id="btnDemand{{ demand.id }}" onclick="participateDemand({{ demand.id }})">
+                                                    <i class="fa fa-minus"></i> Se désinscrire
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-success" id="btnDemand{{ demand.id }}" onclick="participateDemand({{ demand.id }})">
+                                                    <i class="fa fa-plus"></i> Participer
+                                                </button>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+                        <p class="lead">Il n'y a pas de demandes en attente</p>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
+    {% if app.user.service.id is not defined or app.user.service.id != 5 %}
+        <div aria-hidden="true" aria-labelledby="modalNewClass" class="modal fade bd-example-modal-lg" id="addModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalNewTitle">{% trans %}Créer une demande de gardiennage{% endtrans %}</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCookingClass" method="POST">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Date{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="date" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Heure{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="time" class="form-control" name="hour" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Description{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <textarea name="description" required></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button>
+                        <button class="btn btn-success" onclick="$('#addCookingClass').submit();" data-dismiss="modal">{% trans %}Ajouter{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block customJs %}
+    <script type="text/javascript">
+        function viewDescription(id){
+            $.ajax({
+                type: "GET",
+                url : '{{ path('guarding') }}',
+                data:  {
+                    'getDemand': id
+                }
+            }).done(function(data, textStatus, xhr){
+                if (xhr.status === 200){
+                    month = data.date.date.substr(5,2);
+                    day = data.date.date.substr(8,2);
+                    Swal.fire({
+                        title: "{% trans %}Demande du{% endtrans %} " + day + "/" + month,
+                        html: data.description
+                    })
+                }
+            });
+        }
+        {% if app.user.service.id is not defined or app.user.service.id != 5 %}
+            function removeMyDemand(id){
+                Swal.fire({
+                    title: '{% trans %}Attention{% endtrans %} !',
+                    text: "{% trans %}Êtes-vous sûr de vouloir supprimer cette demande ?{% endtrans %}",
+                    type: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: '{% trans %}Annuler{% endtrans %}',
+                    confirmButtonText: '{% trans %}Supprimer{% endtrans %}',
+                    customClass: {
+                        confirmButton: 'btn btn-danger ml-2',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false,
+                    reverseButtons : 'true'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "DELETE",
+                            url : '{{ path('guarding') }}',
+                            data:  {
+                                'demand': id
+                            }
+                        }).done(function(data, textStatus, xhr){
+                            if (xhr.status === 200){
+                                $('#demandRow' + id).remove();
+                                Swal.fire({
+                                    title: "{% trans %}Succès{% endtrans %}",
+                                    type: "success",
+                                    text: "{% trans %}Votre cours a bien été supprimé{% endtrans %}"
+                                });
+                            }else{
+                                Swal.fire({
+                                    title: "{% trans %}Erreur{% endtrans %}",
+                                    type: "error",
+                                    text: "{% trans %}Erreur lors de la suppression{% endtrans %}"
+                                });
+                            }
+                        });
+                    }
+                })
+            }
+        {% else %}
+            function participateDemand(id){
+                btnDemand = $('#btnDemand' + id);
+                if (btnDemand.attr('class') === "btn btn-success"){
+                    btnDemand.attr('class','btn btn-danger');
+                    btnDemand.html('<i class="fa fa-minus"></i> {% trans %}Se désinscrire{% endtrans %}');
+                    typeRequest = "POST";
+                }else{
+                    btnDemand.attr('class','btn btn-success');
+                    btnDemand.html('<i class="fa fa-plus"></i> {% trans %}Participer{% endtrans %}');
+                    typeRequest = "DELETE";
+                }
+                $.ajax({
+                    type: typeRequest,
+                    url : '{{ path('guarding') }}',
+                    data:  {
+                        'demand': id
+                    }
+                }).done(function(data){
+                    if(data.status === 'deleted'){
+                        Swal.fire({
+                            title: "{% trans %}Succès{% endtrans %}",
+                            type: "success",
+                            text: "{% trans %}Vous avez bien été désinscrit{% endtrans %}"
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "{% trans %}Succès{% endtrans %}",
+                            type: "success",
+                            text: "{% trans %}Votre inscription a bien été prise en compte{% endtrans %}"
+                        });
+                    }
+                });
+
+            }
+        {% endif %}
+    </script>
 {% endblock %}

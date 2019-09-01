@@ -1,17 +1,212 @@
 Accueil: Accoglienza
-A propos: Chi siamo
-Services: Servizi
+A propos: A proposito
 Portfolio: Portafoglio
-Équipe: Squadra
 Nous contacter: Contattaci
-Connexion: Collegamento
-Se connecter: Connettersi
+Connexion: Entra
+Se connecter: Il login
 Votre nom: Il tuo nome
 Votre e-mail: La tua e-mail
 Sujet: Soggetto
 Message: Messaggio
-Envoyer: Mandara
-Bienvenue sur: Benvenuto sulla
+Envoyer: Mandare
+Bienvenue sur: Benvenuti a
+Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage: Siamo una squadra di studenti di informatica che lottano contro gli sprechi
+Débuter: Inizio
 S'enregistrer: Registro
-Email: Email
-Plain password: Password
+Email: E-mail
+Mot de passe: Parola d'ordine
+Administrateur du site: Amministratore del sito
+Tableau de bord principal: Cruscotto principale
+Tableau de bord: Cruscotto
+Gestion: Gestione
+Identifiants invalides: Identificatori non validi
+Quelques mots sur nous: Qualche parola su di noi
+Le but principal de notre société vise à réduire le gaspillage. Nous proposons plusieurs services afin de collecter et redistribuer des denrées et boissons.: L'obiettivo principale della nostra azienda è ridurre gli sprechi. Offriamo diversi servizi per la raccolta e la ridistribuzione di cibi e bevande.
+Collectes: Collezioni
+Nous organisons des collectes 3 fois par semaine auprès de particuliers et profesionnels pour récolter des denrées et boissons: Organizziamo collezioni 3 volte a settimana con privati e professionisti per raccogliere cibo e bevande
+Redistributions: Redistribuzioni
+Le jour suivant les collectes, nous organisons une redistribution des produits collectés notamment à des organismes de charité: Il giorno dopo le collezioni, organizziamo una ridistribuzione dei prodotti raccolti, in particolare alle organizzazioni di beneficenza
+Services: Servizi
+Nous proposons aussi une variété de services adressés aux adhérents: Offriamo anche una varietà di servizi ai membri
+Faits: Fatti
+En chiffres: In cifre
+Redistributions par an: Ridistribuzioni all'anno
+Adhérents: Membri
+Équipe: Squadra
+Notre équipe est composée d'étudiants en école d'informatique: Il nostro team è composto da studenti nella scuola di computer
+Responsable: Responsabile
+Responsable Développement: Responsabile dello sviluppo
+Responsable Réseau: Responsabile di rete
+Mes ramassages: I miei pickup
+Commentaire: Commento
+Date de création: Data di creazione
+Date de ramassage: Data di ritiro
+Statut: Stato
+Produits: Prodotti
+Aucune: No
+Commande numéro: Numero d'ordine
+Code: Codice
+Nom: Nome
+Poids: Peso
+Marques: Marche
+Quantités: Quantità
+Fermer: Chiudere
+Sauvegarder les changements: Salva le modifiche
+Contact: Contatto
+Si vous souhaitez nous contacter, laissez-nous un message ici: Se desideri contattarci, lasciaci un messaggio qui
+Mes commandes: I miei ordini
+En attente: In attesa di
+Voici les opérations en attente !: Ecco le operazioni in sospeso!
+Total des personnes: Totale persone
+Personnes en attente pour inscription: Persone in attesa di registrazione
+Collectes en attente de confirmations: Collezioni in attesa di conferma
+Staff complet: Personale completo
+Liste de toute les personnes qui travaillent avec FFW: Elenco di tutte le persone che lavorano con FFW
+Prénom: Conome
+Adresse: Indirizzo
+Pays: Paese
+Admin: Admin
+Attribuer ?: Assegnare?
+Retirer droit: Rimuovi a destra
+Donner droit: Dare bene
+Clients Particulier / Pro: Clienti particolare / professionisti
+Liste de tout les clients FFW: Elenco di tutti i clienti FFW
+Pro ou Par: Professionisti o particolare
+Particulier: Particolare
+Pro: Professionisti
+Liste de toutes les collectes: Elenco di tutte le raccolte
+Créé par: Creato da
+Véhicule utilisé: Veicolo usato
+Autoriser ?: Permetti?
+Ajouter date ?: Aggiungi data?
+Collectes en attente: Collezioni in sospeso
+Liste de toute collectes en attente: Elenco di tutte le raccolte in sospeso
+Autoriser: Permesso
+Staff sans service: Personale senza servizio
+Liste des personnes sans service attribué: Elenco di persone senza servizio assegnato
+Validation: Convalida
+Valider: Convalidare
+"Planning des Chauffeurs : semaine n°": "Programma del conducente: settimana n °"
+Semaine suivante: Settimana prossima
+Semaine précédente: Settimana precedente
+Semaine courante: Settimana corrente
+Lundi: Lunedi
+Mardi: Martedì
+Mercredi: Mercoledì
+Jeudi: Giovedi
+Vendredi: Venerdì
+Samedi: Sabato
+Dimanche: Domenica
+Nom événement: Nome dell'evento
+Date: Data
+Créneau: Nicchia
+Voici tous les services existants: Ecco tutti i servizi esistenti
+Identifiant: Accesso
+Description: Descrizione
+Créer nouveau service: Crea un nuovo servizio
+Inscription: Iscrizione
+Bénévoles en attente de confirmations: Volontari in attesa di conferme
+Modèle: Modello
+'Personnes attribuées :': 'Persone assegnate:'
+Marque: Marca
+Kilométrage: Chilometraggio
+Date d'enregistrement: Data di registrazione
+Date du dernier checkup: Data dell'ultimo controllo
+Entrer email: Inserisci l'e-mail
+Pas de vérifications: Nessun controllo
+Ajouter véhicule: Aggiungi veicolo
+Entrepôts: Magazzini
+Voici tout les entrepôt: Ecco tutti i magazzini
+Code postal: Codice postale
+Créer nouvel entrepôt: Crea nuovo magazzino
+Accès Interdit: Accesso proibito
+Vous n'avez pas accès à cette ressource: Non hai accesso a questa risorsa
+Retour à l'accueil: Ritorno a casa
+Page non trouvée: Pagina non trovata
+Oops, quelque chose est cassé: Oops, qualcosa è rotto
+Le serveur rencontre actuellement des problèmes: Il server presenta attualmente problemi
+La page demandée n'a pas été trouvée: La pagina richiesta non è stata trovata
+Bonjour: Buongiorno
+nous sommes heureux de t'avoir ici !: siamo felici di averti qui!
+'Ce message vient de :' : 'Questo messaggio proviene da:'
+Adresse email: Indirizzo email
+Service de partages entre particulier: Servizio di condivisione privata
+'Mes annonces :': 'I miei annunci:'
+Contenu: Contenuto
+Créé le: Creato il
+Options: Opzioni
+Modifier: Cambiamento
+Supprimer: Rimuovere
+Nouveau: Nuovo
+'Annonces :': 'Annunci:'
+Infos: Informazioni
+Article numéro: Numero dell'articolo
+Personne: Nessuno
+Retour: Ritorno
+Nouvel article: Nuovo articolo
+Annonce bien expliquée: Annuncio ben spiegato
+Cela devrait montrer votre profil: Questo dovrebbe mostrare il tuo profilo
+"Créé par :": "Creato da:"
+Calendrier: Calendario
+Toutes les collectes: Tutte le collezioni
+Collectes de la journée: Raccoglie del giorno
+Tous les véhicules: Tutti i veicoli
+Tous les entrpôts: Tutti i partecipanti
+Gestion staff: Gestione del personale
+Gestion collectes: Gestione della raccolta
+Véhicules: Veicoli
+Inventaires: Inventari
+Les mots de passe ne correspondent pas: Le password non corrispondono
+Service: Servizio
+'Autorisé par :': 'Autorizzato da:'
+Chauffeur attribué: Driver assegnato
+Aucun: No
+Staff: Personale
+Inscriptions: Iscrizioni
+Tous les services: Tutti i servizi
+Calendrier chauffeur: Calendario dei driver
+Calendrier aide au logement: Aiuto del calendario con l'alloggio
+Calendrier conseil anti-gaspi: Programma antispreco
+Calendrier cours de cuisine: Calendario di lezioni di cucina
+Calendrier gardiennage: Calendario di guardia
+Tout l'inventaire: Tutto l'inventario
+Rangements: Armadi
+Conseils anti-gaspi: Suggerimenti anti-spreco
+Cours de cuisine: Lezione di cucina
+Services PàP: Servizi PaP
+Gardiennage: Guardia
+État: Stato
+Donations: Donazioni
+En route !: In arrivo!
+Client: Cliente
+Articles: Merce
+Ajouter une annonce: Aggiungi un annuncio
+Mes annonces: I miei annunci
+Titre: Titolo
+Créée le: Creato il
+Annonces des utilisateurs: Annunci dell'utente
+En savoir plus: Ulteriori informazioni
+Ajouter: Aggiungere
+Attention: Attenzione
+Êtes-vous sûr de vouloir supprimer cette annonce ?: Sei sicuro di voler eliminare questo annuncio?
+Annuler: Annullare
+Succès: Successo
+Votre annonce a bien été supprimée: Il tuo annuncio è stato cancellato
+Erreur: Errore
+Erreur lors de la suppression: Errore durante l'eliminazione
+Code-barres: Codice a barre
+Etat: Stato
+Collecte: Collezione
+Entrepôt: Magazzino
+'Expire le :': 'Scade il:'
+Nombre: Numero
+Poids/Volume (en G/mL): Peso/Volume (in G/mL)
+Envoyé: Inviato
+Pas de collectes: Nessuna raccolta
+Quantité: Quantità
+Poids/Volume: Peso/Volume
+Clôture de collecte: Collezione di chiusura
+Clôture: Chiusura
+Voici tous les entrepôts: Ecco tutti i magazzini
+Tous les entrepôts: Tutti i magazzini
+'Créée :': 'Creata:'

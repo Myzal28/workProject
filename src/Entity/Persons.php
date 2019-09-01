@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  message= "L'email que vous avez choisi, existe déjà !"
  * )
  */
-class Persons implements UserInterface
+class Persons implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -166,6 +166,46 @@ class Persons implements UserInterface
      */
     private $ClientPro;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AntiWasteAdvice", mappedBy="user", orphanRemoval=true)
+     */
+    private $antiWasteAdvices;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AntiWasteAdvice", mappedBy="upvoted")
+     */
+    private $upvotedWasteAdvices;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CookingClass", mappedBy="professor")
+     */
+    private $cookingClasses;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CookingClass", mappedBy="registeredPeople")
+     */
+    private $registeredToCookingClass;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guarding", mappedBy="userToGuard", orphanRemoval=true)
+     */
+    private $toGuard;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Guarding", mappedBy="userGuarding")
+     */
+    private $guardings;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitude;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -174,6 +214,12 @@ class Persons implements UserInterface
         $this->inventories = new ArrayCollection();
         $this->calendars = new ArrayCollection();
         $this->individualOffer = new ArrayCollection();
+        $this->antiWasteAdvices = new ArrayCollection();
+        $this->upvotedWasteAdvices = new ArrayCollection();
+        $this->cookingClasses = new ArrayCollection();
+        $this->registeredToCookingClass = new ArrayCollection();
+        $this->toGuard = new ArrayCollection();
+        $this->guardings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -637,6 +683,215 @@ class Persons implements UserInterface
     public function setClientPro(int $ClientPro): self
     {
         $this->ClientPro = $ClientPro;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AntiWasteAdvice[]
+     */
+    public function getAntiWasteAdvices(): Collection
+    {
+        return $this->antiWasteAdvices;
+    }
+
+    public function addAntiWasteAdvice(AntiWasteAdvice $antiWasteAdvice): self
+    {
+        if (!$this->antiWasteAdvices->contains($antiWasteAdvice)) {
+            $this->antiWasteAdvices[] = $antiWasteAdvice;
+            $antiWasteAdvice->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAntiWasteAdvice(AntiWasteAdvice $antiWasteAdvice): self
+    {
+        if ($this->antiWasteAdvices->contains($antiWasteAdvice)) {
+            $this->antiWasteAdvices->removeElement($antiWasteAdvice);
+            // set the owning side to null (unless already changed)
+            if ($antiWasteAdvice->getUser() === $this) {
+                $antiWasteAdvice->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AntiWasteAdvice[]
+     */
+    public function getUpvotedWasteAdvices(): Collection
+    {
+        return $this->upvotedWasteAdvices;
+    }
+
+    public function addUpvotedWasteAdvice(AntiWasteAdvice $upvotedWasteAdvice): self
+    {
+        if (!$this->upvotedWasteAdvices->contains($upvotedWasteAdvice)) {
+            $this->upvotedWasteAdvices[] = $upvotedWasteAdvice;
+            $upvotedWasteAdvice->addUpvoted($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUpvotedWasteAdvice(AntiWasteAdvice $upvotedWasteAdvice): self
+    {
+        if ($this->upvotedWasteAdvices->contains($upvotedWasteAdvice)) {
+            $this->upvotedWasteAdvices->removeElement($upvotedWasteAdvice);
+            $upvotedWasteAdvice->removeUpvoted($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CookingClass[]
+     */
+    public function getCookingClasses(): Collection
+    {
+        return $this->cookingClasses;
+    }
+
+    public function addCookingClass(CookingClass $cookingClass): self
+    {
+        if (!$this->cookingClasses->contains($cookingClass)) {
+            $this->cookingClasses[] = $cookingClass;
+            $cookingClass->setProfessor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCookingClass(CookingClass $cookingClass): self
+    {
+        if ($this->cookingClasses->contains($cookingClass)) {
+            $this->cookingClasses->removeElement($cookingClass);
+            // set the owning side to null (unless already changed)
+            if ($cookingClass->getProfessor() === $this) {
+                $cookingClass->setProfessor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CookingClass[]
+     */
+    public function getRegisteredToCookingClass(): Collection
+    {
+        return $this->registeredToCookingClass;
+    }
+
+    public function addRegisteredToCookingClass(CookingClass $registeredToCookingClass): self
+    {
+        if (!$this->registeredToCookingClass->contains($registeredToCookingClass)) {
+            $this->registeredToCookingClass[] = $registeredToCookingClass;
+            $registeredToCookingClass->addRegisteredPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegisteredToCookingClass(CookingClass $registeredToCookingClass): self
+    {
+        if ($this->registeredToCookingClass->contains($registeredToCookingClass)) {
+            $this->registeredToCookingClass->removeElement($registeredToCookingClass);
+            $registeredToCookingClass->removeRegisteredPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     * @return Collection|Guarding[]
+     */
+    public function getToGuard(): Collection
+    {
+        return $this->toGuard;
+    }
+
+    public function addToGuard(Guarding $toGuard): self
+    {
+        if (!$this->toGuard->contains($toGuard)) {
+            $this->toGuard[] = $toGuard;
+            $toGuard->setUserToGuard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToGuard(Guarding $toGuard): self
+    {
+        if ($this->toGuard->contains($toGuard)) {
+            $this->toGuard->removeElement($toGuard);
+            // set the owning side to null (unless already changed)
+            if ($toGuard->getUserToGuard() === $this) {
+                $toGuard->setUserToGuard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guarding[]
+     */
+    public function getGuardings(): Collection
+    {
+        return $this->guardings;
+    }
+
+    public function addGuarding(Guarding $guarding): self
+    {
+        if (!$this->guardings->contains($guarding)) {
+            $this->guardings[] = $guarding;
+            $guarding->setUserGuarding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuarding(Guarding $guarding): self
+    {
+        if ($this->guardings->contains($guarding)) {
+            $this->guardings->removeElement($guarding);
+            // set the owning side to null (unless already changed)
+            if ($guarding->getUserGuarding() === $this) {
+                $guarding->setUserGuarding(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

@@ -84,11 +84,15 @@ Header
                 {% elseif app.user.getInternal() == 1 %}
                     {% if app.user.getService().getId() is defined and app.user.getService().getId() == 1 %}
                         <li><a href="{{path("drivers_work", {'id' : app.user.id})}}">{% trans %}Collectes{% endtrans %}</a></li>
+                    {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 4 %}
+                        <li><a href="{{ path('cooking_class') }}">{% trans %}Mes cours de cuisine{% endtrans %}</a></li>
+                    {% elseif app.user.getService().getId() is defined and app.user.getService().getId() == 5 %}
+                        <li><a href="{{ path('guarding') }}">{% trans %}Gardiennage{% endtrans %}</a></li>
                     {% endif %}
 
                 {# Si on est client ??? #}
                 {% else %}
-                    <li><a href="{{ path("client_jobs") }}">{% trans %}Mes Ramassages{% endtrans %}</a></li>
+                    <li><a href="{{ path("client_jobs") }}">{% trans %}Mes ramassages{% endtrans %}</a></li>
                     
                     <li class="menu-has-children"><a href="#">{% trans %}Services{% endtrans %}</a>
                         <ul>
@@ -133,7 +137,6 @@ Header
 </header><!-- #header -->
 
 <main id="main">
-
         {% block body %}
         {% endblock %}
 </main>
