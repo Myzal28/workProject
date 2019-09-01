@@ -9,9 +9,123 @@
     <div class="row justify-content-center">
 
         <div class="col-lg-8">
-            <h1 id="title-underlined">{% trans %}Conseils anti-gaspi{% endtrans %}</h1>
+            <h1 id="title-underlined">
+                {% trans %}Conseils anti-gaspi{% endtrans %}
+                <span class="float-right">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus"></i> {% trans %}Ajouter mon conseil{% endtrans %}
+                    </button>
+                </span>
+            </h1>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 mb-2">
+                    <form method="GET" id="sortType">
+                        <select name="order" class="form-control" onchange="$('#sortType').submit()">
+                            {% if type == 'date' %}
+                                <option value="date" selected="selected">{% trans %}Voir les plus récents{% endtrans %}</option>
+                                <option value="upvotes">{% trans %}Voir les plus populaires{% endtrans %}</option>
+                            {% else %}
+                                <option value="date">{% trans %}Voir les plus récents{% endtrans %}</option>
+                                <option value="upvotes" selected="selected">{% trans %}Voir les plus populaires{% endtrans %}</option>
+                            {% endif %}
 
+                        </select>
+                    </form>
+                </div>
+            </div>
+            {% if advices is not empty %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans %}Upvotes{% endtrans %}</th>
+                            <th>{% trans %}Utilisateur{% endtrans %}</th>
+                            <th>{% trans %}Conseil{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for advice in advices %}
+                            {% set isUpvoted = 'false' %}
+                            {%  for upvoter in advice.upvoted %}
+                                {% if app.user.id == upvoter.id %}
+                                    {% set isUpvoted = 'true' %}
+                                {% endif %}
+                            {% endfor %}
+                            <tr>
+                                <td>
+                                    {% if isUpvoted == 'true' %}
+                                        <i class="fa fa-arrow-up" id="arrow{{ advice.id }}" style="color:orange" onclick="upVote({{ advice.id }})"></i>
+                                        &nbsp;<span id="number{{ advice.id }}">{{ advice.upvoted|length }}</span>
+                                    {% else %}
+                                        <i class="fa fa-arrow-up" id="arrow{{ advice.id }}" onclick="upVote({{ advice.id }})"></i>
+                                        &nbsp;<span id="number{{ advice.id }}">{{ advice.upvoted|length }}</span>
+                                    {% endif %}
+
+                                </td>
+                                <td>{{ advice.user.firstname ~ " " ~ advice.user.lastname }}</td>
+                                <td>{{ advice.advice }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="lead"> Il n'y a pas encore de conseils anti-gaspi disponibles</p>
+            {% endif %}
         </div>
     </div>
 </div>
+<div aria-hidden="true" aria-labelledby="modalNewTitle" class="modal fade bd-example-modal-lg" id="addModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalNewTitle">{% trans %}Ajouter mon conseil{% endtrans %}</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addAdvice" method="POST">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">{% trans %}Conseil{% endtrans %}</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="addAdvice">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button>
+                <button class="btn btn-success" onclick="$('#addAdvice').submit();" data-dismiss="modal">{% trans %}Ajouter{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block customJs %}
+    <script type="text/javascript">
+        function upVote(id){
+            arrow = $('#arrow' + id);
+            number = $('#number' + id);
+            if ( (arrow.attr('style') === undefined) || (arrow.attr('style') === '') ) {
+                number.html(parseInt(number.html())+1);
+                arrow.attr('style','color:orange');
+                $.ajax({
+                    type: 'POST',
+                    url : '{{ path('waste_advices') }}',
+                    data: {
+                        'upvoteAdvice': id
+                    }
+                });
+            }else{
+                number.html(number.html()-1);
+                arrow.attr('style','');
+                $.ajax({
+                    type: 'DELETE',
+                    url : '{{ path('waste_advices') }}',
+                    data: {
+                        'upvoteAdvice': id
+                    }
+                });
+            }
+        }
+    </script>
 {% endblock %}

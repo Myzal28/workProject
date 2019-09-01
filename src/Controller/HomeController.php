@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
-
-
+use App\Entity\Delivery;
 use App\Entity\Persons;
 
+use App\Entity\Warehouses;
+use App\Form\DeliveryType;
+use App\Form\ModifyUserType;
 use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
-use App\Repository\ArticlesRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\WarehousesRepository;
 
+use App\Service\Curl;
+use App\Service\Geolocation;
+use App\Service\QuickAlert;
+
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -20,6 +26,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class HomeController extends AbstractController
 {
@@ -76,9 +85,77 @@ class HomeController extends AbstractController
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @param Request $request
+     * @return Response
      */
-    public function viewProfile(){
-        return $this->render('view/profile.html.twig');
+    public function viewProfile(Request $request){
+
+        $user = $this->getUser();
+        $options = [
+            'lastname' => $user->getLastName(),
+            'firstname' => $user->getFirstName(),
+            'birthday' => $user->getBirthday(),
+            'phoneNbr' => $user->getPhoneNbr(),
+            'country' => $user->getCountry(),
+            'city' => $user->getCity(),
+            'zipCode' => $user->getZipcode(),
+            'address' => $user->getAddress(),
+        ];
+        $form = $this->createForm(ModifyUserType::class,$options);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $geoService = new Geolocation();
+            $closeEnough = $geoService->closeEnough($data['address'],$data['city'],$data['zipCode'],$this->getDoctrine());
+            if ($closeEnough){
+
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough['closestWarehouse']);
+
+                $user->setWarehouse($closestWarehouse);
+                $user->setLastName($data['lastname']);
+                $user->setFirstName($data['firstname']);
+                $user->setBirthday($data['birthday']);
+                $user->setAddress($data['address']);
+                $user->setPhoneNbr($data['phoneNbr']);
+                $user->setCountry($data['country']);
+                $user->setZipcode($data['zipCode']);
+                $user->setCity($data['city']);
+                $user->setLatitude($closeEnough['lat']);
+                $user->setLongitude($closeEnough['lng']);
+
+                $m = $this->getDoctrine()->getManager();
+
+                $m->persist($user);
+                $m->flush();
+                // Modifier les informations en BDD
+                $quickAlert = new QuickAlert("success",'Succès',"Vos informations ont bien été modifiées");
+            }else{
+                $quickAlert = new QuickAlert("error",'Erreur',"Désolé, notre service n'est pas encore disponible pour cette adresse");
+            }
+
+            return $this->render('view/profile.html.twig',[
+                'form' => $form->createView(),
+                'quickAlert' => $quickAlert
+            ]);
+        }else{
+            $debug = "";
+        }
+        return $this->render('view/profile.html.twig',[
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    private function sendMail($email,$parameters,$view,$subject,\Swift_Mailer $mailer){
+        $message = (new \Swift_Message($subject))
+            ->setFrom('planitcalendar2018@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView($view,$parameters),
+                'text/html'
+            );
+        $mailer->send($message);
     }
 
     /**
@@ -86,8 +163,8 @@ class HomeController extends AbstractController
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {
-        $message = (new \Swift_Message('Welcome on board !'))
-            ->setFrom('planitcalendar2018@gmail.com')
+        $message = (new \Swift_Message('Bienvenue !'))
+            ->setFrom('ffw.pmv@gmail.com')
             ->setTo($email)
             ->setBody(
                 $this->renderView(
@@ -97,18 +174,7 @@ class HomeController extends AbstractController
                 ),
                 'text/html'
             )
-            /*
-            * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'emails/registration.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )
-            */
         ;
-
         $mailer->send($message);
 
         return $this->redirectToRoute('security_login');

@@ -10,6 +10,9 @@ use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
 use App\Repository\PersonsRepository;
 use App\Repository\CalendarRepository;
+use App\Service\Curl;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,16 +90,20 @@ class ApiController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function collectCreate(Request $request, PersonsRepository $personsRep, ObjectManager $manager, FoodsRepository $foodsRep, StatusRepository $statusRep)
-    {   
-        
+    public function collectCreate(Request $request, PersonsRepository $personsRep, ObjectManager $manager, FoodsRepository $foodsRep, StatusRepository $statusRep,\Swift_Mailer $mailer)
+    {
         $response = new Response();
 
+        // On récupère le json qui nous a été envoyé
         $data = json_decode($request->getContent(), true);
 
         $user = $personsRep->findOneBy(["email"=> $data["email"]]);
         if($user){
+            $totalWeight = 0;
             foreach($data["articles"] as $article){
+                $curl = new Curl();
+                $foodFromApi = $curl->getFood($article['code']);
+                $totalWeight = $foodFromApi['product_quantity'];
 
                 $food = $foodsRep->findOneBy(["code"=>$article["code"]]);
 
@@ -117,26 +124,56 @@ class ApiController extends AbstractController
                 }
             }
 
-            
-
             $collect = new Collect();
             $status = $statusRep->findOneBy(["id"=>4]);
 
             $collect->setPersonCreate($user)
                     ->setStatus($status)
                     ->setCommentary("Collecte en attente de confirmation.")
-                    ->setDateRegister($date = new \Datetime);
-
+                    ->setDateRegister($date = new \Datetime)
+                    ->setTotalWeight($totalWeight);
             $manager->persist($collect);
             $manager->flush();
             
             $fs = new Filesystem();
             try {
-                $fs->dumpFile($this->get('kernel')->getRootDir().'/collects/'.$collect->getId().'.json', $request->getContent());
+                $fs->dumpFile($this->getParameter('kernel.project_dir').'/src/collects/'.$collect->getId().'.json', $request->getContent());
             }catch(IOException $e) {
                 $response->setContent($e);
                 return $response;
             }
+
+            // On va générer le pdf qui sera envoyé à l'utilisateur
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFond','arial');
+            $pdf = new Dompdf();
+
+            $html = $this->renderView('pdf/collect.html.twig',[
+                'name' => 'Maxime',
+                'products' => $data['articles']
+            ]);
+
+            $pdf->loadHtml($html);
+            $pdf->setPaper('A4','portrait');
+            $pdf->render();
+
+            $path = $this->getParameter('kernel.project_dir') . "/emailPdfs/pdfCollect.pdf";
+            file_put_contents($path ,$pdf->output());
+
+
+            $message = (new \Swift_Message('Votre ramassage du ' . date('d/m/Y')))
+                ->setFrom('ffw.pmv@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/addCollect.html.twig',
+                        ['name' => $user->getFirstname()]
+                    ),
+                    'text/html'
+                )
+                ->attach(\Swift_Attachment::fromPath($path))
+            ;
+            $mailer->send($message);
 
             $response->setContent('true');
             $response->setStatusCode(200);

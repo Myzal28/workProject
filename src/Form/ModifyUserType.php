@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Persons;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,33 +14,21 @@ class ModifyUserType extends AbstractType
         $builder
             ->add('lastname')
             ->add('firstname')
-            ->add('birthday')
-            ->add('password')
-            ->add('address')
+            ->add('birthday', DateType::class, [
+                'format' => 'yyyy-MM-dd',
+                'widget' => 'single_text',
+            ])
             ->add('phoneNbr')
-            ->add('email')
             ->add('country')
-            ->add('zipcode')
             ->add('city')
-            ->add('dateRegister')
-            ->add('dateModify')
-            ->add('company')
-            ->add('adminSite')
-            ->add('volunteer')
-            ->add('internal')
-            ->add('ClientPar')
-            ->add('ClientPro')
-            ->add('service')
-            ->add('warehouse')
-            ->add('signup')
-            ->add('calendars')
+            ->add('address')
+            ->add('zipCode')
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Persons::class,
-        ]);
+
     }
 }

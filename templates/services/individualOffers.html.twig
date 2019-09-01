@@ -116,7 +116,6 @@
     </div>
 
 </div>
-</div>
 {% endblock %}
 {% block customJs %}
     <script type="text/javascript">
@@ -127,7 +126,6 @@
             $.get(
                 '{{ path('individual_offers_api') }}?offer=' + offer,
                 function(data, textStatus, xhr){
-                    console.log(data);
                     if (xhr.status === 200){
                         Swal.fire({
                             title: data.name,
@@ -161,7 +159,6 @@
                         }
                     }).done(function(data, textStatus, xhr){
                         if (xhr.status === 200){
-                            console.log(data);
                             $('#myOffer' + offer).remove();
                             Swal.fire({
                                 title: "{% trans %}Succès{% endtrans %}",

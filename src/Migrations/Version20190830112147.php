@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190609031416 extends AbstractMigration
+final class Version20190830112147 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20190609031416 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE article (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, content LONGTEXT NOT NULL, image VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE persons ADD client_par INT NOT NULL');
+        $this->addSql('CREATE TABLE anti_waste_advice (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, advice VARCHAR(255) NOT NULL, date DATE NOT NULL, INDEX IDX_4D512E50A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE anti_waste_advice ADD CONSTRAINT FK_4D512E50A76ED395 FOREIGN KEY (user_id) REFERENCES persons (id)');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,6 @@ final class Version20190609031416 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE article');
-        $this->addSql('ALTER TABLE persons DROP client_par');
+        $this->addSql('DROP TABLE anti_waste_advice');
     }
 }
