@@ -69,6 +69,27 @@ class Delivery
      */
     private $inventory;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Warehouses")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $warehouse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitude;
+
     public function __construct()
     {
         $this->inventory = new ArrayCollection();
@@ -214,6 +235,54 @@ class Delivery
                 $inventory->setDelivery(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getWarehouse(): ?Warehouses
+    {
+        return $this->warehouse;
+    }
+
+    public function setWarehouse(?Warehouses $warehouse): self
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

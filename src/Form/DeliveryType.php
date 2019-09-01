@@ -16,6 +16,7 @@ class DeliveryType extends AbstractType
             ->add('entityLastname')
             ->add('entityEmail')
             ->add('address')
+            ->add('city')
             ->add('country')
             ->add('zipcode')
         ;

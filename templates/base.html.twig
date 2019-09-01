@@ -61,7 +61,7 @@ Header
 
                 {% block navbar %}
                 {% endblock %}
-
+                <li><a href="{{ path('security_delivery_signup') }}">{% trans %}Demande alimentaire{% endtrans %}</a></li>
                 <li><a href="{{ path('contact') }}">{% trans %}Nous contacter{% endtrans %}</a></li>
                 {# Si on est pas connecté #}
                 {% if app.user == false %}

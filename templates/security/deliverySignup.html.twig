@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} {% trans %}Demande alimentaire{% endtrans %}{% endblock %}
+{% block body %}
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+		    <div class="col-lg-8">
+		        <h1 id="title-underlined">{% trans %}Demande{% endtrans %}</h1>
+		        {{ form_start(form) }}
+		        {{ form_widget(form) }}
+		        <button type="submit" class="btn btn-success">Envoyer</button>
+		        {{ form_end(form) }}
+		    </div>
+		</div>
+	</div>
+{% endblock %}
+

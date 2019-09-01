@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Signup;
 use App\Entity\Persons;
+use App\Entity\Delivery;
 
 use App\Entity\Warehouses;
 use App\Form\SignupPersonType;
+use App\Form\DeliveryType;
 
 use App\Service\Geolocation;
 
@@ -23,6 +25,56 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
+
+    /**
+     * @Route("/delivery_signup/{_locale}", name="security_delivery_signup", defaults={"_locale"="fr"})
+     */
+    public function delivery(Request $request, StatusRepository $status)
+    {
+        $delivery = new Delivery();
+
+        $form = $this->createForm(DeliveryType::class, $delivery);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $geoService = new Geolocation();
+            $closeEnough = $geoService->closeEnough($delivery->getAddress(),$delivery->getCity(),$delivery->getZipcode(),$this->getDoctrine());
+
+            if ($closeEnough){
+                
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough['closestWarehouse']);
+
+                $delivery->setWarehouse($closestWarehouse);
+                $delivery->setStatus($status->find(1));
+                $delivery->setLatitude($closeEnough['lat']);
+                $delivery->setLongitude($closeEnough['lng']);
+
+                $this->getDoctrine()->getManager()->persist($delivery);
+                $this->getDoctrine()->getManager()->flush();
+
+                
+
+                return $this->redirectToRoute('new_delivery',['id' => $person->getId()]);
+
+            }else{
+                $quickAlert['icon'] = "error";
+                $quickAlert['title'] = "Erreur";
+                $quickAlert['text'] = "Notre service n'est malheureusement pas encore disponible dans votre ville";
+
+
+                return $this->render('security/deliverySignup.html.twig', [
+                    'form' => $form->createView(),
+                    'quickAlert' => $quickAlert
+                ]);
+            }
+
+        }
+
+        return $this->render('security/deliverySignup.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
     /**
      * @Route("/signup/{_locale}", name="security_signup", defaults={"_locale"="fr"})

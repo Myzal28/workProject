@@ -2,33 +2,34 @@
 
 namespace App\Controller;
 
-use App\Entity\Delivery;
-use App\Entity\Persons;
-
-use App\Entity\Warehouses;
-use App\Form\DeliveryType;
-use App\Form\ModifyUserType;
-use App\Repository\StatusRepository;
-use App\Repository\CollectRepository;
-use App\Repository\InventoryRepository;
-use App\Repository\WarehousesRepository;
-
-use App\Service\Curl;
-use App\Service\Geolocation;
-use App\Service\QuickAlert;
-
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Dompdf\Dompdf;
 use Dompdf\Options;
+
+use App\Service\Curl;
+use App\Entity\Persons;
+use App\Entity\Delivery;
+use App\Entity\Warehouses;
+use App\Form\DeliveryType;
+use App\Service\QuickAlert;
+use App\Form\ModifyUserType;
+
+use App\Service\Geolocation;
+use App\Repository\StatusRepository;
+use Symfony\Component\Finder\Finder;
+
+use App\Repository\CollectRepository;
+use App\Repository\DeliveryRepository;
+use App\Repository\InventoryRepository;
+use App\Repository\WarehousesRepository;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -370,5 +371,46 @@ class HomeController extends AbstractController
         return $this->render('admin/manageInventory.html.twig',[
             "inventories" => $inventories
         ]);
+    }
+
+    /**
+     * @Route("/new_delivery/{_locale}",
+     *     defaults={"_locale"="fr"},
+     *     name="new_delivery",
+     *     requirements={
+     *         "_locale"="en|fr|pt|it"
+     * })
+     */
+    public function newDelivery(DeliveryRepository $deliveryRep, InventoryRepository $inventoryRep){
+
+
+        if(/*$delivery*/TRUE){
+
+            $deliveryTemp = $deliveryRep->find(1);
+
+            $stocks = $inventoryRep->findAll(["warehouse_id"=>$deliveryTemp->getWarehouse()]);
+
+            $arrayStock = array();
+
+            foreach($stocks as $stock){
+                $foodId = $stock->getFoods()->getId();
+                if( isset($arrayStock[$foodId]) ){
+                    $arrayStock[$foodId]["number"] + $stock->getNumber();;
+                }else{
+                    $arrayStock[$foodId]["name"] =  $stock->getFoods()->getName();
+                    $arrayStock[$foodId]["brands"] =  $stock->getFoods()->getBrands();
+                    $arrayStock[$foodId]["code"] =  $stock->getFoods()->getCode();
+                    $arrayStock[$foodId]["number"] =  $stock->getNumber();
+
+                }
+                
+            }
+
+            return $this->render('home/deliverySetup.html.twig',[
+               'stock' => $arrayStock
+            ]);
+        }
+
+        return $this->redirectToRoute('security_delivery_signup');;
     }
 }
