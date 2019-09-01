@@ -92,6 +92,7 @@ class SecurityController extends AbstractController
                 $this->getDoctrine()->getManager()->persist($person);
                 $this->getDoctrine()->getManager()->flush();
 
+
                 return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
             }else{
                 $quickAlert['icon'] = "error";

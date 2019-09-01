@@ -26,6 +26,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class HomeController extends AbstractController
 {
     /**
@@ -140,13 +143,25 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    private function sendMail($email,$parameters,$view,$subject,\Swift_Mailer $mailer){
+        $message = (new \Swift_Message($subject))
+            ->setFrom('planitcalendar2018@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView($view,$parameters),
+                'text/html'
+            );
+        $mailer->send($message);
+    }
+
     /**
      * @Route("/email/send/{email}/{name}/{_locale}",name="email_send")
      */
     public function mail($name, $email, \Swift_Mailer $mailer)
     {
-        $message = (new \Swift_Message('Welcome on board !'))
-            ->setFrom('planitcalendar2018@gmail.com')
+        $message = (new \Swift_Message('Bienvenue !'))
+            ->setFrom('ffw.pmv@gmail.com')
             ->setTo($email)
             ->setBody(
                 $this->renderView(
@@ -156,18 +171,7 @@ class HomeController extends AbstractController
                 ),
                 'text/html'
             )
-            /*
-            * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'emails/registration.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )
-            */
         ;
-
         $mailer->send($message);
 
         return $this->redirectToRoute('security_login');
