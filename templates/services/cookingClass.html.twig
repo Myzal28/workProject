@@ -8,10 +8,262 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
 
-            <div class="col-lg-8">
-                <h1 id="title-underlined">{% trans %}Cours de cuisine{% endtrans %}</h1>
-
+            <div class="col-lg-10">
+                <h1 id="title-underlined">
+                    {% trans %}Cours de cuisine{% endtrans %}
+                    {% if app.user.service.id is defined and app.user.service.id == 4 %}
+                        <span class="float-right">
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                                {% trans %}<i class="fa fa-plus"></i> Ajouter un cours{% endtrans %}
+                            </button>
+                        </span>
+                    {% endif %}
+                </h1>
+                {% if cookingClasses is not empty %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{% trans %}Intitulé{% endtrans %}</th>
+                                <th>{% trans %}Lieu{% endtrans %}</th>
+                                <th>{% trans %}Début{% endtrans %}</th>
+                                <th>{% trans %}Durée{% endtrans %}</th>
+                                <th>{% trans %}Places{% endtrans %}</th>
+                                {% if app.user.service.id is not defined or app.user.service.id != 4 %}
+                                    <th>{% trans %}Professeur{% endtrans %}</th>
+                                {% endif %}
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cookingClass in cookingClasses %}
+                                {% set capacity = cookingClass.capacity|number_format %}
+                                {% set participants = cookingClass.registeredPeople|length|number_format %}
+                                {% set userIsRegistered = "false" %}
+                                <tr id="cookingClassRow{{ cookingClass.id }}">
+                                    <td>{{ cookingClass.name }}</td>
+                                    <td>{{ cookingClass.place }}</td>
+                                    <td>{{ cookingClass.beginning|date('d/m H:i') }}</td>
+                                    {% set durationMinutes = cookingClass.duration%60 %}
+                                    {% set durationHours = (cookingClass.duration-durationMinutes)/60 %}
+                                    <td>{{ durationHours ~ "h" ~ durationMinutes }}m</td>
+                                    <td><span id="places{{ cookingClass.id }}">{{ capacity-participants }}</span>/{{ cookingClass.capacity }}</td>
+                                    {% if app.user.service.id is not defined or app.user.service.id != 4 %}
+                                        <td>{{ cookingClass.professor.firstname ~ " " ~ cookingClass.professor.lastname }}</td>
+                                    {% endif %}
+                                    <td>
+                                        {% if app.user.service.id is defined and app.user.service.id == 4 %}
+                                            <button class="btn btn-success" onclick="viewStudents({{ cookingClass.id }})">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger" onclick="removeClass({{ cookingClass.id }})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-success" onclick="registerClass({{ cookingClass.id }})">
+                                                {% for user in cookingClass.registeredPeople %}
+                                                    {% if user.id == app.user.id %}
+                                                        {% set userIsRegistered = "true" %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if userIsRegistered == "true" %}
+                                                        <i id="class{{ cookingClass.id }}" class="fa fa-minus"></i> {% trans %}Se désinscrire{% endtrans %}
+                                                {% else %}
+                                                        <i id="class{{ cookingClass.id }}" class="fa fa-plus"></i> {% trans %}S'inscrire{% endtrans %}
+                                                {% endif %}
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="lead">{% trans %}Il n'y a pas encore de cours de cuisine disponibles{% endtrans %}</p>
+                {% endif %}
             </div>
         </div>
     </div>
+    {% if app.user.service.id is defined and app.user.service.id == 4 %}
+        <div aria-hidden="true" aria-labelledby="modalNewClass" class="modal fade bd-example-modal-lg" id="addModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalNewTitle">{% trans %}Ajouter un cours{% endtrans %}</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCookingClass" method="POST">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Nom{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Lieu{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="place" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Date{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="beginning_date" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Heure{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="time" class="form-control" name="beginning_hour" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Durée (en minutes){% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" name="duration" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{% trans %}Capacité{% endtrans %}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" name="capacity" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button">{% trans %}Retour{% endtrans %}</button>
+                        <button class="btn btn-success" onclick="$('#addCookingClass').submit();" data-dismiss="modal">{% trans %}Ajouter{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{%  block customJs %}
+    {% if app.user.service.id is not defined or app.user.service.id != 4 %}
+        <script type="text/javascript">
+            function registerClass(id){
+                cookingClass = $('#class' + id);
+                placesLeftSpan = $('#places' + id);
+                placesLeft = parseInt(placesLeftSpan.html());
+                console.log(placesLeft);
+                if (cookingClass.attr('class') === "fa fa-minus"){
+                    $.ajax({
+                        type: 'DELETE',
+                        url : '{{ path('cooking_class') }}',
+                        data: {
+                            'cookingClass': id
+                        }
+
+                    }).done(function(data, textStatus,xhr){
+
+                        placesLeftSpan.html(parseInt(placesLeft)+1);
+                        Swal.fire({
+                            title: "{% trans %}Succès{% endtrans %}",
+                            html: "{% trans %}Votre désinscription a bien été prise en compte{% endtrans %}",
+                            type: "success"
+                        });
+                        cookingClass.parent().html('<i class="fa fa-plus" id="class' + id + '"></i> {% trans %}S\'inscrire{% endtrans %}');
+                    });
+                }else{
+                    $.post(
+                        '{{ path('cooking_class') }}',
+                        'cookingClass=' + id,
+                        function(data){
+                            if (data.status === 'added'){
+                                cookingClass.parent().html('<i class="fa fa-minus" id="class' + id + '"></i> {% trans %}Se désinscrire{% endtrans %}');
+                                placesLeftSpan.html(parseInt(placesLeft)-1);
+                                Swal.fire({
+                                    title: "{% trans %}Succès{% endtrans %}",
+                                    html: "{% trans %}Inscription réussie, un email de confirmation vous sera envoyé 24h avant le cours{% endtrans %}",
+                                    type: "success"
+                                })
+                            }else{
+                                Swal.fire({
+                                    title: "{% trans %}Erreur{% endtrans %}",
+                                    html: "{% trans %}Le cours est complet et ne prend plus d'inscriptions{% endtrans %}",
+                                    type: "error"
+                                });
+                            }
+                        }
+                    );
+                }
+            }
+        </script>
+    {% else %}
+        <script type="text/javascript">
+            function viewStudents(id){
+                $.ajax({
+                    type: "GET",
+                    url : '{{ path('cooking_class') }}',
+                    data:  {
+                        'getAll': id
+                    }
+                }).done(function(data, textStatus, xhr){
+                    if (xhr.status === 200){
+                        if (data.length !== 0){
+                            participants = "<ul>";
+                            for (i = 0; i < data.length ; i++){
+                                participants = participants + "<li>" + data[i]['firstname'] + " " + data[i]['lastname'];
+                            }
+                            Swal.fire({
+                                title: "{% trans %}Participants{% endtrans %}",
+                                html: participants
+                            })
+                        }else{
+                            Swal.fire({
+                                title: "{% trans %}Participants{% endtrans %}",
+                                html: "{% trans %}Personne ne s'est encore inscrit à ce cours{% endtrans %}"
+                            })
+                        }
+                    }
+                });
+            }
+
+            function removeClass(id){
+                Swal.fire({
+                    title: '{% trans %}Attention{% endtrans %} !',
+                    text: "{% trans %}Êtes-vous sûr de vouloir supprimer ce cours ? Les utilisateurs inscris seront avertis par mail{% endtrans %}",
+                    type: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: '{% trans %}Annuler{% endtrans %}',
+                    confirmButtonText: '{% trans %}Supprimer{% endtrans %}',
+                    customClass: {
+                        confirmButton: 'btn btn-danger ml-2',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false,
+                    reverseButtons : 'true'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "DELETE",
+                            url : '{{ path('cooking_class') }}',
+                            data:  {
+                                'cookingClass': id
+                            }
+                        }).done(function(data, textStatus, xhr){
+                            if (xhr.status === 200){
+                                $('#cookingClassRow' + id).remove();
+                                Swal.fire({
+                                    title: "{% trans %}Succès{% endtrans %}",
+                                    type: "success",
+                                    text: "{% trans %}Votre cours a bien été supprimé{% endtrans %}"
+                                });
+                            }else{
+                                Swal.fire({
+                                    title: "{% trans %}Erreur{% endtrans %}",
+                                    type: "error",
+                                    text: "{% trans %}Erreur lors de la suppression{% endtrans %}"
+                                });
+                            }
+                        });
+                    }
+                })
+            }
+        </script>
+    {% endif %}
 {% endblock %}

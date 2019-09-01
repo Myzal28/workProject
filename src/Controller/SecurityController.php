@@ -48,7 +48,7 @@ class SecurityController extends AbstractController
             if ($closeEnough){
                 $hash = $encoder->encodePassword($person, $person->getPassword());
 
-                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough);
+                $closestWarehouse = $this->getDoctrine()->getRepository(Warehouses::class)->find($closeEnough['closestWarehouse']);
                 $person->setWarehouse($closestWarehouse);
 
                 $person->setPassword($hash);
@@ -59,6 +59,9 @@ class SecurityController extends AbstractController
                 $person->setVolunteer(0);
                 $person->setClientPro(0);
                 $person->setClientPar(0);
+
+                $person->setLatitude($closeEnough['lat']);
+                $person->setLongitude($closeEnough['lng']);
 
                 // On passe à 1 la variable qui nous intéresse
                 switch ($person->type_choice) {
@@ -91,6 +94,7 @@ class SecurityController extends AbstractController
                 // On envoie toutes nos modifications en base de données
                 $this->getDoctrine()->getManager()->persist($person);
                 $this->getDoctrine()->getManager()->flush();
+
 
                 return $this->redirectToRoute('email_send',['name' => $person->getFirstname(), 'email'=>$person->getEmail()]);
             }else{

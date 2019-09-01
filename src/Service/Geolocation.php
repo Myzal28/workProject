@@ -65,7 +65,11 @@ class Geolocation
                     }
                 }
             }
-            return $closestWarehouse;
+            return array(
+                'closestWarehouse' => $closestWarehouse,
+                'lat' => $lat,
+                'lng' => $lng
+            );
         }else{
             return $closeEnough;
         }

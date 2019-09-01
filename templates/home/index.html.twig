@@ -3,21 +3,6 @@
 
 {% block firstPage %}
     <section id="intro">
-        <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
-
-            <div class="carousel-inner" role="listbox">
-
-                <div class="carousel-item active">
-                    <div class="carousel-background"><img src="{{ asset('/img/background/background-1.jpg') }}" alt=""></div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="carousel-background"><img src="{{ asset('/img/background/background-2.jpg') }}" alt=""></div>
-                </div>
-
-            </div>
-
-        </div>
         <div class="intro-content">
             <h1>{% trans %}Bienvenue sur{% endtrans %} fight food waste</h1>
             <h2>{% trans %}Nous sommes une équipe d'étudiants en informatique qui luttons contre le gaspillage{% endtrans %}</h2>
@@ -60,7 +45,7 @@
 
                 </div>
                 <div class="col-lg-6 order-lg-2 order-1 wow fadeInRight">
-                    <video controls="controls" width="700" hight="525" poster="{{ asset('video/thumbnail.jpg') }}">
+                    <video controls="controls" width="100%" poster="{{ asset('video/thumbnail.jpg') }}">
                         <source src="{{ asset('video/présentation_webgl.mp4') }}" type="video/mp4" />
                     </video>
                 </div>
