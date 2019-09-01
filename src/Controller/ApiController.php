@@ -149,6 +149,39 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @param $email
+     * @param $parameters
+     * @param $view
+     * @param $subject
+     * @param \Swift_Mailer $mailer
+     */
+    private function sendMail($email,$parameters,$view,$subject,\Swift_Mailer $mailer){
+        $message = (new \Swift_Message($subject))
+            ->setFrom('planitcalendar2018@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView($view,$parameters),
+                'text/html'
+            );
+        $mailer->send($message);
+    }
+
+
+    /**
+     * @Route("/test/mail")
+     */
+
+    public function testMail(\Swift_Mailer $mailer){
+        $email = 'valentin77181@gmail.com';
+        $parameters = ['name' => 'Valentin'];
+        $view = 'email/deliveryRecap.html.twig';
+        $subject = "La livraison s'est bien effectuée";
+
+        return $this->sendMail($email, $parameters, $view, $subject, $mailer);
+
+    }
+
+    /**
      * @Route("/calendar/load", name="calendar_load")
      */
     public function calendarLoad(CalendarRepository $calendarRep){
