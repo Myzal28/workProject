@@ -217,7 +217,6 @@ class ApiController extends AbstractController
                 $response->setContent($e);
                 return $response;
             }
-            /*
             // On va générer le pdf qui sera envoyé à l'utilisateur
             $pdfOptions = new Options();
             $pdfOptions->set('defaultFond','arial');
@@ -248,7 +247,7 @@ class ApiController extends AbstractController
                 )
                 ->attach(\Swift_Attachment::fromPath($path))
             ;
-            $mailer->send($message);*/
+            $mailer->send($message);
             $response->setContent('true');
             $response->setStatusCode(200);
             return $response;

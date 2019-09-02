@@ -49,7 +49,7 @@ class CookingClassRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
 
     public function findThisWeek($id){
         $qb = $this->createQueryBuilder('q');
@@ -64,5 +64,6 @@ class CookingClassRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    */
 
 }
