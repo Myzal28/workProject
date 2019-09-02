@@ -56,4 +56,16 @@ class GuardingRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findThisWeek(){
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->where("q.beginning > :now")
+            ->setParameter('now',date('Y-m-d 00:00:00'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 }

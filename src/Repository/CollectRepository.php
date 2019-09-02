@@ -59,4 +59,17 @@ class CollectRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findThisWeek(){
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->where("q.dateCollect > :now")
+            ->setParameter('now',date('Y-m-d 00:00:00'))
+            ->groupBy("q.vehicle")
+            ->andWhere("q.status = 5")
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 }
