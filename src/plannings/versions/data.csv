@@ -1,0 +1,22 @@
+id_user;name;serviceType;schedule;duration;language
+1;Balivet, Peter;3;03/09-16h30;2;fr
+1;Balivet, Peter;1;02/09-10h00;6;fr
+2;Lalo, Maxime;3;02/09-17h30;1;fr
+2;Lalo, Maxime;1;05/09-09h00;6;fr
+2;Lalo, Maxime;2;03/09-10h00;6;fr
+2;Lalo, Maxime;2;04/09-13h00;6;fr
+4;Roussel, Valentin;1;05/09-08h00;6;fr
+4;Roussel, Valentin;2;06/09-08h30;6;fr
+4;Roussel, Valentin;4;06/09-18h30;4;fr
+5;Tortel, Pascual;3;06/09-17h00;2;it
+5;Tortel, Pascual;1;02/09-13h30;6;it
+5;Tortel, Pascual;1;04/09-11h30;6;it
+5;Tortel, Pascual;2;03/09-09h30;6;it
+5;Tortel, Pascual;2;05/09-14h00;6;it
+6;San, José;1;04/09-12h30;6;pt
+6;San, José;2;05/09-08h30;6;pt
+6;San, José;4;05/09-19h00;3,5;pt
+6;San, José;4;02/09-18h00;5;pt
+7;Troyes, Alice;3;05/09-16h30;2;en
+7;Troyes, Alice;4;04/09-19h00;4;en
+7;Troyes, Alice;4;03/09-18h30;4,5;en

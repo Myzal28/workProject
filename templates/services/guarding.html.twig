@@ -19,10 +19,10 @@
                         </span>
                     {% endif %}
                 </h1>
-                <!-- Si on ne fait pas partie du service de guardiennage -->
+                <!-- Si on ne fait pas partie du service de gardiennage -->
                 {% if app.user.service.id is not defined or app.user.service.id != 5 %}
                     {% if myDemands is not empty %}
-                        <p class="lead">{% trans %}Mes demandes de guardiennage{% endtrans %}</p>
+                        <p class="lead">{% trans %}Mes demandes de gardiennage{% endtrans %}</p>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -60,7 +60,7 @@
                             </tbody>
                         </table>
                     {% else %}
-                        <p class="lead">{% trans %}Vous n'avez pas encore effectué de demande de guardiennage{% endtrans %}</p>
+                        <p class="lead">{% trans %}Vous n'avez pas encore effectué de demande de gardiennage{% endtrans %}</p>
                         <p class="lead"><a data-toggle="modal" data-target="#addModal" href="#">{% trans %}En ajouter une maintenant{% endtrans %}</a></p>
                     {% endif %}
                 <!-- Si on fait partie du service de gardiennage -->
