@@ -14,7 +14,7 @@
                     {% if app.user.service.id is defined and app.user.service.id == 4 %}
                         <span class="float-right">
                             <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
-                                {% trans %}<i class="fa fa-plus"></i> Ajouter un cours{% endtrans %}
+                                <i class="fa fa-plus"></i>{% trans %}Ajouter un cours{% endtrans %}
                             </button>
                         </span>
                     {% endif %}
@@ -166,7 +166,7 @@
                             html: "{% trans %}Votre désinscription a bien été prise en compte{% endtrans %}",
                             type: "success"
                         });
-                        cookingClass.parent().html('<i class="fa fa-plus" id="class' + id + '"></i> {% trans %}S\'inscrire{% endtrans %}');
+                        cookingClass.parent().html(`<i class="fa fa-plus" id="class' + id + '"></i> {% trans %}S'inscrire{% endtrans %}`);
                     });
                 }else{
                     $.post(

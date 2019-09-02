@@ -19,6 +19,18 @@ class CollectRepository extends ServiceEntityRepository
         parent::__construct($registry, Collect::class);
     }
 
+    public function findWaiting($warehouse){
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->where("q.dateRegister > :now")
+            ->setParameter('now',date('Y-m-d 00:00:00'))
+            ->andWhere('q.warehouse = :warehouse')
+            ->setParameter('warehouse',$warehouse)
+            ->andWhere('q.status = 4')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
     // /**
     //  * @return Collect[] Returns an array of Collect objects
     //  */
@@ -47,4 +59,17 @@ class CollectRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findThisWeek(){
+        $qb = $this->createQueryBuilder('q');
+
+        $qb->where("q.dateCollect > :now")
+            ->setParameter('now',date('Y-m-d 00:00:00'))
+            ->groupBy("q.vehicle")
+            ->andWhere("q.status = 5")
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

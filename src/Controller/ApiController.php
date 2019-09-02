@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Foods;
 use App\Entity\Collect;
 use App\Entity\Persons;
+use App\Entity\Status;
+use App\Entity\Vehicles;
 use App\Repository\FoodsRepository;
 use App\Repository\StatusRepository;
 use App\Repository\CollectRepository;
@@ -97,18 +99,29 @@ class ApiController extends AbstractController
         // On récupère le json qui nous a été envoyé
         $data = json_decode($request->getContent(), true);
 
+        // On récupère l'utilisateur auquel est lié le JSON envoyé via son email
         $user = $personsRep->findOneBy(["email"=> $data["email"]]);
+
+        // Si il existe
         if($user){
+            /* On initialise la variable qui contiendra le poids total de son envoi et la variable qui va
+             * permettre d'aller récupérer les poids
+             */
             $totalWeight = 0;
+            $curl = new Curl();
+
+            // Pour chaque article envoyé par l'utilisateur
             foreach($data["articles"] as $article){
-                $curl = new Curl();
+
+                // On récupère l'article sur l'api openfoodfact
                 $foodFromApi = $curl->getFood($article['code']);
-                $totalWeight = $foodFromApi['product_quantity'];
 
+                // On incrémente le poids total de la commande
+                $totalWeight += $foodFromApi['product_quantity']*$article['quantity_nbr'];
+
+                // Si c'est la première fois qu'on rencontre ce code barre on le met en BDD
                 $food = $foodsRep->findOneBy(["code"=>$article["code"]]);
-
                 if(!($food)){
-                
                     $food = new Foods();
 
                     $food->setName($article["product_name"])
@@ -124,6 +137,7 @@ class ApiController extends AbstractController
                 }
             }
 
+            // On crée ensuite un ramassage
             $collect = new Collect();
             $status = $statusRep->findOneBy(["id"=>4]);
 
@@ -131,10 +145,71 @@ class ApiController extends AbstractController
                     ->setStatus($status)
                     ->setCommentary("Collecte en attente de confirmation.")
                     ->setDateRegister($date = new \Datetime)
-                    ->setTotalWeight($totalWeight);
+                    ->setTotalWeight($totalWeight)
+                    ->setWarehouse($user->getWarehouse()->getId())
+            ;
             $manager->persist($collect);
             $manager->flush();
-            
+
+            // On récupère toutes les commandes de l'entrepôt lié qui sont en attente
+            $waitingCollects = $this->getDoctrine()->getRepository(Collect::class)->findWaiting($user->getWarehouse());
+
+            // On va venir chercher le poids total de la commande ainsi que le temps total de l'itinéraire
+            $currentTotalWeight = 0;
+            $wayPointsString = "&waypoints=";
+
+            // Pour chaque collecte en attente
+            foreach ($waitingCollects as $waitingCollect){
+                // On formate pour l'URL Google
+                $wayPointsString .= $waitingCollect->getPersonCreate()->getLatitude().",".$waitingCollect->getPersonCreate()->getLongitude()."|";
+                // On incrémente le poids total
+                $currentTotalWeight += $waitingCollect->getTotalWeight();
+            }
+
+            // On formate l'URL pour l'API Google
+            $origin = "origin=".$user->getWarehouse()->getLatitude().",".$user->getWarehouse()->getLongitude();
+            $destination = "&destination=".$user->getWarehouse()->getLatitude().",".$user->getWarehouse()->getLongitude();
+            $key = "&key=AIzaSyDE9fld3JmAgIk2oZdBeiIf3lFxPIkCTko";
+            $url = "https://maps.googleapis.com/maps/api/directions/json?".$origin.$destination.$key.$wayPointsString;
+            // On récupère le résultat de l'API Google
+            $data = $curl->getJson($url);
+            $totalDuration = 0;
+            // On récupère le temps total de l'itinéraire
+            foreach ($data['routes'][0]['legs'] as $step){
+                $totalDuration += $step['duration']['value'];
+            }
+
+            // De base on ne lance pas la collecte, on va vérifier après si on a de quoi la lancer
+            $startCollect = false;
+            // On récupère un véhicule libre actuellement
+            $vehicles = $this->getDoctrine()->getRepository(Vehicles::class)->findWaiting();
+            $vehicle = $vehicles[0];
+            // Si l'itinéraire fais plus de 6h alors on envoie la collecte a un chauffeur libre
+            if ($totalDuration > 21600){
+                $startCollect = true;
+            }else{
+                // On considère qu'on peut faire les 2/3 d'un camion en terme de poids
+                $capacity = (($vehicle->getCapacity())/3)*2;
+
+                // Si le poids total de la collecte dépasse cette capacité, alors on démarre la collecte
+                if ($currentTotalWeight > $capacity){
+                    $startCollect = true;
+                }
+
+            }
+
+            if ($startCollect){
+                $collectStatus = $this->getDoctrine()->getRepository(Status::class)->find(5);
+                $vehicleStatus = $this->getDoctrine()->getRepository(Status::class)->find(9);
+                $vehicle->setStatus($vehicleStatus);
+                foreach($waitingCollects as $waitingCollect){
+                    $waitingCollect->setVehicle($vehicle);
+                    $waitingCollect->setStatus($collectStatus);
+                    $waitingCollect->setCommentary('Collecte confirmée');
+                    $waitingCollect->setDateCollect(new \DateTime('tomorrow'));
+                }
+                $manager->flush();
+            }
             $fs = new Filesystem();
             try {
                 $fs->dumpFile($this->getParameter('kernel.project_dir').'/src/collects/'.$collect->getId().'.json', $request->getContent());
@@ -142,7 +217,6 @@ class ApiController extends AbstractController
                 $response->setContent($e);
                 return $response;
             }
-
             // On va générer le pdf qui sera envoyé à l'utilisateur
             $pdfOptions = new Options();
             $pdfOptions->set('defaultFond','arial');
@@ -174,7 +248,6 @@ class ApiController extends AbstractController
                 ->attach(\Swift_Attachment::fromPath($path))
             ;
             $mailer->send($message);
-
             $response->setContent('true');
             $response->setStatusCode(200);
             return $response;

@@ -7,10 +7,27 @@
 		        <h1 id="title-underlined">{% trans %}Inscription{% endtrans %}</h1>
 		        {{ form_start(form) }}
 		        {{ form_widget(form) }}
-		        <button type="submit" class="btn btn-success">Envoyer</button>
+		        	<button type="submit" class="btn btn-success">Envoyer</button>
 		        {{ form_end(form) }}
 		    </div>
 		</div>
 	</div>
+{% endblock %}
+{% block customJs %}
+	<script type="text/javascript">
+		$('#signup_person_company').attr('type','hidden');
+		$('label[for=signup_person_company]').attr('style','display:none');
+		signupPerson = $('#signup_person_type_choice');
+		signupPerson.on('change',function(){
+			if (signupPerson.val() == 3){
+				$('#signup_person_company').attr('type','text');
+				$('label[for=signup_person_company]').attr('style','display:block');
+			}else{
+				$('#signup_person_company').attr('type','hidden');
+				$('label[for=signup_person_company]').attr('style','display:none');
+			}
+
+		});
+	</script>
 {% endblock %}
 

@@ -1,6 +1,6 @@
 {
-    "email":"maxime.lalo.pro@gmail.com",
-    "password":"testtest",
+    "email":"peterbalivet@gmail.com",
+    "password":"Peter945914",
     "articles":[
         {
             "code":"4006040271543",
@@ -9,7 +9,7 @@
             "quantity":"84 g (8 x 10,5 g)",
             "brands":"Rapunzel",
             "image_url":"https://static.openfoodfacts.org/images/products/400/604/027/1543/front_fr.3.400.jpg",
-            "quantity_nbr":"5"
+            "quantity_nbr":"50"
         },
         {
             "code":"8076809572569",
@@ -18,7 +18,7 @@
             "quantity":"195 g",
             "brands":"Barilla",
             "image_url":"https://static.openfoodfacts.org/images/products/807/680/957/2569/front_fr.30.400.jpg",
-            "quantity_nbr":"2"
+            "quantity_nbr":"20"
         }
     ]
 }
