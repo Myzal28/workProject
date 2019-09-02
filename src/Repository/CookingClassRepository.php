@@ -51,15 +51,11 @@ class CookingClassRepository extends ServiceEntityRepository
     }
     */
 
-    public function findThisWeek($id){
+    public function findThisWeek(){
         $qb = $this->createQueryBuilder('q');
 
         $qb->where("q.beginning > :now")
-            ->andWhere('q.beginning < :finDeLaSemaine')
-            ->andWhere('q.professor = :utilisateurDuCsv')
             ->setParameter('now',date('Y-m-d 00:00:00'))
-            ->setParameter('finDeLaSemaine',// Récupérer la fin de la semaine)
-            ->setParameter('utilisateurDuCsv',$id//id du professeur du cours)
         ;
 
         return $qb->getQuery()->getResult();
