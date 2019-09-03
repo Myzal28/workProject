@@ -1,13 +1,24 @@
 {
-"email":"maxime.lalo.pro@gmail.com",
-"password":"testtest",
-"articles":[
-{
-"code":"3268840001008",
-"product_name":"Cristaline",
-"ingredients_text":"Eau de source",
-"quantity":"50 cl",
-"brands":"Cristaline",
-"image_url":"https://static.openfoodfacts.org/images/products/326/884/000/1008/front_fr.258.400.jpg",
-"quantity_nbr":"5"
-}]}
+    "email":"peterbalivet@gmail.com",
+    "password":"Peter945914",
+    "articles":[
+        {
+            "code":"4006040271543",
+            "product_name":"Bouillon de légumes Original Bio (8 tablettes)",
+            "ingredients_text":"Sel de mer, graisse de palme non hydrogénée, extrait de levure, légumes 4% (oignons, carottes, céleri), persil, macis, curcuma.",
+            "quantity":"84 g (8 x 10,5 g)",
+            "brands":"Rapunzel",
+            "image_url":"https://static.openfoodfacts.org/images/products/400/604/027/1543/front_fr.3.400.jpg",
+            "quantity_nbr":"5"
+        },
+        {
+            "code":"8076809572569",
+            "product_name":"Pesto au basilic Vegan",
+            "ingredients_text":"Basilic 35.7%, huile de tournesol, noix de cajou, sirop de glucose, eau, amidon de maïs modifié, sel, arômes naturels, huile d'olive vierge extra, sucre, correcteur d'acidité: acide lactique peut contenir des traces d'autres fruits a coque.",
+            "quantity":"195 g",
+            "brands":"Barilla",
+            "image_url":"https://static.openfoodfacts.org/images/products/807/680/957/2569/front_fr.30.400.jpg",
+            "quantity_nbr":"2"
+        }
+    ]
+}

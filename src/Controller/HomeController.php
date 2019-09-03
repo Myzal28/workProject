@@ -241,14 +241,20 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/user/driver/work/{id}/{_locale}",
+     * @Route("/user/driver/work/{_locale}",
      *     defaults={"_locale"="fr"},
      *     name="drivers_work",
      *     requirements={
      *         "_locale"="en|fr|pt|it"
      * })
+     * @param Persons $person
+     * @param CollectRepository $collectsRep
+     * @param StatusRepository $statusRep
+     * @return Response
+     * @throws ExceptionInterface
      */
-    public function driversWork(Persons $person, CollectRepository $collectsRep, StatusRepository $statusRep){
+    public function driversWork(CollectRepository $collectsRep, StatusRepository $statusRep){
+        $person = $this->getUser();
 
         $from = new \DateTime(date("Y-m-d")." 00:00:00");
         $to = new \DateTime(date("Y-m-d")." 23:59:59");
@@ -256,14 +262,11 @@ class HomeController extends AbstractController
 
         foreach($person->getVehicles() as $vehicule){
             $qb = $collectsRep->createQueryBuilder("e");
-            $qb->andWhere('e.dateCollect BETWEEN :from AND :to')
-            ->andWhere('e.vehicle = :vehicle')
-            ->andWhere('e.status = :status')
-            ->setParameter('from', $from )
-            ->setParameter('status', $status )
-            ->setParameter('vehicle', $vehicule )
-            ->setParameter('to', $to);
-
+            $qb->andWhere('e.vehicle = :vehicle')
+                ->andWhere('e.status = :status')
+                ->setParameter('status', $status )
+                ->setParameter('vehicle', $vehicule )
+            ;
             $collects = $qb->getQuery()->getResult();
         }
 

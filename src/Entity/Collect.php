@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CollectRepository")
  */
-class Collect
+class Collect implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -64,6 +64,11 @@ class Collect
      * @ORM\Column(type="integer")
      */
     private $totalWeight;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $warehouse;
 
     public function __construct()
     {
@@ -200,5 +205,22 @@ class Collect
         $this->totalWeight = $totalWeight;
 
         return $this;
+    }
+
+    public function getWarehouse(): ?int
+    {
+        return $this->warehouse;
+    }
+
+    public function setWarehouse(int $warehouse): self
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
